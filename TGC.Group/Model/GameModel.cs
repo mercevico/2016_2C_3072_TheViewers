@@ -34,6 +34,10 @@ namespace TGC.Group.Model
         //Caja que se muestra en el ejemplo.
         private TgcBox Box { get; set; }
 
+        //Plano
+        private TgcPlane Plane { get; set; }
+
+
         //Mesh de TgcLogo.
         private TgcMesh Mesh { get; set; }
 
@@ -63,12 +67,14 @@ namespace TGC.Group.Model
             var texture = TgcTexture.createTexture(pathTexturaCaja);
 
             //Creamos una caja 3D ubicada de dimensiones (5, 10, 5) y la textura como color.
-            var size = new Vector3(5, 10, 5);
+            var size = new Vector3(1500, 5, 1500);
             //Construimos una caja según los parámetros, por defecto la misma se crea con centro en el origen y se recomienda así para facilitar las transformaciones.
             Box = TgcBox.fromSize(size, texture);
             //Posición donde quiero que este la caja, es común que se utilicen estructuras internas para las transformaciones.
             //Entonces actualizamos la posición lógica, luego podemos utilizar esto en render para posicionar donde corresponda con transformaciones.
             Box.Position = new Vector3(-25, 0, 0);
+          
+           
 
             //Cargo el unico mesh que tiene la escena.
             Mesh = new TgcSceneLoader().loadSceneFromFile(MediaDir + "LogoTGC-TgcScene.xml").Meshes[0];
@@ -77,14 +83,15 @@ namespace TGC.Group.Model
 
             var loader = new TgcSceneLoader();
              
-        scene = loader.loadSceneFromFile(MediaDir + "MeshCreator\\Scenes\\Ciudad\\miterreno1-TgcScene.xml");
+        scene = loader.loadSceneFromFile(MediaDir + "Isla-TgcScene.xml");
+            
             //Suelen utilizarse objetos que manejan el comportamiento de la camara.
             //Lo que en realidad necesitamos gráficamente es una matriz de View.
             //El framework maneja una cámara estática, pero debe ser inicializada.
             //Posición de la camara.
-            var cameraPosition = new Vector3(0, 0, 125);
+            var cameraPosition = new Vector3(0, 0, 500);
             //Quiero que la camara mire hacia el origen (0,0,0).
-            var lookAt = Vector3.Empty;
+            var lookAt = new Vector3(1, 0, 0);
             //Configuro donde esta la posicion de la camara y hacia donde mira.
             Camara.SetCamera(cameraPosition, lookAt);
             //Internamente el framework construye la matriz de view con estos dos vectores.
@@ -120,6 +127,19 @@ namespace TGC.Group.Model
                     Camara.SetCamera(new Vector3(Camara.Position.X, 0f, Camara.Position.Z), Camara.LookAt);
                 }
             }
+            if (Input.buttonUp(TgcD3dInput.MouseButtons.BUTTON_RIGHT))
+            {
+                //Como ejemplo podemos hacer un movimiento simple de la cámara.
+                //En este caso le sumamos un valor en Y
+                Camara.SetCamera(Camara.Position + new Vector3(10f, 0, 0), Camara.LookAt);
+                //Ver ejemplos de cámara para otras operaciones posibles.
+
+                //Si superamos cierto Y volvemos a la posición original.
+                if (Camara.Position.Y > 300f)
+                {
+                    Camara.SetCamera(new Vector3(Camara.Position.X, 0f, Camara.Position.Z), Camara.LookAt);
+                }
+            }
         }
 
         /// <summary>
@@ -137,7 +157,9 @@ namespace TGC.Group.Model
             DrawText.drawText(
                 "Con clic izquierdo subimos la camara [Actual]: " + TgcParserUtils.printVector3(Camara.Position), 0, 30,
                 Color.OrangeRed);
-
+            DrawText.drawText(
+               "Con clic derecho rotamos la camara [Actual]: " + TgcParserUtils.printVector3(Camara.Position), 0, 30,
+               Color.Black);
             //Siempre antes de renderizar el modelo necesitamos actualizar la matriz de transformacion.
             //Debemos recordar el orden en cual debemos multiplicar las matrices, en caso de tener modelos jerárquicos, tenemos control total.
             Box.Transform = Matrix.Scaling(Box.Scale) *
@@ -145,9 +167,10 @@ namespace TGC.Group.Model
                             Matrix.Translation(Box.Position);
             //A modo ejemplo realizamos toda las multiplicaciones, pero aquí solo nos hacia falta la traslación.
             //Finalmente invocamos al render de la caja
+           
             Box.render();
             scene.renderAll();
-
+           
             //Cuando tenemos modelos mesh podemos utilizar un método que hace la matriz de transformación estándar.
             //Es útil cuando tenemos transformaciones simples, pero OJO cuando tenemos transformaciones jerárquicas o complicadas.
             Mesh.UpdateMeshTransform();
@@ -177,6 +200,7 @@ namespace TGC.Group.Model
             //Dispose del mesh.
             Mesh.dispose();
             scene.disposeAll();
+           
         }
     }
 }
