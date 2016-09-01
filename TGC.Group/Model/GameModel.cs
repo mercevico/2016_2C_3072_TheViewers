@@ -181,7 +181,14 @@ namespace TGC.Group.Model
 
                 Camara.SetCamera(Camara.Position + new Vector3(0, 0, -1), Camara.LookAt);
             }
-
+            if (Camara.Position.Y < 5f)
+            {
+                Camara.SetCamera(new Vector3(Camara.Position.X, 5f, Camara.Position.Z), Camara.LookAt);
+            }
+            if (Camara.Position.X < -777f)
+            {
+                Camara.SetCamera(new Vector3(-777, Camara.Position.Y, Camara.Position.Z), Camara.LookAt);
+            }
 
         }
 
