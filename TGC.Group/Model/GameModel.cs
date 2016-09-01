@@ -31,11 +31,13 @@ namespace TGC.Group.Model
             Description = Game.Default.Description;
         }
 
+
+
         //Caja que se muestra en el ejemplo.
         private TgcBox Box { get; set; }
 
-        //Plano
-        private TgcPlane Plane { get; set; }
+      //Fondo 
+      private TgcBox Fondo { get; set; }
 
 
         //Mesh de TgcLogo.
@@ -52,6 +54,8 @@ namespace TGC.Group.Model
         /// </summary>
         /// 
         private TgcScene scene;
+      
+
         public override void Init()
         {
            
@@ -61,19 +65,21 @@ namespace TGC.Group.Model
             //Textura de la carperta Media. Game.Default es un archivo de configuracion (Game.settings) util para poner cosas.
             //Pueden abrir el Game.settings que se ubica dentro de nuestro proyecto para configurar.
             var pathTexturaCaja = MediaDir + Game.Default.TexturaCaja;
-
+            var pathTexturaFondo = MediaDir + "fondo.jpg";
             //Cargamos una textura, tener en cuenta que cargar una textura significa crear una copia en memoria.
             //Es importante cargar texturas en Init, si se hace en el render loop podemos tener grandes problemas si instanciamos muchas.
             var texture = TgcTexture.createTexture(pathTexturaCaja);
-
+            var texturefondo = TgcTexture.createTexture(pathTexturaFondo);
             //Creamos una caja 3D ubicada de dimensiones (5, 10, 5) y la textura como color.
             var size = new Vector3(1500, 5, 1500);
+            var sizefondo = new Vector3(0, 5000, 5000);
             //Construimos una caja según los parámetros, por defecto la misma se crea con centro en el origen y se recomienda así para facilitar las transformaciones.
             Box = TgcBox.fromSize(size, texture);
+            Fondo = TgcBox.fromSize(sizefondo, texturefondo);
             //Posición donde quiero que este la caja, es común que se utilicen estructuras internas para las transformaciones.
             //Entonces actualizamos la posición lógica, luego podemos utilizar esto en render para posicionar donde corresponda con transformaciones.
             Box.Position = new Vector3(-25, 0, 0);
-          
+            Fondo.Position = new Vector3(-900, 0, 0);
            
 
             //Cargo el unico mesh que tiene la escena.
@@ -82,8 +88,8 @@ namespace TGC.Group.Model
             Mesh.Scale = new Vector3(0.5f, 0.5f, 0.5f);
 
             var loader = new TgcSceneLoader();
-             
-        scene = loader.loadSceneFromFile(MediaDir + "Isla-TgcScene.xml");
+             var loader1 = new TgcSceneLoader();
+            scene = loader.loadSceneFromFile(MediaDir + "Isla-TgcScene.xml");
             
             //Suelen utilizarse objetos que manejan el comportamiento de la camara.
             //Lo que en realidad necesitamos gráficamente es una matriz de View.
@@ -115,23 +121,27 @@ namespace TGC.Group.Model
 
             //Capturar Input Mouse
             if (Input.buttonUp(TgcD3dInput.MouseButtons.BUTTON_LEFT))
-            {
+            {   
+                
                 //Como ejemplo podemos hacer un movimiento simple de la cámara.
                 //En este caso le sumamos un valor en Y
                 Camara.SetCamera(Camara.Position + new Vector3(0, 10f, 0), Camara.LookAt);
                 //Ver ejemplos de cámara para otras operaciones posibles.
 
                 //Si superamos cierto Y volvemos a la posición original.
-                if (Camara.Position.Y > 300f)
+                if (Camara.Position.Y > 300f) 
                 {
                     Camara.SetCamera(new Vector3(Camara.Position.X, 0f, Camara.Position.Z), Camara.LookAt);
                 }
             }
-            if (Input.buttonUp(TgcD3dInput.MouseButtons.BUTTON_RIGHT))
+
+     
+
+            if (Input.buttonPressed(TgcD3dInput.MouseButtons.BUTTON_RIGHT)) 
             {
                 //Como ejemplo podemos hacer un movimiento simple de la cámara.
                 //En este caso le sumamos un valor en Y
-                Camara.SetCamera(Camara.Position + new Vector3(10f, 0, 0), Camara.LookAt);
+                Camara.SetCamera(Camara.Position + new Vector3(1, 0, 0), Camara.LookAt); 
                 //Ver ejemplos de cámara para otras operaciones posibles.
 
                 //Si superamos cierto Y volvemos a la posición original.
@@ -140,6 +150,39 @@ namespace TGC.Group.Model
                     Camara.SetCamera(new Vector3(Camara.Position.X, 0f, Camara.Position.Z), Camara.LookAt);
                 }
             }
+
+            if (Input.keyDown(Key.A))
+            {
+                
+                 Camara.SetCamera(Camara.Position + new Vector3(1, 0, 0), Camara.LookAt); 
+            }
+            if (Input.keyDown(Key.D))
+            {
+
+                Camara.SetCamera(Camara.Position + new Vector3(-1, 0, 0), Camara.LookAt);
+            }
+            if (Input.keyDown(Key.W))
+            {
+
+                Camara.SetCamera(Camara.Position + new Vector3(0, 1, 0), Camara.LookAt);
+            }
+            if (Input.keyDown(Key.S))
+            {
+
+                Camara.SetCamera(Camara.Position + new Vector3(0, -1, 0), Camara.LookAt);
+            }
+            if (Input.keyDown(Key.UpArrow))
+            {
+
+                Camara.SetCamera(Camara.Position + new Vector3(0, 0, 1), Camara.LookAt);
+            }
+            if (Input.keyDown(Key.DownArrow))
+            {
+
+                Camara.SetCamera(Camara.Position + new Vector3(0, 0, -1), Camara.LookAt);
+            }
+
+
         }
 
         /// <summary>
@@ -158,16 +201,22 @@ namespace TGC.Group.Model
                 "Con clic izquierdo subimos la camara [Actual]: " + TgcParserUtils.printVector3(Camara.Position), 0, 30,
                 Color.OrangeRed);
             DrawText.drawText(
-               "Con clic derecho rotamos la camara [Actual]: " + TgcParserUtils.printVector3(Camara.Position), 0, 30,
+               "Con clic derecho rotamos la camara [Actual]: " + TgcParserUtils.printVector3(Camara.Position), 0, 50,
                Color.Black);
             //Siempre antes de renderizar el modelo necesitamos actualizar la matriz de transformacion.
             //Debemos recordar el orden en cual debemos multiplicar las matrices, en caso de tener modelos jerárquicos, tenemos control total.
             Box.Transform = Matrix.Scaling(Box.Scale) *
                             Matrix.RotationYawPitchRoll(Box.Rotation.Y, Box.Rotation.X, Box.Rotation.Z) *
                             Matrix.Translation(Box.Position);
+
+            Fondo.Transform = Matrix.Scaling(Box.Scale) *
+                            Matrix.RotationYawPitchRoll(Box.Rotation.Y, Box.Rotation.X, Box.Rotation.Z) * Matrix.Translation(Fondo.Position);
+            
+            
+            
             //A modo ejemplo realizamos toda las multiplicaciones, pero aquí solo nos hacia falta la traslación.
             //Finalmente invocamos al render de la caja
-           
+            Fondo.render();
             Box.render();
             scene.renderAll();
            
@@ -197,6 +246,7 @@ namespace TGC.Group.Model
         {
             //Dispose de la caja.
             Box.dispose();
+            Fondo.dispose();
             //Dispose del mesh.
             Mesh.dispose();
             scene.disposeAll();
