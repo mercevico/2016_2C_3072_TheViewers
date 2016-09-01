@@ -89,13 +89,13 @@ namespace TGC.Group.Model
 
             var loader = new TgcSceneLoader();
              var loader1 = new TgcSceneLoader();
-            scene = loader.loadSceneFromFile(MediaDir + "Isla-TgcScene.xml");
+            scene = loader.loadSceneFromFile(MediaDir + "Isla_v2-TgcScene.xml");
             
             //Suelen utilizarse objetos que manejan el comportamiento de la camara.
             //Lo que en realidad necesitamos gráficamente es una matriz de View.
             //El framework maneja una cámara estática, pero debe ser inicializada.
             //Posición de la camara.
-            var cameraPosition = new Vector3(0, 0, 500);
+            var cameraPosition = new Vector3(0, 140, 500);
             //Quiero que la camara mire hacia el origen (0,0,0).
             var lookAt = new Vector3(1, 0, 0);
             //Configuro donde esta la posicion de la camara y hacia donde mira.
@@ -141,7 +141,7 @@ namespace TGC.Group.Model
             {
                 //Como ejemplo podemos hacer un movimiento simple de la cámara.
                 //En este caso le sumamos un valor en Y
-                Camara.SetCamera(Camara.Position + new Vector3(1, 0, 0), Camara.LookAt); 
+                Camara.SetCamera(Camara.Position + new Vector3(10f, 0, 0), Camara.LookAt); 
                 //Ver ejemplos de cámara para otras operaciones posibles.
 
                 //Si superamos cierto Y volvemos a la posición original.
