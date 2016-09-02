@@ -72,14 +72,14 @@ namespace TGC.Group.Model
             var texturefondo = TgcTexture.createTexture(pathTexturaFondo);
             //Creamos una caja 3D ubicada de dimensiones (5, 10, 5) y la textura como color.
             var size = new Vector3(1500, 5, 1500);
-            var sizefondo = new Vector3(0, 5000, 5000);
+            var sizefondo = new Vector3(1500, 1000, 1500); /////
             //Construimos una caja según los parámetros, por defecto la misma se crea con centro en el origen y se recomienda así para facilitar las transformaciones.
             Box = TgcBox.fromSize(size, texture);
             Fondo = TgcBox.fromSize(sizefondo, texturefondo);
             //Posición donde quiero que este la caja, es común que se utilicen estructuras internas para las transformaciones.
             //Entonces actualizamos la posición lógica, luego podemos utilizar esto en render para posicionar donde corresponda con transformaciones.
             Box.Position = new Vector3(-25, 0, 0);
-            Fondo.Position = new Vector3(-900, 0, 0);
+            Fondo.Position = new Vector3(-25, 450, 0); /////
            
 
             //Cargo el unico mesh que tiene la escena.
