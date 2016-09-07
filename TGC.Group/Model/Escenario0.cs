@@ -8,6 +8,7 @@ using TGC.Core.Input;
 using TGC.Core.SceneLoader;
 using TGC.Core.Textures;
 using TGC.Core.Utils;
+using TGC.Core.Collision;
 
 namespace TGC.Group.Escenario
 
@@ -33,6 +34,15 @@ namespace TGC.Group.Escenario
         }
 
 
+        private bool applyMovement;
+        private TgcBox collisionPointMesh;
+        private TgcArrow directionArrow;
+        private TgcMesh mesh1;
+        private Matrix meshRotationMatrix;
+        private Vector3 newPosition;
+        private Vector3 originalMeshRot;
+        private TgcPickingRay pickingRay;
+        private TgcPlane suelo0;
 
         //Caja que se muestra en el ejemplo.
         private TgcBox Suelo { get; set; }
@@ -65,6 +75,41 @@ namespace TGC.Group.Escenario
         public override void Init()
         {
 
+
+            //Cargar suelo
+            var texture = TgcTexture.createTexture(D3DDevice.Instance.Device, MediaDir + "Grass.jpg");
+            suelo0 = new TgcPlane(new Vector3(0, 4f, 0), new Vector3(5000, 0f, 5000), TgcPlane.Orientations.XZplane, texture);
+            
+            //Iniciarlizar PickingRay
+            pickingRay = new TgcPickingRay(Input);
+
+            //Cargar nave
+            var loader = new TgcSceneLoader();
+            var scene =
+                loader.loadSceneFromFile(MediaDir + "\\Esqueletos\\EsqueletoHumano2\\Esqueleto2-TgcScene.xml");
+
+            mesh1 = scene.Meshes[0];
+
+            //Rotación original de la malla, hacia -Z
+            originalMeshRot = new Vector3(0, 0, -1);
+
+            //Manipulamos los movimientos del mesh a mano
+            mesh1.AutoTransformEnable = false;
+            meshRotationMatrix = Matrix.Identity;
+
+            newPosition = mesh1.Position;
+            applyMovement = false;
+
+            //Crear caja para marcar en que lugar hubo colision
+            collisionPointMesh = TgcBox.fromSize(new Vector3(3, 100, 3), Color.Red);
+
+            //Flecha para marcar la dirección
+            directionArrow = new TgcArrow();
+            directionArrow.Thickness = 5;
+            directionArrow.HeadSize = new Vector2(10, 10);
+
+
+
             //Device de DirectX para crear primitivas.
             var d3dDevice = D3DDevice.Instance.Device;
 
@@ -74,7 +119,7 @@ namespace TGC.Group.Escenario
             var pathTexturaFondo = MediaDir + "grass_fence.jpg";
             //Cargamos una textura, tener en cuenta que cargar una textura significa crear una copia en memoria.
             //Es importante cargar texturas en Init, si se hace en el render loop podemos tener grandes problemas si instanciamos muchas.
-            var texture = TgcTexture.createTexture(pathTexturaSuelo);
+            var texture1 = TgcTexture.createTexture(pathTexturaSuelo);
             var texturefondo = TgcTexture.createTexture(pathTexturaFondo);
             //Creamos una caja 3D ubicada de dimensiones (5, 10, 5) y la textura como color.
             var size = new Vector3(5000, 5, 5000);
@@ -130,7 +175,7 @@ namespace TGC.Group.Escenario
             }
 
             //Capturar Input Mouse
-            if (Input.buttonUp(TgcD3dInput.MouseButtons.BUTTON_LEFT))
+           /* if (Input.buttonUp(TgcD3dInput.MouseButtons.BUTTON_LEFT))
             {
 
                 //Como ejemplo podemos hacer un movimiento simple de la cámara.
@@ -143,7 +188,7 @@ namespace TGC.Group.Escenario
                 {
                     Camara.SetCamera(new Vector3(Camara.Position.X, 0f, Camara.Position.Z), Camara.LookAt);
                 }
-            }
+            }*/
 
 
 
@@ -184,13 +229,26 @@ namespace TGC.Group.Escenario
             if (Input.keyDown(Key.UpArrow))
             {
 
-                Camara.SetCamera(Camara.Position + new Vector3(0, 0, 1), Camara.LookAt);
+                Camara.SetCamera(Camara.Position + new Vector3(0, 1, 1), Camara.LookAt);
             }
             if (Input.keyDown(Key.DownArrow))
             {
 
-                Camara.SetCamera(Camara.Position + new Vector3(0, 0, -1), Camara.LookAt);
+                Camara.SetCamera(Camara.Position + new Vector3(0, -1, -1), Camara.LookAt);
             }
+
+            if (Input.keyDown(Key.LeftArrow))
+            {
+
+                Camara.SetCamera(Camara.Position + new Vector3(1, 0, 1), Camara.LookAt);
+            }
+
+            if (Input.keyDown(Key.RightArrow))
+            {
+
+                Camara.SetCamera(Camara.Position + new Vector3(-1, 0, -1), Camara.LookAt);
+            }
+
             if (Camara.Position.Y < 5f)
             {
                 Camara.SetCamera(new Vector3(Camara.Position.X, 5f, Camara.Position.Z), Camara.LookAt);
@@ -211,6 +269,76 @@ namespace TGC.Group.Escenario
         {
             //Inicio el render de la escena, para ejemplos simples. Cuando tenemos postprocesado o shaders es mejor realizar las operaciones según nuestra conveniencia.
             PreRender();
+
+            //Si hacen clic con el mouse, ver si hay colision con el suelo
+            if (Input.buttonPressed(TgcD3dInput.MouseButtons.BUTTON_LEFT))
+            {
+                //Actualizar Ray de colisión en base a posición del mouse
+                pickingRay.updateRay();
+
+                //Detectar colisión Ray-AABB
+                if (TgcCollisionUtils.intersectRayAABB(pickingRay.Ray, suelo0.BoundingBox, out newPosition))
+                {
+                    //Fijar nueva posición destino
+                    applyMovement = true;
+
+                    collisionPointMesh.Position = newPosition;
+                    directionArrow.PEnd = new Vector3(newPosition.X, 30f, newPosition.Z);
+
+                    //Rotar modelo en base a la nueva dirección a la que apunta
+                    var direction = Vector3.Normalize(newPosition - mesh1.Position);
+                    var angle = FastMath.Acos(Vector3.Dot(originalMeshRot, direction));
+                    var axisRotation = Vector3.Cross(originalMeshRot, direction);
+                    meshRotationMatrix = Matrix.RotationAxis(axisRotation, angle);
+                }
+            }
+            //Interporlar movimiento, si hay que mover
+            if (applyMovement)
+            {
+                //Ver si queda algo de distancia para mover
+                var posDiff = newPosition - mesh1.Position;
+                var posDiffLength = posDiff.LengthSq();
+                if (posDiffLength > float.Epsilon)
+                {
+                    //Movemos el mesh interpolando por la velocidad
+                    var currentVelocity = 1500 * ElapsedTime;
+                    posDiff.Normalize();
+                    posDiff.Multiply(currentVelocity);
+
+                    //Ajustar cuando llegamos al final del recorrido
+                    var newPos = mesh1.Position + posDiff;
+                    if (posDiff.LengthSq() > posDiffLength)
+                    {
+                        newPos = newPosition;
+                    }
+
+                    //Actualizar flecha de movimiento
+                    directionArrow.PStart = new Vector3(mesh1.Position.X, 30f, mesh1.Position.Z);
+                    directionArrow.updateValues();
+
+                    //Actualizar posicion del mesh
+                    mesh1.Position = newPos;
+
+                    //Como desactivamos la transformacion automatica, tenemos que armar nosotros la matriz de transformacion
+                    mesh1.Transform = meshRotationMatrix * Matrix.Translation(mesh1.Position);
+
+                    
+                }
+                //Se acabo el movimiento
+                else
+                {
+                    applyMovement = false;
+                }
+            }
+
+            //Mostrar caja con lugar en el que se hizo click, solo si hay movimiento
+            if (applyMovement)
+            {
+                collisionPointMesh.render();
+                directionArrow.render();
+            }
+
+
 
             //Dibuja un texto por pantalla
             DrawText.drawText("Con la tecla F se dibuja el bounding box.", 0, 20, Color.OrangeRed);
@@ -247,8 +375,8 @@ namespace TGC.Group.Escenario
             //Render del mesh
             Mesh.render();
             Planta.render();
-            Planta1.render();
-            
+            Planta1.render(); mesh1.render();
+
 
             //Render de BoundingBox, muy útil para debug de colisiones.
             if (BoundingBox)
@@ -272,6 +400,7 @@ namespace TGC.Group.Escenario
             //Dispose de la caja.
             Suelo.dispose();
             Fondo.dispose();
+            mesh1.dispose();
             //Dispose del mesh.
             Mesh.dispose();
             Planta.dispose();
