@@ -35,7 +35,7 @@ namespace TGC.Group.Escenario
 
 
         //Caja que se muestra en el ejemplo.
-        private TgcBox Box { get; set; }
+        private TgcBox Suelo { get; set; }
 
         //Fondo 
         private TgcBox Fondo { get; set; }
@@ -43,6 +43,10 @@ namespace TGC.Group.Escenario
 
         //Mesh de TgcLogo.
         private TgcMesh Mesh { get; set; }
+
+        //Meshes de Plantas del suelo--------------------------------------------------------///
+        private TgcMesh Planta { get; set; }
+        private TgcMesh Planta1 { get; set; }
 
         //Boleano para ver si dibujamos el boundingbox
         private bool BoundingBox { get; set; }
@@ -65,29 +69,34 @@ namespace TGC.Group.Escenario
 
             //Textura de la carperta Media. Game.Default es un archivo de configuracion (Game.settings) util para poner cosas.
             //Pueden abrir el Game.settings que se ubica dentro de nuestro proyecto para configurar.
-            var pathTexturaCaja = MediaDir + Game.Default.TexturaCaja;
-            var pathTexturaFondo = MediaDir + "fondo.jpg";
+            var pathTexturaSuelo = MediaDir + "Grass.jpg";
+            var pathTexturaFondo = MediaDir + "grass_fence.jpg";
             //Cargamos una textura, tener en cuenta que cargar una textura significa crear una copia en memoria.
             //Es importante cargar texturas en Init, si se hace en el render loop podemos tener grandes problemas si instanciamos muchas.
-            var texture = TgcTexture.createTexture(pathTexturaCaja);
+            var texture = TgcTexture.createTexture(pathTexturaSuelo);
             var texturefondo = TgcTexture.createTexture(pathTexturaFondo);
             //Creamos una caja 3D ubicada de dimensiones (5, 10, 5) y la textura como color.
-            var size = new Vector3(1500, 5, 1500);
-            var sizefondo = new Vector3(1500, 1500, 15000); /////
+            var size = new Vector3(5000, 5, 5000);
+            var sizefondo = new Vector3(5000, 5000, 5000); /////
             //Construimos una caja según los parámetros, por defecto la misma se crea con centro en el origen y se recomienda así para facilitar las transformaciones.
-            Box = TgcBox.fromSize(size, texture);
+            Suelo = TgcBox.fromSize(size, texture);
             Fondo = TgcBox.fromSize(sizefondo, texturefondo);
             //Posición donde quiero que este la caja, es común que se utilicen estructuras internas para las transformaciones.
             //Entonces actualizamos la posición lógica, luego podemos utilizar esto en render para posicionar donde corresponda con transformaciones.
-            Box.Position = new Vector3(-25, 0, 0);
+            Suelo.Position = new Vector3(-25, 0, 0);
             Fondo.Position = new Vector3(-25, 450, 0); /////
 
 
             //Cargo el unico mesh que tiene la escena.
             Mesh = new TgcSceneLoader().loadSceneFromFile(MediaDir + "LogoTGC-TgcScene.xml").Meshes[0];
+            Planta = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Planta3\\Planta3-TgcScene.xml").Meshes[0];
+            Planta1 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Planta3\\Planta3-TgcScene.xml").Meshes[0];
+            Planta.Position = new Vector3(0,3,0);
+            Planta1.Position = new Vector3(100, 3, 200);
             //Defino una escala en el modelo logico del mesh que es muy grande.
             Mesh.Scale = new Vector3(0.5f, 0.5f, 0.5f);
-
+            
+            
             //var loader = new TgcSceneLoader();
             //var loader1 = new TgcSceneLoader();
             //scene = loader.loadSceneFromFile(MediaDir + "Isla_v2-TgcScene.xml");
@@ -213,32 +222,37 @@ namespace TGC.Group.Escenario
                Color.Black);
             //Siempre antes de renderizar el modelo necesitamos actualizar la matriz de transformacion.
             //Debemos recordar el orden en cual debemos multiplicar las matrices, en caso de tener modelos jerárquicos, tenemos control total.
-            Box.Transform = Matrix.Scaling(Box.Scale) *
-                            Matrix.RotationYawPitchRoll(Box.Rotation.Y, Box.Rotation.X, Box.Rotation.Z) *
-                            Matrix.Translation(Box.Position);
+            Suelo.Transform = Matrix.Scaling(Suelo.Scale) *
+                            Matrix.RotationYawPitchRoll(Suelo.Rotation.Y, Suelo.Rotation.X, Suelo.Rotation.Z) *
+                            Matrix.Translation(Suelo.Position);
 
-            Fondo.Transform = Matrix.Scaling(Box.Scale) *
-                            Matrix.RotationYawPitchRoll(Box.Rotation.Y, Box.Rotation.X, Box.Rotation.Z) * Matrix.Translation(Fondo.Position);
+            Fondo.Transform = Matrix.Scaling(Suelo.Scale) *
+                            Matrix.RotationYawPitchRoll(Suelo.Rotation.Y, Suelo.Rotation.X, Suelo.Rotation.Z) * Matrix.Translation(Fondo.Position);
 
 
 
             //A modo ejemplo realizamos toda las multiplicaciones, pero aquí solo nos hacia falta la traslación.
             //Finalmente invocamos al render de la caja
             Fondo.render();
-            Box.render();
+            Suelo.render();
             //scene.renderAll();
 
             //Cuando tenemos modelos mesh podemos utilizar un método que hace la matriz de transformación estándar.
             //Es útil cuando tenemos transformaciones simples, pero OJO cuando tenemos transformaciones jerárquicas o complicadas.
             Mesh.UpdateMeshTransform();
+            Planta.UpdateMeshTransform();
+            Planta1.UpdateMeshTransform();
             //Render del mesh
             Mesh.render();
+            Planta.render();
+            Planta1.render();
 
             //Render de BoundingBox, muy útil para debug de colisiones.
             if (BoundingBox)
             {
-                Box.BoundingBox.render();
+                Suelo.BoundingBox.render();
                 Mesh.BoundingBox.render();
+
             }
 
             //Finaliza el render y presenta en pantalla, al igual que el preRender se debe para casos puntuales es mejor utilizar a mano las operaciones de EndScene y PresentScene
@@ -253,10 +267,12 @@ namespace TGC.Group.Escenario
         public override void Dispose()
         {
             //Dispose de la caja.
-            Box.dispose();
+            Suelo.dispose();
             Fondo.dispose();
             //Dispose del mesh.
             Mesh.dispose();
+            Planta.dispose();
+            Planta1.dispose();
             scene.disposeAll();
 
         }
