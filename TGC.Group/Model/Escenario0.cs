@@ -44,9 +44,10 @@ namespace TGC.Group.Escenario
         //Mesh de TgcLogo.
         private TgcMesh Mesh { get; set; }
 
-        //Meshes de Plantas del suelo--------------------------------------------------------///
+        //Meshes de Objetos del suelo--------------------------------------------------------///
         private TgcMesh Planta { get; set; }
         private TgcMesh Planta1 { get; set; }
+        private TgcMesh carretilla { get; set; }
 
         //Boleano para ver si dibujamos el boundingbox
         private bool BoundingBox { get; set; }
@@ -91,16 +92,15 @@ namespace TGC.Group.Escenario
             Mesh = new TgcSceneLoader().loadSceneFromFile(MediaDir + "LogoTGC-TgcScene.xml").Meshes[0];
             Planta = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Planta3\\Planta3-TgcScene.xml").Meshes[0];
             Planta1 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Planta3\\Planta3-TgcScene.xml").Meshes[0];
+            carretilla = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Carretilla\\Carretilla-TgcScene.xml").Meshes[0];
             Planta.Position = new Vector3(0,3,0);
             Planta1.Position = new Vector3(100, 3, 200);
+            carretilla.Position = new Vector3(950, 3, -800);
             //Defino una escala en el modelo logico del mesh que es muy grande.
             Mesh.Scale = new Vector3(0.5f, 0.5f, 0.5f);
             
             
-            //var loader = new TgcSceneLoader();
-            //var loader1 = new TgcSceneLoader();
-            //scene = loader.loadSceneFromFile(MediaDir + "Isla_v2-TgcScene.xml");
-
+            
             //Suelen utilizarse objetos que manejan el comportamiento de la camara.
             //Lo que en realidad necesitamos gráficamente es una matriz de View.
             //El framework maneja una cámara estática, pero debe ser inicializada.
@@ -228,13 +228,14 @@ namespace TGC.Group.Escenario
 
             Fondo.Transform = Matrix.Scaling(Suelo.Scale) *
                             Matrix.RotationYawPitchRoll(Suelo.Rotation.Y, Suelo.Rotation.X, Suelo.Rotation.Z) * Matrix.Translation(Fondo.Position);
+            carretilla.Transform = Matrix.Scaling(new Vector3(0, 0, 2));
 
-
-
+            carretilla.Scale = new Vector3(15, 15, 15);
             //A modo ejemplo realizamos toda las multiplicaciones, pero aquí solo nos hacia falta la traslación.
             //Finalmente invocamos al render de la caja
             Fondo.render();
             Suelo.render();
+            carretilla.render();
             //scene.renderAll();
 
             //Cuando tenemos modelos mesh podemos utilizar un método que hace la matriz de transformación estándar.
@@ -242,10 +243,12 @@ namespace TGC.Group.Escenario
             Mesh.UpdateMeshTransform();
             Planta.UpdateMeshTransform();
             Planta1.UpdateMeshTransform();
+            
             //Render del mesh
             Mesh.render();
             Planta.render();
             Planta1.render();
+            
 
             //Render de BoundingBox, muy útil para debug de colisiones.
             if (BoundingBox)
@@ -273,6 +276,7 @@ namespace TGC.Group.Escenario
             Mesh.dispose();
             Planta.dispose();
             Planta1.dispose();
+            carretilla.dispose();
             scene.disposeAll();
 
         }
