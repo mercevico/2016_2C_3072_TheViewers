@@ -78,7 +78,7 @@ namespace TGC.Group.Escenario
 
             //Cargar suelo
             var texture = TgcTexture.createTexture(D3DDevice.Instance.Device, MediaDir + "Grass.jpg");
-            suelo0 = new TgcPlane(new Vector3(0, 4f, 0), new Vector3(5000, 0f, 5000), TgcPlane.Orientations.XZplane, texture);
+            suelo0 = new TgcPlane(new Vector3(0, 4f, 0), new Vector3(50000, 0f, 50000), TgcPlane.Orientations.XZplane, texture);
             
             //Iniciarlizar PickingRay
             pickingRay = new TgcPickingRay(Input);
@@ -122,8 +122,8 @@ namespace TGC.Group.Escenario
             var texture1 = TgcTexture.createTexture(pathTexturaSuelo);
             var texturefondo = TgcTexture.createTexture(pathTexturaFondo);
             //Creamos una caja 3D ubicada de dimensiones (5, 10, 5) y la textura como color.
-            var size = new Vector3(5000, 5, 5000);
-            var sizefondo = new Vector3(5000, 5000, 5000); /////
+            var size = new Vector3(50000, 5, 50000);
+            var sizefondo = new Vector3(50000, 50000, 50000); /////
             //Construimos una caja según los parámetros, por defecto la misma se crea con centro en el origen y se recomienda así para facilitar las transformaciones.
             Suelo = TgcBox.fromSize(size, texture);
             Fondo = TgcBox.fromSize(sizefondo, texturefondo);
@@ -133,7 +133,7 @@ namespace TGC.Group.Escenario
             Fondo.Position = new Vector3(-25, 450, 0); /////
 
 
-            //Cargo el unico mesh que tiene la escena.
+            //Cargo los  mesh que tiene la escena.
             Mesh = new TgcSceneLoader().loadSceneFromFile(MediaDir + "LogoTGC-TgcScene.xml").Meshes[0];
             Planta = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Planta3\\Planta3-TgcScene.xml").Meshes[0];
             Planta1 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Planta3\\Planta3-TgcScene.xml").Meshes[0];
@@ -354,7 +354,7 @@ namespace TGC.Group.Escenario
                             Matrix.RotationYawPitchRoll(Suelo.Rotation.Y, Suelo.Rotation.X, Suelo.Rotation.Z) *
                             Matrix.Translation(Suelo.Position);
 
-            Fondo.Transform = Matrix.Scaling(Suelo.Scale) *
+            Fondo.Transform = Matrix.Scaling(Fondo.Scale) *
                             Matrix.RotationYawPitchRoll(Suelo.Rotation.Y, Suelo.Rotation.X, Suelo.Rotation.Z) * Matrix.Translation(Fondo.Position);
             carretilla.Transform = Matrix.Scaling(new Vector3(0, 0, 2));
 
