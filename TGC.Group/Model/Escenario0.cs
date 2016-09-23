@@ -43,7 +43,10 @@ namespace TGC.Group.Escenario
         private Vector3 originalMeshRot;
         private TgcPickingRay pickingRay;
         private TgcPlane suelo0;
-
+        private bool selected;
+        private TgcBox selectedMesh;
+        private TgcBox meshAABB;
+        private Vector3 collisionPoint;
         //Caja que se muestra en el ejemplo.
         private TgcBox Suelo { get; set; }
 
@@ -90,6 +93,8 @@ namespace TGC.Group.Escenario
 
             mesh1 = scene.Meshes[0];
 
+            // Creamos la AABB del mesh
+            meshAABB = TgcBox.fromSize(new Vector3(30, 100, 30), Color.Yellow);
             //Rotación original de la malla, hacia -Z
             originalMeshRot = new Vector3(0, 0, -1);
 
@@ -135,21 +140,21 @@ namespace TGC.Group.Escenario
 
             //Cargo los  mesh que tiene la escena.
             Mesh = new TgcSceneLoader().loadSceneFromFile(MediaDir + "LogoTGC-TgcScene.xml").Meshes[0];
-            for (int i = 0; i < 500; i++)
+            for (int i = 0; i < 2; i++)
             {
                 Planta[i] = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Planta3\\Planta3-TgcScene.xml").Meshes[0];
             }
-            for (int i = 0; i < 500; i++)
+            for (int i = 0; i < 2; i++)
             {
                 Planta1[i] = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Planta3\\Planta3-TgcScene.xml").Meshes[0];
             }
                 carretilla = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Carretilla\\Carretilla-TgcScene.xml").Meshes[0];
-            for (int i = 0; i < 500; i++)
+            for (int i = 0; i < 2; i++)
             {
                 Planta[i].Position = new Vector3(0+i*25*i^i, 3, i/2 +(-i*15*i));
             }
 
-            for (int i = 0; i < 500; i++)
+            for (int i = 0; i < 2; i++)
             {
                 Planta1[i].Position = new Vector3(0 + i * 25 *- i ^ i, 3, i + (i * 15 * i)); ;
             }
@@ -283,8 +288,29 @@ namespace TGC.Group.Escenario
             //Inicio el render de la escena, para ejemplos simples. Cuando tenemos postprocesado o shaders es mejor realizar las operaciones según nuestra conveniencia.
             PreRender();
 
-            //Si hacen clic con el mouse, ver si hay colision con el suelo
+            //Si hacen clic con el mouse, ver si hay colision RayAABB
             if (Input.buttonPressed(TgcD3dInput.MouseButtons.BUTTON_LEFT))
+            {
+                //Actualizar Ray de colision en base a posicion del mouse
+                pickingRay.updateRay();
+
+                //Testear Ray contra el AABB del esqueleto
+
+                var aabb = meshAABB.BoundingBox;
+
+                //Ejecutar test, si devuelve true se carga el punto de colision collisionPoint
+                selected = TgcCollisionUtils.intersectRayAABB(pickingRay.Ray, aabb, out collisionPoint);
+                if (selected) {
+                    selectedMesh = meshAABB;
+                    DrawText.drawText("HOLA", 100, 100, Color.Red);
+                } else {
+                    selectedMesh = null;
+                }
+            }
+
+
+            //Si hacen clic derecho con el mouse, ver si hay colision con el suelo
+            if (Input.buttonPressed(TgcD3dInput.MouseButtons.BUTTON_RIGHT))
             {
                 //Actualizar Ray de colisión en base a posición del mouse
                 pickingRay.updateRay();
@@ -382,21 +408,21 @@ namespace TGC.Group.Escenario
             //Cuando tenemos modelos mesh podemos utilizar un método que hace la matriz de transformación estándar.
             //Es útil cuando tenemos transformaciones simples, pero OJO cuando tenemos transformaciones jerárquicas o complicadas.
             Mesh.UpdateMeshTransform();
-            for (int i = 0; i < 500; i++)
+            for (int i = 0; i < 2; i++)
             {
                 Planta[i].UpdateMeshTransform();
             }
-            for (int i = 0; i < 500; i++)
+            for (int i = 0; i < 2; i++)
             {
                 Planta1[i].UpdateMeshTransform();
             }
             //Render del mesh
             Mesh.render();
-            for (int i = 0; i < 500; i++)
+            for (int i = 0; i < 2; i++)
             {
                 Planta[i].render();
             }
-            for (int i = 0; i < 500; i++)
+            for (int i = 0; i < 2; i++)
             {
                 Planta1[i].render(); mesh1.render();
             }
@@ -426,11 +452,11 @@ namespace TGC.Group.Escenario
             mesh1.dispose();
             //Dispose del mesh.
             Mesh.dispose();
-            for (int i = 0; i < 500; i++)
+            for (int i = 0; i < 2; i++)
             {
                 Planta[i].dispose();
             }
-            for (int i = 0; i < 500; i++)
+            for (int i = 0; i < 2; i++)
             {
 
                 Planta1[i].dispose();
