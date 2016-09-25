@@ -37,14 +37,14 @@ namespace TGC.Group.Escenario
         private bool applyMovement;
         private TgcBox collisionPointMesh;
         private TgcArrow directionArrow;
-        private TgcMesh mesh1;
+        private TgcMesh esqueleto;
         private Matrix meshRotationMatrix;
         private Vector3 newPosition;
         private Vector3 originalMeshRot;
         private TgcPickingRay pickingRay;
         private TgcPlane suelo0;
         private bool selected;
-        private TgcBox selectedMesh;
+        private TgcMesh selectedMesh;
         private TgcBox meshAABB;
         private Vector3 collisionPoint;
         //Caja que se muestra en el ejemplo.
@@ -53,12 +53,10 @@ namespace TGC.Group.Escenario
         //Fondo 
         private TgcBox Fondo { get; set; }
 
-
-        //Mesh de TgcLogo.
-        private TgcMesh Mesh { get; set; }
+        //Boolean de tipo de juego
+        private bool FirstPersonCamera;
 
         //Meshes de Objetos del suelo--------------------------------------------------------///
-        private TgcMesh[] Planta = new TgcMesh[500];
         private TgcMesh[] Planta1 = new TgcMesh[500];
         private TgcMesh carretilla { get; set; }
 
@@ -91,7 +89,7 @@ namespace TGC.Group.Escenario
             var scene =
                 loader.loadSceneFromFile(MediaDir + "\\Esqueletos\\EsqueletoHumano2\\Esqueleto2-TgcScene.xml");
 
-            mesh1 = scene.Meshes[0];
+            esqueleto = scene.Meshes[0];
 
             // Creamos la AABB del mesh
             meshAABB = TgcBox.fromSize(new Vector3(30, 100, 30), Color.Yellow);
@@ -99,10 +97,10 @@ namespace TGC.Group.Escenario
             originalMeshRot = new Vector3(0, 0, -1);
 
             //Manipulamos los movimientos del mesh a mano
-            mesh1.AutoTransformEnable = false;
+            esqueleto.AutoTransformEnable = false;
             meshRotationMatrix = Matrix.Identity;
 
-            newPosition = mesh1.Position;
+            newPosition = esqueleto.Position;
             applyMovement = false;
 
             //Crear caja para marcar en que lugar hubo colision
@@ -139,11 +137,6 @@ namespace TGC.Group.Escenario
 
 
             //Cargo los  mesh que tiene la escena.
-            Mesh = new TgcSceneLoader().loadSceneFromFile(MediaDir + "LogoTGC-TgcScene.xml").Meshes[0];
-            for (int i = 0; i < 2; i++)
-            {
-                Planta[i] = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Planta3\\Planta3-TgcScene.xml").Meshes[0];
-            }
             for (int i = 0; i < 2; i++)
             {
                 Planta1[i] = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Planta3\\Planta3-TgcScene.xml").Meshes[0];
@@ -151,19 +144,11 @@ namespace TGC.Group.Escenario
                 carretilla = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Carretilla\\Carretilla-TgcScene.xml").Meshes[0];
             for (int i = 0; i < 2; i++)
             {
-                Planta[i].Position = new Vector3(0+i*25*i^i, 3, i/2 +(-i*15*i));
-            }
-
-            for (int i = 0; i < 2; i++)
-            {
                 Planta1[i].Position = new Vector3(0 + i * 25 *- i ^ i, 3, i + (i * 15 * i)); ;
             }
-                    carretilla.Position = new Vector3(950, 3, -800);
+            carretilla.Position = new Vector3(950, 3, -800);
             //Defino una escala en el modelo logico del mesh que es muy grande.
-            Mesh.Scale = new Vector3(0.5f, 0.5f, 0.5f);
-            
-            
-            
+
             //Suelen utilizarse objetos que manejan el comportamiento de la camara.
             //Lo que en realidad necesitamos gráficamente es una matriz de View.
             //El framework maneja una cámara estática, pero debe ser inicializada.
@@ -192,92 +177,219 @@ namespace TGC.Group.Escenario
                 BoundingBox = !BoundingBox;
             }
 
+            if (Input.keyPressed(Key.C) && selectedMesh != null)
+            {
+                FirstPersonCamera = !FirstPersonCamera;
+            }
+
             //Capturar Input Mouse
-           /* if (Input.buttonUp(TgcD3dInput.MouseButtons.BUTTON_LEFT))
+            /* if (Input.buttonUp(TgcD3dInput.MouseButtons.BUTTON_LEFT))
+             {
+
+                 //Como ejemplo podemos hacer un movimiento simple de la cámara.
+                 //En este caso le sumamos un valor en Y
+                 Camara.SetCamera(Camara.Position + new Vector3(0, 10f, 0), Camara.LookAt);
+                 //Ver ejemplos de cámara para otras operaciones posibles.
+
+                 //Si superamos cierto Y volvemos a la posición original.
+                 if (Camara.Position.Y > 300f)
+                 {
+                     Camara.SetCamera(new Vector3(Camara.Position.X, 0f, Camara.Position.Z), Camara.LookAt);
+                 }
+             }*/
+
+
+
+            //if (Input.buttonPressed(TgcD3dInput.MouseButtons.BUTTON_RIGHT))
+            //{
+            //    //Como ejemplo podemos hacer un movimiento simple de la cámara.
+            //    //En este caso le sumamos un valor en Y
+            //    Camara.SetCamera(Camara.Position + new Vector3(10f, 0, 0), Camara.LookAt);
+            //    //Ver ejemplos de cámara para otras operaciones posibles.
+
+            //    //Si superamos cierto Y volvemos a la posición original.
+            //    if (Camara.Position.Y > 300f)
+            //    {
+            //        Camara.SetCamera(new Vector3(Camara.Position.X, 0f, Camara.Position.Z), Camara.LookAt);
+            //    }
+            //}
+            if (FirstPersonCamera)
             {
+                Camara.SetCamera(selectedMesh.Position + new Vector3(-120, 20, 0), selectedMesh.Position + new Vector3(1,1,0));
 
-                //Como ejemplo podemos hacer un movimiento simple de la cámara.
-                //En este caso le sumamos un valor en Y
-                Camara.SetCamera(Camara.Position + new Vector3(0, 10f, 0), Camara.LookAt);
-                //Ver ejemplos de cámara para otras operaciones posibles.
+                var moveForward = 0f;
+                float rotate = 0;
+                var moving = false;
+                var rotating = false;
+                float jump = 0;
+                var velocidadRotacion = 150;
+                var velocidadCaminar = 2;
+                var velocidadSalto = 10;
+                var tiempoSalto = (float)0.5;
 
-                //Si superamos cierto Y volvemos a la posición original.
-                if (Camara.Position.Y > 300f)
+                //Adelante
+                if (Input.keyDown(Key.W))
                 {
-                    Camara.SetCamera(new Vector3(Camara.Position.X, 0f, Camara.Position.Z), Camara.LookAt);
+                    moveForward = -velocidadCaminar;
+                    moving = true;
                 }
-            }*/
 
-
-
-            if (Input.buttonPressed(TgcD3dInput.MouseButtons.BUTTON_RIGHT))
-            {
-                //Como ejemplo podemos hacer un movimiento simple de la cámara.
-                //En este caso le sumamos un valor en Y
-                Camara.SetCamera(Camara.Position + new Vector3(10f, 0, 0), Camara.LookAt);
-                //Ver ejemplos de cámara para otras operaciones posibles.
-
-                //Si superamos cierto Y volvemos a la posición original.
-                if (Camara.Position.Y > 300f)
+                //Atras
+                if (Input.keyDown(Key.S))
                 {
-                    Camara.SetCamera(new Vector3(Camara.Position.X, 0f, Camara.Position.Z), Camara.LookAt);
+                    moveForward = velocidadCaminar;
+                    moving = true;
+                }
+
+                //Derecha
+                if (Input.keyDown(Key.D))
+                {
+                    rotate = velocidadRotacion;
+                    rotating = true;
+                }
+
+                //Izquierda
+                if (Input.keyDown(Key.A))
+                {
+                    rotate = -velocidadRotacion;
+                    rotating = true;
+                }
+
+            }
+            else
+            {
+                if (Input.keyDown(Key.A))
+                {
+                    Camara.SetCamera(Camara.Position + new Vector3(1, 0, 0), Camara.LookAt);
+                }
+
+                if (Input.keyDown(Key.D))
+                {
+                    Camara.SetCamera(Camara.Position + new Vector3(-1, 0, 0), Camara.LookAt);
+                }
+
+                if (Input.keyDown(Key.W))
+                {
+                    Camara.SetCamera(Camara.Position + new Vector3(0, 1, 0), Camara.LookAt);
+                }
+
+                if (Input.keyDown(Key.S))
+                {
+                    Camara.SetCamera(Camara.Position + new Vector3(0, -1, 0), Camara.LookAt);
+                }
+
+                if (Input.keyDown(Key.UpArrow))
+                {
+                    Camara.SetCamera(Camara.Position + new Vector3(0, 1, 1), Camara.LookAt);
+                }
+
+                if (Input.keyDown(Key.DownArrow))
+                {
+                    Camara.SetCamera(Camara.Position + new Vector3(0, -1, -1), Camara.LookAt);
+                }
+
+                if (Input.keyDown(Key.LeftArrow))
+                {
+                    Camara.SetCamera(Camara.Position + new Vector3(1, 0, 1), Camara.LookAt);
+                }
+
+                if (Input.keyDown(Key.RightArrow))
+                {
+                    Camara.SetCamera(Camara.Position + new Vector3(-1, 0, -1), Camara.LookAt);
+                }
+
+                if (Camara.Position.Y < 5f)
+                {
+                    Camara.SetCamera(new Vector3(Camara.Position.X, 5f, Camara.Position.Z), Camara.LookAt);
+                }
+                if (Camara.Position.X < -777f)
+                {
+                    Camara.SetCamera(new Vector3(-777, Camara.Position.Y, Camara.Position.Z), Camara.LookAt);
+                }
+                //Si hacen clic con el mouse, ver si hay colision RayAABB
+                if (Input.buttonPressed(TgcD3dInput.MouseButtons.BUTTON_LEFT))
+                {
+                    //Actualizar Ray de colision en base a posicion del mouse
+                    pickingRay.updateRay();
+                    //Testear Ray contra el AABB del esqueleto
+                    // TO DO: Acá habría que chequear contra cada elemento del array de meshes
+                    var aabb = esqueleto;
+
+                    //Ejecutar test, si devuelve true se carga el punto de colision collisionPoint
+                    selected = TgcCollisionUtils.intersectRayAABB(pickingRay.Ray, aabb.BoundingBox, out collisionPoint);
+                    if (selected)
+                    {
+                        selectedMesh = aabb;
+                    }
+                    else
+                    {
+                        selectedMesh = null;
+                    }
+                }
+
+
+                //Si hacen clic derecho con el mouse, ver si hay colision con el suelo
+                if (Input.buttonPressed(TgcD3dInput.MouseButtons.BUTTON_RIGHT) && (selectedMesh != null))
+                {
+                    //Actualizar Ray de colisión en base a posición del mouse
+                    pickingRay.updateRay();
+
+                    //Detectar colisión Ray-AABB
+                    if (TgcCollisionUtils.intersectRayAABB(pickingRay.Ray, suelo0.BoundingBox, out newPosition))
+                    {
+                        //Fijar nueva posición destino
+                        applyMovement = true;
+
+                        collisionPointMesh.Position = newPosition;
+                        directionArrow.PEnd = new Vector3(newPosition.X, 30f, newPosition.Z);
+
+                        //Rotar modelo en base a la nueva dirección a la que apunta
+                        var direction = Vector3.Normalize(newPosition - esqueleto.Position);
+                        var angle = FastMath.Acos(Vector3.Dot(originalMeshRot, direction));
+                        var axisRotation = Vector3.Cross(originalMeshRot, direction);
+                        meshRotationMatrix = Matrix.RotationAxis(axisRotation, angle);
+                    }
+                }
+                //Interporlar movimiento, si hay que mover
+                if (applyMovement)
+                {
+                    //Ver si queda algo de distancia para mover
+                    var posDiff = newPosition - esqueleto.Position;
+                    var posDiffLength = posDiff.LengthSq();
+                    if (posDiffLength > float.Epsilon)
+                    {
+                        //Movemos el mesh interpolando por la velocidad
+                        var currentVelocity = 1500 * ElapsedTime;
+                        posDiff.Normalize();
+                        posDiff.Multiply(currentVelocity);
+
+                        //Ajustar cuando llegamos al final del recorrido
+                        var newPos = esqueleto.Position + posDiff;
+                        if (posDiff.LengthSq() > posDiffLength)
+                        {
+                            newPos = newPosition;
+                        }
+
+                        //Actualizar flecha de movimiento
+                        directionArrow.PStart = new Vector3(esqueleto.Position.X, 30f, esqueleto.Position.Z);
+                        directionArrow.updateValues();
+
+                        //Actualizar posicion del mesh
+                        esqueleto.Position = newPos;
+
+                        //Como desactivamos la transformacion automatica, tenemos que armar nosotros la matriz de transformacion
+                        esqueleto.Transform = meshRotationMatrix * Matrix.Translation(esqueleto.Position);
+
+
+                    }
+                    //Se acabo el movimiento
+                    else
+                    {
+                        applyMovement = false;
+                    }
                 }
             }
-
-            if (Input.keyDown(Key.A))
-            {
-
-                Camara.SetCamera(Camara.Position + new Vector3(1, 0, 0), Camara.LookAt);
-            }
-            if (Input.keyDown(Key.D))
-            {
-
-                Camara.SetCamera(Camara.Position + new Vector3(-1, 0, 0), Camara.LookAt);
-            }
-            if (Input.keyDown(Key.W))
-            {
-
-                Camara.SetCamera(Camara.Position + new Vector3(0, 1, 0), Camara.LookAt);
-            }
-            if (Input.keyDown(Key.S))
-            {
-
-                Camara.SetCamera(Camara.Position + new Vector3(0, -1, 0), Camara.LookAt);
-            }
-            if (Input.keyDown(Key.UpArrow))
-            {
-
-                Camara.SetCamera(Camara.Position + new Vector3(0, 1, 1), Camara.LookAt);
-            }
-            if (Input.keyDown(Key.DownArrow))
-            {
-
-                Camara.SetCamera(Camara.Position + new Vector3(0, -1, -1), Camara.LookAt);
-            }
-
-            if (Input.keyDown(Key.LeftArrow))
-            {
-
-                Camara.SetCamera(Camara.Position + new Vector3(1, 0, 1), Camara.LookAt);
-            }
-
-            if (Input.keyDown(Key.RightArrow))
-            {
-
-                Camara.SetCamera(Camara.Position + new Vector3(-1, 0, -1), Camara.LookAt);
-            }
-
-            if (Camara.Position.Y < 5f)
-            {
-                Camara.SetCamera(new Vector3(Camara.Position.X, 5f, Camara.Position.Z), Camara.LookAt);
-            }
-            if (Camara.Position.X < -777f)
-            {
-                Camara.SetCamera(new Vector3(-777, Camara.Position.Y, Camara.Position.Z), Camara.LookAt);
-            }
-
         }
-
         /// <summary>
         ///     Se llama cada vez que hay que refrescar la pantalla.
         ///     Escribir aquí todo el código referido al renderizado.
@@ -287,95 +399,6 @@ namespace TGC.Group.Escenario
         {
             //Inicio el render de la escena, para ejemplos simples. Cuando tenemos postprocesado o shaders es mejor realizar las operaciones según nuestra conveniencia.
             PreRender();
-
-            //Si hacen clic con el mouse, ver si hay colision RayAABB
-            if (Input.buttonPressed(TgcD3dInput.MouseButtons.BUTTON_LEFT))
-            {
-                //Actualizar Ray de colision en base a posicion del mouse
-                pickingRay.updateRay();
-
-                //Testear Ray contra el AABB del esqueleto
-
-                var aabb = meshAABB.BoundingBox;
-
-                //Ejecutar test, si devuelve true se carga el punto de colision collisionPoint
-                selected = TgcCollisionUtils.intersectRayAABB(pickingRay.Ray, aabb, out collisionPoint);
-                if (selected) {
-                    selectedMesh = meshAABB;
-                    DrawText.drawText("HOLA", 100, 100, Color.Red);
-                } else {
-                    selectedMesh = null;
-                }
-            }
-
-
-            //Si hacen clic derecho con el mouse, ver si hay colision con el suelo
-            if (Input.buttonPressed(TgcD3dInput.MouseButtons.BUTTON_RIGHT))
-            {
-                //Actualizar Ray de colisión en base a posición del mouse
-                pickingRay.updateRay();
-
-                //Detectar colisión Ray-AABB
-                if (TgcCollisionUtils.intersectRayAABB(pickingRay.Ray, suelo0.BoundingBox, out newPosition))
-                {
-                    //Fijar nueva posición destino
-                    applyMovement = true;
-
-                    collisionPointMesh.Position = newPosition;
-                    directionArrow.PEnd = new Vector3(newPosition.X, 30f, newPosition.Z);
-
-                    //Rotar modelo en base a la nueva dirección a la que apunta
-                    var direction = Vector3.Normalize(newPosition - mesh1.Position);
-                    var angle = FastMath.Acos(Vector3.Dot(originalMeshRot, direction));
-                    var axisRotation = Vector3.Cross(originalMeshRot, direction);
-                    meshRotationMatrix = Matrix.RotationAxis(axisRotation, angle);
-                }
-            }
-            //Interporlar movimiento, si hay que mover
-            if (applyMovement)
-            {
-                //Ver si queda algo de distancia para mover
-                var posDiff = newPosition - mesh1.Position;
-                var posDiffLength = posDiff.LengthSq();
-                if (posDiffLength > float.Epsilon)
-                {
-                    //Movemos el mesh interpolando por la velocidad
-                    var currentVelocity = 1500 * ElapsedTime;
-                    posDiff.Normalize();
-                    posDiff.Multiply(currentVelocity);
-
-                    //Ajustar cuando llegamos al final del recorrido
-                    var newPos = mesh1.Position + posDiff;
-                    if (posDiff.LengthSq() > posDiffLength)
-                    {
-                        newPos = newPosition;
-                    }
-
-                    //Actualizar flecha de movimiento
-                    directionArrow.PStart = new Vector3(mesh1.Position.X, 30f, mesh1.Position.Z);
-                    directionArrow.updateValues();
-
-                    //Actualizar posicion del mesh
-                    mesh1.Position = newPos;
-
-                    //Como desactivamos la transformacion automatica, tenemos que armar nosotros la matriz de transformacion
-                    mesh1.Transform = meshRotationMatrix * Matrix.Translation(mesh1.Position);
-
-                    
-                }
-                //Se acabo el movimiento
-                else
-                {
-                    applyMovement = false;
-                }
-            }
-
-            //Mostrar caja con lugar en el que se hizo click, solo si hay movimiento
-            if (applyMovement)
-            {
-                collisionPointMesh.render();
-                directionArrow.render();
-            }
 
 
 
@@ -387,6 +410,7 @@ namespace TGC.Group.Escenario
             DrawText.drawText(
                "Con clic derecho rotamos la camara [Actual]: " + TgcParserUtils.printVector3(Camara.Position), 0, 50,
                Color.Black);
+            DrawText.drawText("Con la tecla C se cambia el modo de juego.", 0, 40, Color.OrangeRed);
             //Siempre antes de renderizar el modelo necesitamos actualizar la matriz de transformacion.
             //Debemos recordar el orden en cual debemos multiplicar las matrices, en caso de tener modelos jerárquicos, tenemos control total.
             Suelo.Transform = Matrix.Scaling(Suelo.Scale) *
@@ -407,32 +431,33 @@ namespace TGC.Group.Escenario
 
             //Cuando tenemos modelos mesh podemos utilizar un método que hace la matriz de transformación estándar.
             //Es útil cuando tenemos transformaciones simples, pero OJO cuando tenemos transformaciones jerárquicas o complicadas.
-            Mesh.UpdateMeshTransform();
-            for (int i = 0; i < 2; i++)
-            {
-                Planta[i].UpdateMeshTransform();
-            }
             for (int i = 0; i < 2; i++)
             {
                 Planta1[i].UpdateMeshTransform();
             }
             //Render del mesh
-            Mesh.render();
             for (int i = 0; i < 2; i++)
             {
-                Planta[i].render();
+                Planta1[i].render();
             }
-            for (int i = 0; i < 2; i++)
-            {
-                Planta1[i].render(); mesh1.render();
-            }
-
+            esqueleto.render();
             //Render de BoundingBox, muy útil para debug de colisiones.
             if (BoundingBox)
             {
                 Suelo.BoundingBox.render();
-                Mesh.BoundingBox.render();
+                esqueleto.BoundingBox.render();
+            }
 
+            //Mostrar caja con lugar en el que se hizo click, solo si hay movimiento
+            if (applyMovement)
+            {
+                collisionPointMesh.render();
+                directionArrow.render();
+            }
+
+            if (selectedMesh != null)
+            {
+                selectedMesh.BoundingBox.render();
             }
 
             //Finaliza el render y presenta en pantalla, al igual que el preRender se debe para casos puntuales es mejor utilizar a mano las operaciones de EndScene y PresentScene
@@ -449,16 +474,10 @@ namespace TGC.Group.Escenario
             //Dispose de la caja.
             Suelo.dispose();
             Fondo.dispose();
-            mesh1.dispose();
+            esqueleto.dispose();
             //Dispose del mesh.
-            Mesh.dispose();
             for (int i = 0; i < 2; i++)
             {
-                Planta[i].dispose();
-            }
-            for (int i = 0; i < 2; i++)
-            {
-
                 Planta1[i].dispose();
             }
             carretilla.dispose();

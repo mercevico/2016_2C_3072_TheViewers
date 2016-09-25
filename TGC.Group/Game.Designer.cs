@@ -49,18 +49,6 @@ namespace TGC.Group {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Mi idea - Descripción de la idea")]
-        public string Description {
-            get {
-                return ((string)(this["Description"]));
-            }
-            set {
-                this["Description"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("..\\..\\Shaders\\")]
         public string ShadersDirectory {
             get {
@@ -92,6 +80,18 @@ namespace TGC.Group {
             }
             set {
                 this["TexturaCaja"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Plantas Vs. Zombies 3D")]
+        public string Description {
+            get {
+                return ((string)(this["Description"]));
+            }
+            set {
+                this["Description"] = value;
             }
         }
     }
