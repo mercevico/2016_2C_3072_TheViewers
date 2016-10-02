@@ -73,6 +73,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Characters\Plants\RepeaterDouble.cs" />
+    <Compile Include="Characters\Plants\Repeater.cs" />
+    <Compile Include="Characters\Plants\Sunflower.cs" />
+    <Compile Include="Characters\Plants\Plant.cs" />
+    <Compile Include="Characters\Zombies\ZombieBalde.cs" />
+    <Compile Include="Characters\Zombies\ZombieCono.cs" />
+    <Compile Include="Characters\Zombies\Zombie.cs" />
     <Compile Include="Form\GameForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -155,6 +162,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
