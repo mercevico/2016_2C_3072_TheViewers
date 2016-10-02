@@ -72,6 +72,10 @@ namespace TGC.Group.Escenario
         /// 
         private TgcScene scene;
 
+        //Posición de la camara.
+        private Vector3 cameraPosition = new Vector3(0, 140, 500);
+        //Quiero que la camara mire hacia el origen (0,0,0).
+        private Vector3 lookAt = new Vector3(1, 0, 0);
 
         public override void Init()
         {
@@ -152,10 +156,7 @@ namespace TGC.Group.Escenario
             //Suelen utilizarse objetos que manejan el comportamiento de la camara.
             //Lo que en realidad necesitamos gráficamente es una matriz de View.
             //El framework maneja una cámara estática, pero debe ser inicializada.
-            //Posición de la camara.
-            var cameraPosition = new Vector3(0, 140, 500);
-            //Quiero que la camara mire hacia el origen (0,0,0).
-            var lookAt = new Vector3(1, 0, 0);
+
             //Configuro donde esta la posicion de la camara y hacia donde mira.
             Camara.SetCamera(cameraPosition, lookAt);
             //Internamente el framework construye la matriz de view con estos dos vectores.
@@ -182,6 +183,10 @@ namespace TGC.Group.Escenario
                 FirstPersonCamera = !FirstPersonCamera;
             }
 
+            if (Input.keyPressed(Key.C) && !FirstPersonCamera) 
+            {
+                Camara.SetCamera(cameraPosition, lookAt);
+            }
             //Capturar Input Mouse
             /* if (Input.buttonUp(TgcD3dInput.MouseButtons.BUTTON_LEFT))
              {
@@ -215,7 +220,7 @@ namespace TGC.Group.Escenario
             //}
             if (FirstPersonCamera)
             {
-                Camara.SetCamera(selectedMesh.Position + new Vector3(-120, 20, 0), selectedMesh.Position + new Vector3(1,1,0));
+                Camara.SetCamera(selectedMesh.Position + new Vector3(0, 100, 500), selectedMesh.Position + new Vector3(1,1,0));
 
                 var moveForward = 0f;
                 float rotate = 0;
@@ -226,6 +231,7 @@ namespace TGC.Group.Escenario
                 var velocidadCaminar = 2;
                 var velocidadSalto = 10;
                 var tiempoSalto = (float)0.5;
+                var movement = new Vector3(0, 0, 0);
 
                 //Adelante
                 if (Input.keyDown(Key.W))
@@ -254,6 +260,14 @@ namespace TGC.Group.Escenario
                     rotate = -velocidadRotacion;
                     rotating = true;
                 }
+                //Si hubo desplazamiento
+                if (moving)
+                {
+                    //Aplicar movimiento, internamente suma valores a la posicion actual del mesh.
+                    selectedMesh.move(movement);
+                }
+                //Hacer que la camara siga al personaje en su nueva posicion
+                //Camara.Target = selectedMesh.Position;
 
             }
             else
