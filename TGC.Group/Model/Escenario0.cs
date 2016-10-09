@@ -120,8 +120,8 @@ namespace TGC.Group.Escenario
             var texture1 = TgcTexture.createTexture(pathTexturaSuelo);
             var texturefondo = TgcTexture.createTexture(pathTexturaFondo);
             //Creamos una caja 3D ubicada de dimensiones (5, 10, 5) y la textura como color.
-            var size = new Vector3(10000, 5, 10000);
-            var sizefondo = new Vector3(10000, 10000, 10000); /////
+            var size = new Vector3(20000, 5, 20000);
+            var sizefondo = new Vector3(20000, 20000, 20000); /////
             //Construimos una caja según los parámetros, por defecto la misma se crea con centro en el origen y se recomienda así para facilitar las transformaciones.
             Suelo = TgcBox.fromSize(size, texture);
             Fondo = TgcBox.fromSize(sizefondo, texturefondo);
@@ -161,7 +161,7 @@ namespace TGC.Group.Escenario
             //Lo que en realidad necesitamos gráficamente es una matriz de View.
             //El framework maneja una cámara estática, pero debe ser inicializada.
             //Posición de la camara.
-            var cameraPosition = new Vector3(50, 5383, 1024);
+            var cameraPosition = new Vector3(50, 6383, 1024);
             //Quiero que la camara mire hacia el origen (0,0,0).
             var lookAt = new Vector3(1, 200, 200);
             //Configuro donde esta la posicion de la camara y hacia donde mira.
@@ -239,25 +239,25 @@ namespace TGC.Group.Escenario
             }
             
 
-            if (Camara.Position.Z < -3166)
+            if (Camara.Position.Z < -7826)
             {
-                Camara.SetCamera(new Vector3(Camara.Position.X, Camara.Position.Y, -3166), Camara.LookAt + new Vector3(0, 0, 10));
+                Camara.SetCamera(new Vector3(Camara.Position.X, Camara.Position.Y, -7826), Camara.LookAt + new Vector3(0, 0, 10));
             }
 
 
-            if (Camara.Position.Z > 4294)
+            if (Camara.Position.Z > 8774)
             {
-                Camara.SetCamera(new Vector3(Camara.Position.X, Camara.Position.Y, 4294), Camara.LookAt + new Vector3(0, 0, -10));
+                Camara.SetCamera(new Vector3(Camara.Position.X, Camara.Position.Y, 8774), Camara.LookAt + new Vector3(0, 0, -10));
             }
 
-            if (Camara.Position.X >2570)
+            if (Camara.Position.X >6990)
             {
-                Camara.SetCamera(new Vector3(2570, Camara.Position.Y, Camara.Position.Z), Camara.LookAt + new Vector3(-10, 0, 0));
+                Camara.SetCamera(new Vector3(6990, Camara.Position.Y, Camara.Position.Z), Camara.LookAt + new Vector3(-10, 0, 0));
             }
 
-            if (Camara.Position.X < -3890)
+            if (Camara.Position.X < -7810)
             {
-                Camara.SetCamera(new Vector3(-3890, Camara.Position.Y, Camara.Position.Z), Camara.LookAt + new Vector3(10, 0, 0));
+                Camara.SetCamera(new Vector3(-7810, Camara.Position.Y, Camara.Position.Z), Camara.LookAt + new Vector3(10, 0, 0));
             }
         }
 
