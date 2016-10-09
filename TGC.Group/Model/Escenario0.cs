@@ -237,38 +237,28 @@ namespace TGC.Group.Escenario
 
                 Camara.SetCamera(Camara.Position + new Vector3(0, 0, 10), Camara.LookAt + new Vector3(0, 0, 10));
             }
-            if (Input.keyDown(Key.UpArrow))
-            {
+            
 
-                Camara.SetCamera(Camara.Position + new Vector3(0, 1, 1), Camara.LookAt);
-            }
-            if (Input.keyDown(Key.DownArrow))
+            if (Camara.Position.Z < -3166)
             {
-
-                Camara.SetCamera(Camara.Position + new Vector3(0, -1, -1), Camara.LookAt);
+                Camara.SetCamera(new Vector3(Camara.Position.X, Camara.Position.Y, -3166), Camara.LookAt + new Vector3(0, 0, 10));
             }
 
-            if (Input.keyDown(Key.LeftArrow))
-            {
 
-                Camara.SetCamera(Camara.Position + new Vector3(1, 0, 1), Camara.LookAt);
+            if (Camara.Position.Z > 4294)
+            {
+                Camara.SetCamera(new Vector3(Camara.Position.X, Camara.Position.Y, 4294), Camara.LookAt + new Vector3(0, 0, -10));
             }
 
-            if (Input.keyDown(Key.RightArrow))
+            if (Camara.Position.X >2570)
             {
-
-                Camara.SetCamera(Camara.Position + new Vector3(-1, 0, -1), Camara.LookAt);
+                Camara.SetCamera(new Vector3(2570, Camara.Position.Y, Camara.Position.Z), Camara.LookAt + new Vector3(-10, 0, 0));
             }
 
-            if (Camara.Position.Y < 5f)
+            if (Camara.Position.X < -3890)
             {
-                Camara.SetCamera(new Vector3(Camara.Position.X, 5f, Camara.Position.Z), Camara.LookAt);
+                Camara.SetCamera(new Vector3(-3890, Camara.Position.Y, Camara.Position.Z), Camara.LookAt + new Vector3(10, 0, 0));
             }
-            if (Camara.Position.X < -777f)
-            {
-                Camara.SetCamera(new Vector3(-777, Camara.Position.Y, Camara.Position.Z), Camara.LookAt);
-            }
-
         }
 
         /// <summary>
