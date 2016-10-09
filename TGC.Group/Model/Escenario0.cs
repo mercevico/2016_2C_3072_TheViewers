@@ -55,8 +55,8 @@ namespace TGC.Group.Escenario
         private TgcMesh Mesh { get; set; }
 
         //Meshes de Objetos del suelo--------------------------------------------------------///
-        private TgcMesh[] Planta = new TgcMesh[500];
-        private TgcMesh[] Planta1 = new TgcMesh[500];
+        //private TgcMesh[] Planta = new TgcMesh[500];
+        //private TgcMesh[] Planta1 = new TgcMesh[500];
         private TgcMesh carretilla { get; set; }
 
         //Boleano para ver si dibujamos el boundingbox
@@ -78,7 +78,7 @@ namespace TGC.Group.Escenario
 
             //Cargar suelo
             var texture = TgcTexture.createTexture(D3DDevice.Instance.Device, MediaDir + "Grass.jpg");
-            suelo0 = new TgcPlane(new Vector3(0, 4f, 0), new Vector3(50000, 0f, 50000), TgcPlane.Orientations.XZplane, texture);
+            suelo0 = new TgcPlane(new Vector3(0, 4f, 0), new Vector3(10000, 0f, 10000), TgcPlane.Orientations.XZplane, texture);
             
             //Iniciarlizar PickingRay
             pickingRay = new TgcPickingRay(Input);
@@ -122,8 +122,8 @@ namespace TGC.Group.Escenario
             var texture1 = TgcTexture.createTexture(pathTexturaSuelo);
             var texturefondo = TgcTexture.createTexture(pathTexturaFondo);
             //Creamos una caja 3D ubicada de dimensiones (5, 10, 5) y la textura como color.
-            var size = new Vector3(50000, 5, 50000);
-            var sizefondo = new Vector3(50000, 50000, 50000); /////
+            var size = new Vector3(10000, 5, 10000);
+            var sizefondo = new Vector3(10000, 10000, 10000); /////
             //Construimos una caja según los parámetros, por defecto la misma se crea con centro en el origen y se recomienda así para facilitar las transformaciones.
             Suelo = TgcBox.fromSize(size, texture);
             Fondo = TgcBox.fromSize(sizefondo, texturefondo);
@@ -137,21 +137,21 @@ namespace TGC.Group.Escenario
             Mesh = new TgcSceneLoader().loadSceneFromFile(MediaDir + "LogoTGC-TgcScene.xml").Meshes[0];
             for (int i = 0; i < 500; i++)
             {
-                Planta[i] = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Planta3\\Planta3-TgcScene.xml").Meshes[0];
+                //Planta[i] = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Planta3\\Planta3-TgcScene.xml").Meshes[0];
             }
             for (int i = 0; i < 500; i++)
             {
-                Planta1[i] = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Planta3\\Planta3-TgcScene.xml").Meshes[0];
+                //Planta1[i] = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Planta3\\Planta3-TgcScene.xml").Meshes[0];
             }
                 carretilla = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Carretilla\\Carretilla-TgcScene.xml").Meshes[0];
             for (int i = 0; i < 500; i++)
             {
-                Planta[i].Position = new Vector3(0+i*25*i^i, 3, i/2 +(-i*15*i));
+                //Planta[i].Position = new Vector3(0+i*25*i^i, 3, i/2 +(-i*15*i));
             }
 
             for (int i = 0; i < 500; i++)
             {
-                Planta1[i].Position = new Vector3(0 + i * 25 *- i ^ i, 3, i + (i * 15 * i)); ;
+                //Planta1[i].Position = new Vector3(0 + i * 25 *- i ^ i, 3, i + (i * 15 * i)); ;
             }
                     carretilla.Position = new Vector3(950, 3, -800);
             //Defino una escala en el modelo logico del mesh que es muy grande.
@@ -384,21 +384,21 @@ namespace TGC.Group.Escenario
             Mesh.UpdateMeshTransform();
             for (int i = 0; i < 500; i++)
             {
-                Planta[i].UpdateMeshTransform();
+                //Planta[i].UpdateMeshTransform();
             }
             for (int i = 0; i < 500; i++)
             {
-                Planta1[i].UpdateMeshTransform();
+                //Planta1[i].UpdateMeshTransform();
             }
             //Render del mesh
             Mesh.render();
             for (int i = 0; i < 500; i++)
             {
-                Planta[i].render();
+                //Planta[i].render();
             }
             for (int i = 0; i < 500; i++)
             {
-                Planta1[i].render(); mesh1.render();
+                //Planta1[i].render(); mesh1.render();
             }
 
             //Render de BoundingBox, muy útil para debug de colisiones.
@@ -428,12 +428,12 @@ namespace TGC.Group.Escenario
             Mesh.dispose();
             for (int i = 0; i < 500; i++)
             {
-                Planta[i].dispose();
+                //Planta[i].dispose();
             }
             for (int i = 0; i < 500; i++)
             {
 
-                Planta1[i].dispose();
+                //Planta1[i].dispose();
             }
             carretilla.dispose();
           //  scene.disposeAll();
