@@ -44,16 +44,14 @@ namespace TGC.Group.Escenario
         private TgcPickingRay pickingRay;
         private TgcPlane suelo0;
 
-        //Caja que se muestra en el ejemplo.
+        //Suelo.
         private TgcBox Suelo { get; set; }
 
         //Fondo 
         private TgcBox Fondo { get; set; }
 
 
-        //Mesh de TgcLogo.
-        private TgcMesh Mesh { get; set; }
-
+        
         //Meshes de Objetos del suelo--------------------------------------------------------///
         //private TgcMesh[] Planta = new TgcMesh[500];
         //private TgcMesh[] Planta1 = new TgcMesh[500];
@@ -83,7 +81,7 @@ namespace TGC.Group.Escenario
             //Iniciarlizar PickingRay
             pickingRay = new TgcPickingRay(Input);
 
-            //Cargar nave
+            //Cargar personaje
             var loader = new TgcSceneLoader();
             var scene =
                 loader.loadSceneFromFile(MediaDir + "\\Esqueletos\\EsqueletoHumano2\\Esqueleto2-TgcScene.xml");
@@ -134,7 +132,7 @@ namespace TGC.Group.Escenario
 
 
             //Cargo los  mesh que tiene la escena.
-            Mesh = new TgcSceneLoader().loadSceneFromFile(MediaDir + "LogoTGC-TgcScene.xml").Meshes[0];
+            //Mesh = new TgcSceneLoader().loadSceneFromFile(MediaDir + "LogoTGC-TgcScene.xml").Meshes[0];
             for (int i = 0; i < 500; i++)
             {
                 //Planta[i] = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Planta3\\Planta3-TgcScene.xml").Meshes[0];
@@ -155,7 +153,7 @@ namespace TGC.Group.Escenario
             }
                     carretilla.Position = new Vector3(950, 3, -800);
             //Defino una escala en el modelo logico del mesh que es muy grande.
-            Mesh.Scale = new Vector3(0.5f, 0.5f, 0.5f);
+            //Mesh.Scale = new Vector3(0.5f, 0.5f, 0.5f);
             
             
             
@@ -163,9 +161,9 @@ namespace TGC.Group.Escenario
             //Lo que en realidad necesitamos gráficamente es una matriz de View.
             //El framework maneja una cámara estática, pero debe ser inicializada.
             //Posición de la camara.
-            var cameraPosition = new Vector3(0, 140, 500);
+            var cameraPosition = new Vector3(50, 5383, 1024);
             //Quiero que la camara mire hacia el origen (0,0,0).
-            var lookAt = new Vector3(1, 0, 0);
+            var lookAt = new Vector3(1, 200, 200);
             //Configuro donde esta la posicion de la camara y hacia donde mira.
             Camara.SetCamera(cameraPosition, lookAt);
             //Internamente el framework construye la matriz de view con estos dos vectores.
@@ -222,22 +220,22 @@ namespace TGC.Group.Escenario
             if (Input.keyDown(Key.A))
             {
 
-                Camara.SetCamera(Camara.Position + new Vector3(1, 0, 0), Camara.LookAt);
+                Camara.SetCamera(Camara.Position + new Vector3(10, 0, 0), Camara.LookAt + new Vector3(10, 0, 0));
             }
             if (Input.keyDown(Key.D))
             {
 
-                Camara.SetCamera(Camara.Position + new Vector3(-1, 0, 0), Camara.LookAt);
+                Camara.SetCamera(Camara.Position + new Vector3(-10, 0, 0), Camara.LookAt + new Vector3(-10, 0, 0));
             }
             if (Input.keyDown(Key.W))
             {
 
-                Camara.SetCamera(Camara.Position + new Vector3(0, 1, 0), Camara.LookAt);
+                Camara.SetCamera(Camara.Position + new Vector3(0, 0, -10), Camara.LookAt + new Vector3(0, 0, -10));
             }
             if (Input.keyDown(Key.S))
             {
 
-                Camara.SetCamera(Camara.Position + new Vector3(0, -1, 0), Camara.LookAt);
+                Camara.SetCamera(Camara.Position + new Vector3(0, 0, 10), Camara.LookAt + new Vector3(0, 0, 10));
             }
             if (Input.keyDown(Key.UpArrow))
             {
@@ -381,7 +379,7 @@ namespace TGC.Group.Escenario
 
             //Cuando tenemos modelos mesh podemos utilizar un método que hace la matriz de transformación estándar.
             //Es útil cuando tenemos transformaciones simples, pero OJO cuando tenemos transformaciones jerárquicas o complicadas.
-            Mesh.UpdateMeshTransform();
+            //Mesh.UpdateMeshTransform();
             for (int i = 0; i < 500; i++)
             {
                 //Planta[i].UpdateMeshTransform();
@@ -391,7 +389,7 @@ namespace TGC.Group.Escenario
                 //Planta1[i].UpdateMeshTransform();
             }
             //Render del mesh
-            Mesh.render();
+            //Mesh.render();
             for (int i = 0; i < 500; i++)
             {
                 //Planta[i].render();
@@ -405,7 +403,7 @@ namespace TGC.Group.Escenario
             if (BoundingBox)
             {
                 Suelo.BoundingBox.render();
-                Mesh.BoundingBox.render();
+                //Mesh.BoundingBox.render();
 
             }
 
@@ -425,7 +423,7 @@ namespace TGC.Group.Escenario
             Fondo.dispose();
             mesh1.dispose();
             //Dispose del mesh.
-            Mesh.dispose();
+            //Mesh.dispose();
             for (int i = 0; i < 500; i++)
             {
                 //Planta[i].dispose();
