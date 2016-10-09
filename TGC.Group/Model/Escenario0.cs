@@ -9,7 +9,7 @@ using TGC.Core.SceneLoader;
 using TGC.Core.Textures;
 using TGC.Core.Utils;
 using TGC.Core.Collision;
-
+using TGC.Group.Camara;
 namespace TGC.Group.Escenario
 
 {
@@ -49,7 +49,7 @@ namespace TGC.Group.Escenario
         private Vector3 collisionPoint;
         //Caja que se muestra en el ejemplo.
         private TgcBox Suelo { get; set; }
-
+        private new PvZCamera Camara = new PvZCamera();
         //Fondo 
         private TgcBox Fondo { get; set; }
 
@@ -187,37 +187,7 @@ namespace TGC.Group.Escenario
             {
                 Camara.SetCamera(cameraPosition, lookAt);
             }
-            //Capturar Input Mouse
-            /* if (Input.buttonUp(TgcD3dInput.MouseButtons.BUTTON_LEFT))
-             {
-
-                 //Como ejemplo podemos hacer un movimiento simple de la cámara.
-                 //En este caso le sumamos un valor en Y
-                 Camara.SetCamera(Camara.Position + new Vector3(0, 10f, 0), Camara.LookAt);
-                 //Ver ejemplos de cámara para otras operaciones posibles.
-
-                 //Si superamos cierto Y volvemos a la posición original.
-                 if (Camara.Position.Y > 300f)
-                 {
-                     Camara.SetCamera(new Vector3(Camara.Position.X, 0f, Camara.Position.Z), Camara.LookAt);
-                 }
-             }*/
-
-
-
-            //if (Input.buttonPressed(TgcD3dInput.MouseButtons.BUTTON_RIGHT))
-            //{
-            //    //Como ejemplo podemos hacer un movimiento simple de la cámara.
-            //    //En este caso le sumamos un valor en Y
-            //    Camara.SetCamera(Camara.Position + new Vector3(10f, 0, 0), Camara.LookAt);
-            //    //Ver ejemplos de cámara para otras operaciones posibles.
-
-            //    //Si superamos cierto Y volvemos a la posición original.
-            //    if (Camara.Position.Y > 300f)
-            //    {
-            //        Camara.SetCamera(new Vector3(Camara.Position.X, 0f, Camara.Position.Z), Camara.LookAt);
-            //    }
-            //}
+ 
             if (FirstPersonCamera)
             {
                 Camara.SetCamera(selectedMesh.Position + new Vector3(0, 100, 500), selectedMesh.Position + new Vector3(1,1,0));
