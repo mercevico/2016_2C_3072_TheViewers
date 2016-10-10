@@ -55,6 +55,10 @@ namespace TGC.Group.Escenario
         private TgcMesh reja9;
         private TgcMesh reja10;
         private TgcMesh reja11;
+        private TgcMesh reja12;
+        private TgcMesh reja13;
+        private TgcMesh reja14;
+        private TgcMesh reja15;
 
 
 
@@ -168,6 +172,10 @@ namespace TGC.Group.Escenario
                 reja9 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
                 reja10 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
                 reja11 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
+                reja12 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
+                reja13 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
+                reja14 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
+                reja15 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
 
 
 
@@ -180,6 +188,13 @@ namespace TGC.Group.Escenario
             reja7.rotateY(-80.4f);
             reja8.rotateY(-44.9f);
             reja9.rotateY(-44.9f);
+            reja12.rotateY(44.8f);
+            reja13.rotateY(44.8f);
+            reja14.rotateY(-80f);
+            reja15.rotateY(-80.08f);
+
+
+
 
             for (int i = 0; i < 500; i++)
             {
@@ -203,6 +218,10 @@ namespace TGC.Group.Escenario
             reja9.Position = new Vector3(-7810, 3, -6026);
             reja10.Position = new Vector3(-7810, 3, -2100);
             reja11.Position = new Vector3(-7810, 3, -134);
+            reja12.Position = new Vector3(-9000, 3, 5000);
+            reja13.Position = new Vector3(-6000, 3, 5000);
+            reja14.Position = new Vector3(-1100, 3, 7900);
+            reja15.Position = new Vector3(1100, 3, 7900);
 
 
 
@@ -215,7 +234,7 @@ namespace TGC.Group.Escenario
             //Lo que en realidad necesitamos gráficamente es una matriz de View.
             //El framework maneja una cámara estática, pero debe ser inicializada.
             //Posición de la camara.
-            var cameraPosition = new Vector3(50, 6383, 1024);
+            var cameraPosition = new Vector3(50, 9000, 1024);
             //Quiero que la camara mire hacia el origen (0,0,0).
             var lookAt = new Vector3(1, 200, 200);
             //Configuro donde esta la posicion de la camara y hacia donde mira.
@@ -423,10 +442,14 @@ namespace TGC.Group.Escenario
             reja8.Scale = new Vector3(140, 50, 50);
             reja9.Scale = new Vector3(120, 50, 50);
             reja10.Scale = new Vector3(75, 50, 50);
-            reja11.Scale = new Vector3(75, 50, 50);
+            reja11.Scale = new Vector3(90, 50, 50);
+            reja12.Scale = new Vector3(170, 50, 50);
+            reja13.Scale = new Vector3(150, 50, 50);
+            reja14.Scale = new Vector3(180, 50, 50);
+            reja15.Scale = new Vector3(175, 50, 50);
 
 
-            carretilla.Scale = new Vector3(15, 15, 15);
+            carretilla.Scale = new Vector3(30, 30, 30);
             //A modo ejemplo realizamos toda las multiplicaciones, pero aquí solo nos hacia falta la traslación.
             //Finalmente invocamos al render de la caja
             Fondo.render();
@@ -445,6 +468,10 @@ namespace TGC.Group.Escenario
             reja9.render();
             reja10.render();
             reja11.render();
+            reja12.render();
+            reja13.render();
+            reja14.render();
+            reja15.render();
 
             //scene.renderAll();
 
@@ -517,6 +544,10 @@ namespace TGC.Group.Escenario
             reja9.dispose();
             reja10.dispose();
             reja11.dispose();
+            reja12.dispose();
+            reja13.dispose();
+            reja14.dispose();
+            reja15.dispose();
 
             //  scene.disposeAll();
 
