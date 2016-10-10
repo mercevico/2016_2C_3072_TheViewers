@@ -45,6 +45,9 @@ namespace TGC.Group.Escenario
         private TgcPlane suelo0;
         private TgcMesh reja;
         private TgcMesh reja1;
+        private TgcMesh reja2;
+        private TgcMesh reja3;
+
         //Suelo.
         private TgcBox Suelo { get; set; }
 
@@ -145,9 +148,14 @@ namespace TGC.Group.Escenario
                 carretilla = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Carretilla\\Carretilla-TgcScene.xml").Meshes[0];
                 reja = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
                 reja1 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
+                reja2 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
+                reja3 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
 
-            reja.rotateY(-47);
-            reja1.rotateY(-47);
+            //pongo las rejas en posicion
+            reja.rotateY(-44.9f);
+            reja1.rotateY(-45f);
+
+
             for (int i = 0; i < 500; i++)
             {
                 //Planta[i].Position = new Vector3(0+i*25*i^i, 3, i/2 +(-i*15*i));
@@ -160,6 +168,9 @@ namespace TGC.Group.Escenario
                     carretilla.Position = new Vector3(950, 3, -800);
             reja.Position = new Vector3(6980,3,8764);
             reja1.Position = new Vector3(10000,3,8864);
+            reja2.Position = new Vector3(7500, 3, 134);
+            reja3.Position = new Vector3(7500, 3, -1800);
+            
             //Defino una escala en el modelo logico del mesh que es muy grande.
             //Mesh.Scale = new Vector3(0.5f, 0.5f, 0.5f);
             
@@ -368,6 +379,8 @@ namespace TGC.Group.Escenario
             carretilla.Transform = Matrix.Scaling(new Vector3(0, 0, 2));
             reja.Scale = new Vector3(250,50,50);
             reja1.Scale = new Vector3(250, 50, 50);
+            reja2.Scale = new Vector3(70, 50, 50);
+            reja3.Scale = new Vector3(70, 50, 50);
 
             carretilla.Scale = new Vector3(15, 15, 15);
             //A modo ejemplo realizamos toda las multiplicaciones, pero aquí solo nos hacia falta la traslación.
@@ -378,6 +391,8 @@ namespace TGC.Group.Escenario
 
             reja.render();
             reja1.render();
+            reja2.render();
+            reja3.render();
             //scene.renderAll();
 
             //Cuando tenemos modelos mesh podemos utilizar un método que hace la matriz de transformación estándar.
@@ -439,6 +454,9 @@ namespace TGC.Group.Escenario
             carretilla.dispose();
             reja.dispose();
             reja1.dispose();
+            reja2.render();
+            reja3.render();
+
             //  scene.disposeAll();
 
         }
