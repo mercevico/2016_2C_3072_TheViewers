@@ -9,7 +9,7 @@ namespace TGC.Group.Camara
     /// </summary>
     public class PvZCamera : TgcCamera
     {
-        private Vector3 position;
+        public Vector3 position;
         public bool thirdPersonCamera { get; set; }
         public bool isThirdPersonCameraEnabled { get; set; }
 

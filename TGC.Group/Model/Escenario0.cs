@@ -10,6 +10,7 @@ using TGC.Core.Textures;
 using TGC.Core.Utils;
 using TGC.Core.Collision;
 using TGC.Group.Camara;
+
 namespace TGC.Group.Escenario
 
 {
@@ -49,7 +50,7 @@ namespace TGC.Group.Escenario
         private Vector3 collisionPoint;
         //Caja que se muestra en el ejemplo.
         private TgcBox Suelo { get; set; }
-        private new PvZCamera Camara = new PvZCamera();
+        private PvZCamera camaraInterna = new PvZCamera();
         //Fondo 
         private TgcBox Fondo { get; set; }
 
@@ -158,6 +159,7 @@ namespace TGC.Group.Escenario
             //El framework maneja una cámara estática, pero debe ser inicializada.
 
             //Configuro donde esta la posicion de la camara y hacia donde mira.
+            Camara = camaraInterna;
             Camara.SetCamera(cameraPosition, lookAt);
             //Internamente el framework construye la matriz de view con estos dos vectores.
             //Luego en nuestro juego tendremos que crear una cámara que cambie la matriz de view con variables como movimientos o animaciones de escenas.
