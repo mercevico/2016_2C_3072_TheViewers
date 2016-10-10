@@ -51,6 +51,12 @@ namespace TGC.Group.Escenario
         private TgcMesh reja5;
         private TgcMesh reja6;
         private TgcMesh reja7;
+        private TgcMesh reja8;
+        private TgcMesh reja9;
+        private TgcMesh reja10;
+        private TgcMesh reja11;
+
+
 
         //Suelo.
         private TgcBox Suelo { get; set; }
@@ -158,6 +164,10 @@ namespace TGC.Group.Escenario
                 reja5 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
                 reja6 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
                 reja7 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
+                reja8 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
+                reja9 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
+                reja10 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
+                reja11 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
 
 
 
@@ -167,7 +177,9 @@ namespace TGC.Group.Escenario
             reja4.rotateY(45f);
             reja5.rotateY(45f);
             reja6.rotateY(-80f);
-            reja7.rotateY(-80f);
+            reja7.rotateY(-80.4f);
+            reja8.rotateY(-44.9f);
+            reja9.rotateY(-44.9f);
 
             for (int i = 0; i < 500; i++)
             {
@@ -178,7 +190,7 @@ namespace TGC.Group.Escenario
             {
                 //Planta1[i].Position = new Vector3(0 + i * 25 *- i ^ i, 3, i + (i * 15 * i)); ;
             }
-                    carretilla.Position = new Vector3(950, 3, -800);
+                    carretilla.Position = new Vector3(-950, 3, -941);
             reja.Position = new Vector3(6980,3,8764);
             reja1.Position = new Vector3(10000,3,8864);
             reja2.Position = new Vector3(7500, 3, 134);
@@ -187,12 +199,18 @@ namespace TGC.Group.Escenario
             reja5.Position = new Vector3(6000, 3, -10000);
             reja6.Position = new Vector3(1100, 3, -7900);
             reja7.Position = new Vector3(-1100, 3, - 7900);
-            
+            reja8.Position = new Vector3(-6000, 3, -7826);
+            reja9.Position = new Vector3(-7810, 3, -6026);
+            reja10.Position = new Vector3(-7810, 3, -2100);
+            reja11.Position = new Vector3(-7810, 3, -134);
+
+
+
             //Defino una escala en el modelo logico del mesh que es muy grande.
             //Mesh.Scale = new Vector3(0.5f, 0.5f, 0.5f);
-            
-            
-            
+
+
+
             //Suelen utilizarse objetos que manejan el comportamiento de la camara.
             //Lo que en realidad necesitamos gráficamente es una matriz de View.
             //El framework maneja una cámara estática, pero debe ser inicializada.
@@ -402,6 +420,11 @@ namespace TGC.Group.Escenario
             reja5.Scale = new Vector3(200, 50, 50);
             reja6.Scale = new Vector3(120, 50, 50);
             reja7.Scale = new Vector3(120, 50, 50);
+            reja8.Scale = new Vector3(140, 50, 50);
+            reja9.Scale = new Vector3(120, 50, 50);
+            reja10.Scale = new Vector3(75, 50, 50);
+            reja11.Scale = new Vector3(75, 50, 50);
+
 
             carretilla.Scale = new Vector3(15, 15, 15);
             //A modo ejemplo realizamos toda las multiplicaciones, pero aquí solo nos hacia falta la traslación.
@@ -418,6 +441,10 @@ namespace TGC.Group.Escenario
             reja5.render();
             reja6.render();
             reja7.render();
+            reja8.render();
+            reja9.render();
+            reja10.render();
+            reja11.render();
 
             //scene.renderAll();
 
@@ -486,6 +513,10 @@ namespace TGC.Group.Escenario
             reja5.dispose();
             reja6.dispose();
             reja7.dispose();
+            reja8.dispose();
+            reja9.dispose();
+            reja10.dispose();
+            reja11.dispose();
 
             //  scene.disposeAll();
 
