@@ -62,6 +62,11 @@ namespace TGC.Group.Escenario
         private TgcMesh tumba;
         private TgcMesh tumba1;
         private TgcMesh tumba2;
+        private TgcMesh tumba3;
+        private TgcMesh tumba4;
+        private TgcMesh tumba5;
+        private TgcMesh tumba6;
+        private TgcMesh tumba7;
 
         //Suelo.
         private TgcBox Suelo { get; set; }
@@ -180,6 +185,11 @@ namespace TGC.Group.Escenario
                 tumba = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Sarcofago\\Sarcofago-TgcScene.xml").Meshes[0];
                 tumba1 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Sarcofago\\Sarcofago-TgcScene.xml").Meshes[0];
                 tumba2 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Sarcofago\\Sarcofago-TgcScene.xml").Meshes[0];
+                tumba3 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Sarcofago\\Sarcofago-TgcScene.xml").Meshes[0];
+                tumba4 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Sarcofago\\Sarcofago-TgcScene.xml").Meshes[0];
+                tumba5 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Sarcofago\\Sarcofago-TgcScene.xml").Meshes[0];
+                tumba6 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Sarcofago\\Sarcofago-TgcScene.xml").Meshes[0];
+                tumba7 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Sarcofago\\Sarcofago-TgcScene.xml").Meshes[0];
 
 
             //pongo las rejas en posicion
@@ -200,6 +210,15 @@ namespace TGC.Group.Escenario
             tumba1.rotateY(45.5f);
             tumba2.rotateX(45.5f);
             tumba2.rotateY(-47.5f);
+            tumba3.rotateX(45.5f);
+            tumba3.rotateY(-47.1f);
+            tumba4.rotateX(45.5f);
+            tumba4.rotateY(-46.5f);
+            tumba5.rotateX(45.5f);
+            tumba5.rotateY(-45.5f);
+            tumba6.rotateX(45.5f);
+            tumba6.rotateY(-45.0f);
+            tumba7.rotateX(45.5f);
 
 
             for (int i = 0; i < 500; i++)
@@ -231,7 +250,12 @@ namespace TGC.Group.Escenario
             tumba.Position = new Vector3(12500, 0, 14500);
             tumba1.Position = new Vector3(14500, 0, -580);
             tumba2.Position = new Vector3(10500, 0, -14026);
-
+            tumba3.Position = new Vector3(-500, 0, -14526);
+            tumba4.Position = new Vector3(-13000, 0, -14526);
+            tumba5.Position = new Vector3(-14500, 0, -994);
+            tumba6.Position = new Vector3(-14500, 0, 12084);
+            tumba7.Position = new Vector3(-300, 0, 14500);
+            
 
             //Defino una escala en el modelo logico del mesh que es muy grande.
             //Mesh.Scale = new Vector3(0.5f, 0.5f, 0.5f);
@@ -458,6 +482,11 @@ namespace TGC.Group.Escenario
             tumba.Scale = new Vector3(8, 8, 18);
             tumba1.Scale = new Vector3(8, 8, 18);
             tumba2.Scale = new Vector3(8, 8, 18);
+            tumba3.Scale = new Vector3(8, 8, 18);
+            tumba4.Scale = new Vector3(8, 8, 18);
+            tumba5.Scale = new Vector3(8, 8, 18);
+            tumba6.Scale = new Vector3(8, 8, 18);
+            tumba7.Scale = new Vector3(8, 8, 18);
 
 
             carretilla.Scale = new Vector3(30, 30, 30);
@@ -486,7 +515,11 @@ namespace TGC.Group.Escenario
             tumba.render();
             tumba1.render();
             tumba2.render();
-
+            tumba3.render();
+            tumba4.render();
+            tumba5.render();
+            tumba6.render();
+            tumba7.render();
 
             //scene.renderAll();
 
@@ -566,6 +599,11 @@ namespace TGC.Group.Escenario
             tumba.dispose();
             tumba1.dispose();
             tumba2.dispose();
+            tumba3.dispose();
+            tumba4.dispose();
+            tumba5.dispose();
+            tumba6.dispose();
+            tumba7.dispose();
 
             //  scene.disposeAll();
 
