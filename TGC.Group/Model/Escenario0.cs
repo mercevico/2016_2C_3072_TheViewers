@@ -218,8 +218,8 @@ namespace TGC.Group.Escenario
             reja9.Position = new Vector3(-10000, 3, -8864);
             reja10.Position = new Vector3(-10810, 3, -2100);
             reja11.Position = new Vector3(-10110, 3, -134);
-            reja12.Position = new Vector3(-9000, 3, 5000);
-            reja13.Position = new Vector3(-6000, 3, 7000);
+            reja12.Position = new Vector3(-9500, 3, 5500);
+            reja13.Position = new Vector3(-8500, 3, 7654);
             reja14.Position = new Vector3(-1650, 3, 7900);
             reja15.Position = new Vector3(1000, 3, 7900);
 
@@ -443,8 +443,8 @@ namespace TGC.Group.Escenario
             reja9.Scale = new Vector3(210, 50, 50);
             reja10.Scale = new Vector3(150, 50, 50);
             reja11.Scale = new Vector3(150, 50, 50);
-            reja12.Scale = new Vector3(170, 50, 50);
-            reja13.Scale = new Vector3(150, 50, 50);
+            reja12.Scale = new Vector3(190, 50, 50);
+            reja13.Scale = new Vector3(240, 50, 50);
             reja14.Scale = new Vector3(180, 50, 50);
             reja15.Scale = new Vector3(175, 50, 50);
 
