@@ -59,8 +59,9 @@ namespace TGC.Group.Escenario
         private TgcMesh reja13;
         private TgcMesh reja14;
         private TgcMesh reja15;
-
-
+        private TgcMesh tumba;
+        private TgcMesh tumba1;
+        private TgcMesh tumba2;
 
         //Suelo.
         private TgcBox Suelo { get; set; }
@@ -176,7 +177,9 @@ namespace TGC.Group.Escenario
                 reja13 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
                 reja14 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
                 reja15 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
-
+                tumba = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Sarcofago\\Sarcofago-TgcScene.xml").Meshes[0];
+                tumba1 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Sarcofago\\Sarcofago-TgcScene.xml").Meshes[0];
+                tumba2 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Sarcofago\\Sarcofago-TgcScene.xml").Meshes[0];
 
 
             //pongo las rejas en posicion
@@ -192,8 +195,11 @@ namespace TGC.Group.Escenario
             reja13.rotateY(44.8f);
             reja14.rotateY(-80.1f);
             reja15.rotateY(-80.1f);
-
-
+            tumba.rotateX(45.5f);
+            tumba1.rotateX(45.5f);
+            tumba1.rotateY(45.5f);
+            tumba2.rotateX(45.5f);
+            tumba2.rotateY(-47.5f);
 
 
             for (int i = 0; i < 500; i++)
@@ -222,7 +228,9 @@ namespace TGC.Group.Escenario
             reja13.Position = new Vector3(-8500, 3, 7654);
             reja14.Position = new Vector3(-1650, 3, 7900);
             reja15.Position = new Vector3(1000, 3, 7900);
-
+            tumba.Position = new Vector3(12500, 0, 14500);
+            tumba1.Position = new Vector3(14500, 0, -580);
+            tumba2.Position = new Vector3(10500, 0, -14026);
 
 
             //Defino una escala en el modelo logico del mesh que es muy grande.
@@ -447,6 +455,9 @@ namespace TGC.Group.Escenario
             reja13.Scale = new Vector3(240, 50, 50);
             reja14.Scale = new Vector3(180, 50, 50);
             reja15.Scale = new Vector3(175, 50, 50);
+            tumba.Scale = new Vector3(8, 8, 18);
+            tumba1.Scale = new Vector3(8, 8, 18);
+            tumba2.Scale = new Vector3(8, 8, 18);
 
 
             carretilla.Scale = new Vector3(30, 30, 30);
@@ -472,6 +483,10 @@ namespace TGC.Group.Escenario
             reja13.render();
             reja14.render();
             reja15.render();
+            tumba.render();
+            tumba1.render();
+            tumba2.render();
+
 
             //scene.renderAll();
 
@@ -548,6 +563,9 @@ namespace TGC.Group.Escenario
             reja13.dispose();
             reja14.dispose();
             reja15.dispose();
+            tumba.dispose();
+            tumba1.dispose();
+            tumba2.dispose();
 
             //  scene.disposeAll();
 
