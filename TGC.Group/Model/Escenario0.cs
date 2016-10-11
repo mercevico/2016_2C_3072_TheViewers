@@ -82,7 +82,18 @@ namespace TGC.Group.Escenario
         //animacion
         private TgcSkeletalBoneAttach attachment2;
         private TgcSkeletalMesh mesh2;
+        /*----------------------------------------------------------------------------------------------------------------------------------------*/
+        /*----------------------------------------------------------------------------------------------------------------------------------------*/
+        private TgcSkeletalBoneAttach attachment3;
+        private TgcSkeletalMesh mesh3;
 
+
+        private Matrix meshRotationMatrixZombie;
+        private Vector3 newPositionZombie;
+        private Vector3 originalMeshRotZombie;
+
+        /*----------------------------------------------------------------------------------------------------------------------------------------*/
+        /*----------------------------------------------------------------------------------------------------------------------------------------*/
 
         //Meshes de Objetos del suelo--------------------------------------------------------///
         //private TgcMesh[] Planta = new TgcMesh[500];
@@ -124,8 +135,22 @@ namespace TGC.Group.Escenario
             attachment2.Bone = mesh2.getBoneByName("Bip01 L Hand");
             attachment2.Offset = Matrix.Translation(10, -40, 0);
             attachment2.updateValues();
+            /*----------------------------------------------------------------------------------------------------------------------------------------*/
+            /*----------------------------------------------------------------------------------------------------------------------------------------*/
+
+            mesh3 = loader1.loadMeshAndAnimationsFromFile(pathMesh, mediaPath, animationsPath);
+            mesh3.buildSkletonMesh();
+
+            attachment3 = new TgcSkeletalBoneAttach();
+            //var attachmentBox = TgcBox.fromSize(new Vector3(5, 100, 5), Color.Blue);
+            attachment3.Mesh = attachmentBox.toMesh("attachment");
+            attachment3.Bone = mesh3.getBoneByName("Bip01 L Hand");
+            attachment3.Offset = Matrix.Translation(10, -40, 0);
+            attachment3.updateValues();
 
 
+            /*----------------------------------------------------------------------------------------------------------------------------------------*/
+            /*----------------------------------------------------------------------------------------------------------------------------------------*/
 
 
             //Cargar suelo
@@ -260,7 +285,9 @@ namespace TGC.Group.Escenario
             {
                 //Planta1[i].Position = new Vector3(0 + i * 25 *- i ^ i, 3, i + (i * 15 * i)); ;
             }
-                    carretilla.Position = new Vector3(-950, 3, -941);
+
+            carretilla.Position = new Vector3(-450, 3, -941);
+
             reja.Position = new Vector3(6980,3,8764);
             reja1.Position = new Vector3(10000,3,8864);
             reja2.Position = new Vector3(11000, 3, 334);
@@ -287,6 +314,15 @@ namespace TGC.Group.Escenario
             tumba7.Position = new Vector3(-300, 0, 14500);
             mesh2.Position = new Vector3(-550, 2, -14026);
             mesh2.Transform = Matrix.Scaling(new Vector3(25,25,25)) * Matrix.RotationY(16)* Matrix.Translation(mesh2.Position);
+
+            /*----------------------------------------------------------------------------------------------------------------------------------------*/
+            /*----------------------------------------------------------------------------------------------------------------------------------------*/
+            //Rotar modelo en base a la nueva dirección a la que apunta
+            mesh3.Position = new Vector3(10250, 5, -13500);
+            mesh3.Transform = Matrix.Scaling(new Vector3(25, 25, 25)) * Matrix.RotationY(9) * Matrix.Translation(mesh3.Position);
+
+            /*----------------------------------------------------------------------------------------------------------------------------------------*/
+            /*----------------------------------------------------------------------------------------------------------------------------------------*/
             //Defino una escala en el modelo logico del m1esh que es muy grande.
             //Mesh.Scale = new Vector3(0.5f, 0.5f, 0.5f);
 
@@ -296,7 +332,7 @@ namespace TGC.Group.Escenario
             //Lo que en realidad necesitamos gráficamente es una matriz de View.
             //El framework maneja una cámara estática, pero debe ser inicializada.
             //Posición de la camara.
-            var cameraPosition = new Vector3(50, 9000, 1024);
+            var cameraPosition = new Vector3(50, 9500, 1024);
             //Quiero que la camara mire hacia el origen (0,0,0).
             var lookAt = new Vector3(1, 200, 200);
             //Configuro donde esta la posicion de la camara y hacia donde mira.
@@ -394,6 +430,76 @@ namespace TGC.Group.Escenario
             {
                 Camara.SetCamera(new Vector3(-10000, Camara.Position.Y, Camara.Position.Z), Camara.LookAt + new Vector3(30, 0, 0));
             }
+
+
+            /*----------------------------------------------------------------------------------------------------------------------------------------*/
+            /*----------------------------------------------------------------------------------------------------------------------------------------*/
+
+            
+            mesh2.Transform = Matrix.Scaling(new Vector3(25, 25, 25)) * Matrix.RotationY(15.8f) * Matrix.Translation(mesh2.Position);
+            
+            const float MOVEMENT_SPEED = 1f;
+
+
+            var movement = new Vector3(0, 0, 0);
+
+            //movement.X = 0;
+            //movement.Y = 0;
+            //movement.Z = 1;
+
+            movement = carretilla.Position - mesh2.Position;
+
+            movement *= MOVEMENT_SPEED * ElapsedTime;
+
+            movement.Normalize();
+
+            //mesh2.move(movement);
+
+            mesh2.Position = mesh2.Position + movement;
+
+            mesh2.Position.Normalize();
+
+            mesh2.Transform = Matrix.Scaling(new Vector3(25, 25, 25)) * Matrix.RotationY(15.8f) * Matrix.Translation(mesh2.Position);
+
+            
+
+
+
+            //const float MOVEMENT_SPEED = 1f;
+
+            var movement2 = new Vector3(0, 0, 0);
+
+            var directionZombie3 = carretilla.Position - mesh3.Position;
+
+            /*
+            movement.X = 0;
+            movement.Y = 0;
+            movement.Z = 1;
+            */
+
+            movement2 = directionZombie3;
+
+            movement2 *= MOVEMENT_SPEED * ElapsedTime;
+
+            movement2.Normalize();
+
+
+            mesh3.Position = mesh3.Position + movement2;
+
+            mesh3.Position.Normalize();
+
+            mesh3.Transform = Matrix.Scaling(new Vector3(25, 25, 25)) * Matrix.RotationY(9) * Matrix.Translation(mesh3.Position);
+
+
+
+
+
+            /*----------------------------------------------------------------------------------------------------------------------------------------*/
+            /*----------------------------------------------------------------------------------------------------------------------------------------*/
+
+
+
+
         }
 
         /// <summary>
@@ -478,6 +584,10 @@ namespace TGC.Group.Escenario
 
 
             //Dibuja un texto por pantalla
+            
+            DrawText.drawText("ElapsedTime: " + ElapsedTime, 0, 70, Color.GreenYellow);
+
+
             DrawText.drawText("Con la tecla F se dibuja el bounding box.", 0, 20, Color.OrangeRed);
             DrawText.drawText(
                 "Con clic izquierdo subimos la camara [Actual]: " + TgcParserUtils.printVector3(Camara.Position), 0, 30,
@@ -551,10 +661,23 @@ namespace TGC.Group.Escenario
             tumba5.render();
             tumba6.render();
             tumba7.render();
-            mesh2.Transform = mesh2.Transform + Matrix.Scaling(new Vector3(25, 25, 25)) * Matrix.RotationY(16) * Matrix.Translation(mesh2.Position + new Vector3(25, 0, 25));
+            //mesh2.Transform = mesh2.Transform + Matrix.Scaling(new Vector3(25, 25, 25)) * Matrix.RotationY(16) * Matrix.Translation(mesh2.Position + new Vector3(25, 0, 25));
             mesh2.playAnimation("Empujar",true,2);
             
             mesh2.animateAndRender(0.1f);
+
+
+            /*----------------------------------------------------------------------------------------------------------------------------------------*/
+            /*----------------------------------------------------------------------------------------------------------------------------------------*/
+            
+            mesh3.playAnimation("Empujar", true, 2);
+
+            mesh3.animateAndRender(0.1f);
+
+            /*----------------------------------------------------------------------------------------------------------------------------------------*/
+            /*----------------------------------------------------------------------------------------------------------------------------------------*/
+
+
             //scene.renderAll();
 
             //Cuando tenemos modelos mesh podemos utilizar un método que hace la matriz de transformación estándar.
@@ -584,6 +707,27 @@ namespace TGC.Group.Escenario
             {
                 Suelo.BoundingBox.render();
                 //Mesh.BoundingBox.render();
+                mesh2.BoundingBox.render();
+                mesh3.BoundingBox.render();
+
+
+                reja.BoundingBox.render();
+                reja1.BoundingBox.render();
+                reja2.BoundingBox.render();
+                reja3.BoundingBox.render();
+                reja4.BoundingBox.render();
+                reja5.BoundingBox.render();
+                reja6.BoundingBox.render();
+                reja7.BoundingBox.render();
+                reja8.BoundingBox.render();
+                reja9.BoundingBox.render();
+                reja10.BoundingBox.render();
+                reja11.BoundingBox.render();
+                reja12.BoundingBox.render();
+                reja13.BoundingBox.render();
+                reja14.BoundingBox.render();
+                reja15.BoundingBox.render();
+
 
             }
 
