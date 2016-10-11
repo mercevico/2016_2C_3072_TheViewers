@@ -138,8 +138,8 @@ namespace TGC.Group.Escenario
             var texture1 = TgcTexture.createTexture(pathTexturaSuelo);
             var texturefondo = TgcTexture.createTexture(pathTexturaFondo);
             //Creamos una caja 3D ubicada de dimensiones (5, 10, 5) y la textura como color.
-            var size = new Vector3(20000, 5, 20000);
-            var sizefondo = new Vector3(20000, 20000, 20000); /////
+            var size = new Vector3(30000, 5, 30000);
+            var sizefondo = new Vector3(30000, 30000, 30000); /////
             //Construimos una caja según los parámetros, por defecto la misma se crea con centro en el origen y se recomienda así para facilitar las transformaciones.
             Suelo = TgcBox.fromSize(size, texture);
             Fondo = TgcBox.fromSize(sizefondo, texturefondo);
@@ -184,14 +184,14 @@ namespace TGC.Group.Escenario
             reja1.rotateY(-45f);
             reja4.rotateY(45f);
             reja5.rotateY(45f);
-            reja6.rotateY(-80f);
-            reja7.rotateY(-80.4f);
-            reja8.rotateY(-44.9f);
+            reja6.rotateY(-80.1f);
+            reja7.rotateY(-80.1f);
+            reja8.rotateY(-44.88f);
             reja9.rotateY(-44.9f);
             reja12.rotateY(44.8f);
             reja13.rotateY(44.8f);
-            reja14.rotateY(-80f);
-            reja15.rotateY(-80.08f);
+            reja14.rotateY(-80.1f);
+            reja15.rotateY(-80.1f);
 
 
 
@@ -208,20 +208,20 @@ namespace TGC.Group.Escenario
                     carretilla.Position = new Vector3(-950, 3, -941);
             reja.Position = new Vector3(6980,3,8764);
             reja1.Position = new Vector3(10000,3,8864);
-            reja2.Position = new Vector3(7500, 3, 134);
-            reja3.Position = new Vector3(7500, 3, -1800);
+            reja2.Position = new Vector3(11000, 3, 334);
+            reja3.Position = new Vector3(11000, 3, -1800);
             reja4.Position = new Vector3(9000, 3, -8500);
             reja5.Position = new Vector3(6000, 3, -10000);
-            reja6.Position = new Vector3(1100, 3, -7900);
-            reja7.Position = new Vector3(-1100, 3, - 7900);
-            reja8.Position = new Vector3(-6000, 3, -7826);
-            reja9.Position = new Vector3(-7810, 3, -6026);
-            reja10.Position = new Vector3(-7810, 3, -2100);
-            reja11.Position = new Vector3(-7810, 3, -134);
+            reja6.Position = new Vector3(1500, 3, -8900);
+            reja7.Position = new Vector3(-2300, 3, -9000);
+            reja8.Position = new Vector3(-6980, 3, -8764);
+            reja9.Position = new Vector3(-10000, 3, -8864);
+            reja10.Position = new Vector3(-10810, 3, -2100);
+            reja11.Position = new Vector3(-10110, 3, -134);
             reja12.Position = new Vector3(-9000, 3, 5000);
-            reja13.Position = new Vector3(-6000, 3, 5000);
-            reja14.Position = new Vector3(-1100, 3, 7900);
-            reja15.Position = new Vector3(1100, 3, 7900);
+            reja13.Position = new Vector3(-6000, 3, 7000);
+            reja14.Position = new Vector3(-1650, 3, 7900);
+            reja15.Position = new Vector3(1000, 3, 7900);
 
 
 
@@ -293,44 +293,44 @@ namespace TGC.Group.Escenario
             if (Input.keyDown(Key.A))
             {
 
-                Camara.SetCamera(Camara.Position + new Vector3(10, 0, 0), Camara.LookAt + new Vector3(10, 0, 0));
+                Camara.SetCamera(Camara.Position + new Vector3(30, 0, 0), Camara.LookAt + new Vector3(30, 0, 0));
             }
             if (Input.keyDown(Key.D))
             {
 
-                Camara.SetCamera(Camara.Position + new Vector3(-10, 0, 0), Camara.LookAt + new Vector3(-10, 0, 0));
+                Camara.SetCamera(Camara.Position + new Vector3(-30, 0, 0), Camara.LookAt + new Vector3(-30, 0, 0));
             }
             if (Input.keyDown(Key.W))
             {
 
-                Camara.SetCamera(Camara.Position + new Vector3(0, 0, -10), Camara.LookAt + new Vector3(0, 0, -10));
+                Camara.SetCamera(Camara.Position + new Vector3(0, 0, -30), Camara.LookAt + new Vector3(0, 0, -30));
             }
             if (Input.keyDown(Key.S))
             {
 
-                Camara.SetCamera(Camara.Position + new Vector3(0, 0, 10), Camara.LookAt + new Vector3(0, 0, 10));
+                Camara.SetCamera(Camara.Position + new Vector3(0, 0, 30), Camara.LookAt + new Vector3(0, 0, 30));
             }
             
 
-            if (Camara.Position.Z < -7826)
+            if (Camara.Position.Z < -11826)
             {
-                Camara.SetCamera(new Vector3(Camara.Position.X, Camara.Position.Y, -7826), Camara.LookAt + new Vector3(0, 0, 10));
+                Camara.SetCamera(new Vector3(Camara.Position.X, Camara.Position.Y, -11826), Camara.LookAt + new Vector3(0, 0, 30));
             }
 
 
-            if (Camara.Position.Z > 8774)
+            if (Camara.Position.Z > 13000)
             {
-                Camara.SetCamera(new Vector3(Camara.Position.X, Camara.Position.Y, 8774), Camara.LookAt + new Vector3(0, 0, -10));
+                Camara.SetCamera(new Vector3(Camara.Position.X, Camara.Position.Y, 13000), Camara.LookAt + new Vector3(0, 0, -30));
             }
 
-            if (Camara.Position.X >6990)
+            if (Camara.Position.X >10000)
             {
-                Camara.SetCamera(new Vector3(6990, Camara.Position.Y, Camara.Position.Z), Camara.LookAt + new Vector3(-10, 0, 0));
+                Camara.SetCamera(new Vector3(10000, Camara.Position.Y, Camara.Position.Z), Camara.LookAt + new Vector3(-30, 0, 0));
             }
 
-            if (Camara.Position.X < -7810)
+            if (Camara.Position.X < -10000)
             {
-                Camara.SetCamera(new Vector3(-7810, Camara.Position.Y, Camara.Position.Z), Camara.LookAt + new Vector3(10, 0, 0));
+                Camara.SetCamera(new Vector3(-10000, Camara.Position.Y, Camara.Position.Z), Camara.LookAt + new Vector3(30, 0, 0));
             }
         }
 
@@ -433,16 +433,16 @@ namespace TGC.Group.Escenario
             carretilla.Transform = Matrix.Scaling(new Vector3(0, 0, 2));
             reja.Scale = new Vector3(250,50,50);
             reja1.Scale = new Vector3(250, 50, 50);
-            reja2.Scale = new Vector3(70, 50, 50);
-            reja3.Scale = new Vector3(70, 50, 50);
+            reja2.Scale = new Vector3(155, 50, 50);
+            reja3.Scale = new Vector3(150, 50, 50);
             reja4.Scale = new Vector3(195, 50, 50);
             reja5.Scale = new Vector3(200, 50, 50);
-            reja6.Scale = new Vector3(120, 50, 50);
-            reja7.Scale = new Vector3(120, 50, 50);
-            reja8.Scale = new Vector3(140, 50, 50);
-            reja9.Scale = new Vector3(120, 50, 50);
-            reja10.Scale = new Vector3(75, 50, 50);
-            reja11.Scale = new Vector3(90, 50, 50);
+            reja6.Scale = new Vector3(140, 50, 50);
+            reja7.Scale = new Vector3(150, 50, 50);
+            reja8.Scale = new Vector3(188, 50, 50);
+            reja9.Scale = new Vector3(210, 50, 50);
+            reja10.Scale = new Vector3(150, 50, 50);
+            reja11.Scale = new Vector3(150, 50, 50);
             reja12.Scale = new Vector3(170, 50, 50);
             reja13.Scale = new Vector3(150, 50, 50);
             reja14.Scale = new Vector3(180, 50, 50);
