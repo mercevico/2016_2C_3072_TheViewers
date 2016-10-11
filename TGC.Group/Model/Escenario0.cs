@@ -10,6 +10,11 @@ using TGC.Core.Textures;
 using TGC.Core.Utils;
 using TGC.Core.Collision;
 
+using TGC.Core.SkeletalAnimation;
+
+
+
+
 namespace TGC.Group.Escenario
 
 {
@@ -74,8 +79,11 @@ namespace TGC.Group.Escenario
         //Fondo 
         private TgcBox Fondo { get; set; }
 
+        //animacion
+        private TgcSkeletalBoneAttach attachment2;
+        private TgcSkeletalMesh mesh2;
 
-        
+
         //Meshes de Objetos del suelo--------------------------------------------------------///
         //private TgcMesh[] Planta = new TgcMesh[500];
         //private TgcMesh[] Planta1 = new TgcMesh[500];
@@ -96,6 +104,28 @@ namespace TGC.Group.Escenario
 
         public override void Init()
         {
+
+
+            //Paths para archivo XML de la malla
+            var pathMesh = MediaDir + "Robot\\Robot-TgcSkeletalMesh.xml";
+
+            //Path para carpeta de texturas de la malla
+            var mediaPath = MediaDir + "Robot\\";
+
+            var animationsPath = new string[1];
+            animationsPath[0] = mediaPath + "Empujar" + "-TgcSkeletalAnim.xml";
+            var loader1 = new TgcSkeletalLoader();
+            mesh2 = loader1.loadMeshAndAnimationsFromFile(pathMesh, mediaPath, animationsPath);
+            mesh2.buildSkletonMesh();
+
+            attachment2 = new TgcSkeletalBoneAttach();
+            var attachmentBox = TgcBox.fromSize(new Vector3(5, 100, 5), Color.Blue);
+            attachment2.Mesh = attachmentBox.toMesh("attachment");
+            attachment2.Bone = mesh2.getBoneByName("Bip01 L Hand");
+            attachment2.Offset = Matrix.Translation(10, -40, 0);
+            attachment2.updateValues();
+
+
 
 
             //Cargar suelo
@@ -255,9 +285,9 @@ namespace TGC.Group.Escenario
             tumba5.Position = new Vector3(-14500, 0, -994);
             tumba6.Position = new Vector3(-14500, 0, 12084);
             tumba7.Position = new Vector3(-300, 0, 14500);
-            
-
-            //Defino una escala en el modelo logico del mesh que es muy grande.
+            mesh2.Position = new Vector3(-550, 2, -14026);
+            mesh2.Transform = Matrix.Scaling(new Vector3(25,25,25)) * Matrix.RotationY(16)* Matrix.Translation(mesh2.Position);
+            //Defino una escala en el modelo logico del m1esh que es muy grande.
             //Mesh.Scale = new Vector3(0.5f, 0.5f, 0.5f);
 
 
@@ -375,6 +405,7 @@ namespace TGC.Group.Escenario
         {
             //Inicio el render de la escena, para ejemplos simples. Cuando tenemos postprocesado o shaders es mejor realizar las operaciones según nuestra conveniencia.
             PreRender();
+            
 
             //Si hacen clic con el mouse, ver si hay colision con el suelo
             if (Input.buttonPressed(TgcD3dInput.MouseButtons.BUTTON_LEFT))
@@ -487,7 +518,7 @@ namespace TGC.Group.Escenario
             tumba5.Scale = new Vector3(8, 8, 18);
             tumba6.Scale = new Vector3(8, 8, 18);
             tumba7.Scale = new Vector3(8, 8, 18);
-
+            mesh2.Scale = new Vector3(450, 450, 450);
 
             carretilla.Scale = new Vector3(30, 30, 30);
             //A modo ejemplo realizamos toda las multiplicaciones, pero aquí solo nos hacia falta la traslación.
@@ -520,7 +551,10 @@ namespace TGC.Group.Escenario
             tumba5.render();
             tumba6.render();
             tumba7.render();
-
+            mesh2.Transform = mesh2.Transform + Matrix.Scaling(new Vector3(25, 25, 25)) * Matrix.RotationY(16) * Matrix.Translation(mesh2.Position + new Vector3(25, 0, 25));
+            mesh2.playAnimation("Empujar",true,2);
+            
+            mesh2.animateAndRender(0.1f);
             //scene.renderAll();
 
             //Cuando tenemos modelos mesh podemos utilizar un método que hace la matriz de transformación estándar.
