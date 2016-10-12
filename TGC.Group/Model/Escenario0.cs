@@ -12,6 +12,8 @@ using TGC.Core.Collision;
 
 using TGC.Core.SkeletalAnimation;
 
+using TGC.Core.BoundingVolumes;
+
 
 
 
@@ -91,6 +93,14 @@ namespace TGC.Group.Escenario
         private Matrix meshRotationMatrixZombie;
         private Vector3 newPositionZombie;
         private Vector3 originalMeshRotZombie;
+
+
+        private TgcBoundingCylinder colliderCylinder;
+        private TgcBoundingCylinderFixedY colliderCylinderFixedY;
+        private TgcBoundingSphere collisionableSphere;
+        private TgcMesh collisionableMeshAABB;
+        private TgcBoundingCylinderFixedY collisionableCylinder;
+        private TgcBoundingSphere characterSphere;
 
         /*----------------------------------------------------------------------------------------------------------------------------------------*/
         /*----------------------------------------------------------------------------------------------------------------------------------------*/
@@ -318,8 +328,16 @@ namespace TGC.Group.Escenario
             /*----------------------------------------------------------------------------------------------------------------------------------------*/
             /*----------------------------------------------------------------------------------------------------------------------------------------*/
             //Rotar modelo en base a la nueva dirección a la que apunta
+
             mesh3.Position = new Vector3(10250, 5, -13500);
             mesh3.Transform = Matrix.Scaling(new Vector3(25, 25, 25)) * Matrix.RotationY(9) * Matrix.Translation(mesh3.Position);
+
+            mesh3.AutoUpdateBoundingBox = false;
+            mesh3.BoundingBox.transform(Matrix.Scaling(new Vector3(25, 25, 25)) * Matrix.RotationY(9) * Matrix.Translation(mesh3.Position));
+
+
+            characterSphere = new TgcBoundingSphere(mesh3.BoundingBox.calculateBoxCenter(), mesh3.BoundingBox.calculateBoxRadius());
+
 
             /*----------------------------------------------------------------------------------------------------------------------------------------*/
             /*----------------------------------------------------------------------------------------------------------------------------------------*/
@@ -483,14 +501,15 @@ namespace TGC.Group.Escenario
 
             movement2.Normalize();
 
-
+            
             mesh3.Position = mesh3.Position + movement2;
 
             mesh3.Position.Normalize();
 
             mesh3.Transform = Matrix.Scaling(new Vector3(25, 25, 25)) * Matrix.RotationY(9) * Matrix.Translation(mesh3.Position);
 
-
+            mesh3.BoundingBox.transform(Matrix.Scaling(new Vector3(25, 25, 25)) * Matrix.RotationY(9) * Matrix.Translation(mesh3.Position));
+            characterSphere.setCenter(mesh3.BoundingBox.calculateBoxCenter());
 
 
 
@@ -671,7 +690,6 @@ namespace TGC.Group.Escenario
             /*----------------------------------------------------------------------------------------------------------------------------------------*/
             
             mesh3.playAnimation("Empujar", true, 2);
-
             mesh3.animateAndRender(0.1f);
 
             /*----------------------------------------------------------------------------------------------------------------------------------------*/
@@ -728,7 +746,7 @@ namespace TGC.Group.Escenario
                 reja14.BoundingBox.render();
                 reja15.BoundingBox.render();
 
-
+                characterSphere.render();
             }
 
             //Finaliza el render y presenta en pantalla, al igual que el preRender se debe para casos puntuales es mejor utilizar a mano las operaciones de EndScene y PresentScene
@@ -782,6 +800,8 @@ namespace TGC.Group.Escenario
             tumba5.dispose();
             tumba6.dispose();
             tumba7.dispose();
+
+
 
             //  scene.disposeAll();
 
