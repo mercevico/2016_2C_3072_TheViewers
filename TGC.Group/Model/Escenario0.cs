@@ -42,6 +42,7 @@ namespace TGC.Group.Escenario
 
 
         private bool applyMovement;
+        private Vector3 collisionPoint;
         private TgcBox collisionPointMesh;
         private TgcArrow directionArrow;
         private TgcMesh mesh1;
@@ -88,7 +89,7 @@ namespace TGC.Group.Escenario
         /*----------------------------------------------------------------------------------------------------------------------------------------*/
         private TgcSkeletalBoneAttach attachment3;
         private TgcSkeletalMesh mesh3;
-
+        private TgcSkeletalMesh selectedMesh;
 
         private Matrix meshRotationMatrixZombie;
         private Vector3 newPositionZombie;
@@ -102,6 +103,7 @@ namespace TGC.Group.Escenario
         private TgcBoundingCylinderFixedY collisionableCylinder;
         private TgcBoundingSphere characterSphere;
 
+        private bool ThirdPersonCamera;
         /*----------------------------------------------------------------------------------------------------------------------------------------*/
         /*----------------------------------------------------------------------------------------------------------------------------------------*/
 
@@ -121,6 +123,11 @@ namespace TGC.Group.Escenario
         /// </summary>
         /// 
         private TgcScene scene;
+
+        //Posición de la camara. La defino como variable global para volver siempre a este punto
+        private Vector3 cameraPosition = new Vector3(50, 9500, 1024);
+        //Quiero que la camara mire hacia el origen (0,0,0).
+        private Vector3 lookAt = new Vector3(1, 200, 200);
 
 
         public override void Init()
@@ -219,42 +226,31 @@ namespace TGC.Group.Escenario
             Suelo.Position = new Vector3(-25, 0, 0);
             Fondo.Position = new Vector3(-25, 450, 0); /////
 
-
-            //Cargo los  mesh que tiene la escena.
-            //Mesh = new TgcSceneLoader().loadSceneFromFile(MediaDir + "LogoTGC-TgcScene.xml").Meshes[0];
-            for (int i = 0; i < 500; i++)
-            {
-                //Planta[i] = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Planta3\\Planta3-TgcScene.xml").Meshes[0];
-            }
-            for (int i = 0; i < 500; i++)
-            {
-                //Planta1[i] = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Planta3\\Planta3-TgcScene.xml").Meshes[0];
-            }
-                carretilla = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Carretilla\\Carretilla-TgcScene.xml").Meshes[0];
-                reja = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
-                reja1 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
-                reja2 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
-                reja3 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
-                reja4 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
-                reja5 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
-                reja6 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
-                reja7 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
-                reja8 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
-                reja9 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
-                reja10 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
-                reja11 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
-                reja12 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
-                reja13 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
-                reja14 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
-                reja15 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
-                tumba = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Sarcofago\\Sarcofago-TgcScene.xml").Meshes[0];
-                tumba1 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Sarcofago\\Sarcofago-TgcScene.xml").Meshes[0];
-                tumba2 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Sarcofago\\Sarcofago-TgcScene.xml").Meshes[0];
-                tumba3 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Sarcofago\\Sarcofago-TgcScene.xml").Meshes[0];
-                tumba4 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Sarcofago\\Sarcofago-TgcScene.xml").Meshes[0];
-                tumba5 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Sarcofago\\Sarcofago-TgcScene.xml").Meshes[0];
-                tumba6 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Sarcofago\\Sarcofago-TgcScene.xml").Meshes[0];
-                tumba7 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Sarcofago\\Sarcofago-TgcScene.xml").Meshes[0];
+            carretilla = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Carretilla\\Carretilla-TgcScene.xml").Meshes[0];
+            reja = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
+            reja1 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
+            reja2 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
+            reja3 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
+            reja4 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
+            reja5 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
+            reja6 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
+            reja7 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
+            reja8 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
+            reja9 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
+            reja10 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
+            reja11 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
+            reja12 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
+            reja13 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
+            reja14 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
+            reja15 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
+            tumba = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Sarcofago\\Sarcofago-TgcScene.xml").Meshes[0];
+            tumba1 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Sarcofago\\Sarcofago-TgcScene.xml").Meshes[0];
+            tumba2 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Sarcofago\\Sarcofago-TgcScene.xml").Meshes[0];
+            tumba3 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Sarcofago\\Sarcofago-TgcScene.xml").Meshes[0];
+            tumba4 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Sarcofago\\Sarcofago-TgcScene.xml").Meshes[0];
+            tumba5 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Sarcofago\\Sarcofago-TgcScene.xml").Meshes[0];
+            tumba6 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Sarcofago\\Sarcofago-TgcScene.xml").Meshes[0];
+            tumba7 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Sarcofago\\Sarcofago-TgcScene.xml").Meshes[0];
 
 
             //pongo las rejas en posicion
@@ -349,10 +345,7 @@ namespace TGC.Group.Escenario
             //Suelen utilizarse objetos que manejan el comportamiento de la camara.
             //Lo que en realidad necesitamos gráficamente es una matriz de View.
             //El framework maneja una cámara estática, pero debe ser inicializada.
-            //Posición de la camara.
-            var cameraPosition = new Vector3(50, 9500, 1024);
-            //Quiero que la camara mire hacia el origen (0,0,0).
-            var lookAt = new Vector3(1, 200, 200);
+
             //Configuro donde esta la posicion de la camara y hacia donde mira.
             Camara.SetCamera(cameraPosition, lookAt);
             //Internamente el framework construye la matriz de view con estos dos vectores.
@@ -374,41 +367,43 @@ namespace TGC.Group.Escenario
                 BoundingBox = !BoundingBox;
             }
 
-            //Capturar Input Mouse
-           /* if (Input.buttonUp(TgcD3dInput.MouseButtons.BUTTON_LEFT))
+            if (Input.keyPressed(Key.C))
             {
-
-                //Como ejemplo podemos hacer un movimiento simple de la cámara.
-                //En este caso le sumamos un valor en Y
-                Camara.SetCamera(Camara.Position + new Vector3(0, 10f, 0), Camara.LookAt);
-                //Ver ejemplos de cámara para otras operaciones posibles.
-
-                //Si superamos cierto Y volvemos a la posición original.
-                if (Camara.Position.Y > 300f)
+                if (selectedMesh != null)
                 {
-                    Camara.SetCamera(new Vector3(Camara.Position.X, 0f, Camara.Position.Z), Camara.LookAt);
+                    ThirdPersonCamera = !ThirdPersonCamera; //Invierto la cámara
+
+                    if (!ThirdPersonCamera) //Si no estoy en tercera persona
+                    {
+                        Camara.SetCamera(cameraPosition, lookAt);
+                    }
                 }
-            }*/
 
-
-
-            if (Input.buttonPressed(TgcD3dInput.MouseButtons.BUTTON_RIGHT))
-            {
-                //Como ejemplo podemos hacer un movimiento simple de la cámara.
-                //En este caso le sumamos un valor en Y
-                Camara.SetCamera(Camara.Position + new Vector3(10f, 0, 0), Camara.LookAt);
-                //Ver ejemplos de cámara para otras operaciones posibles.
-
-                //Si superamos cierto Y volvemos a la posición original.
-                if (Camara.Position.Y > 300f)
-                {
-                    Camara.SetCamera(new Vector3(Camara.Position.X, 0f, Camara.Position.Z), Camara.LookAt);
-                }
             }
+
+            if (ThirdPersonCamera)
+            {
+                Camara.SetCamera(selectedMesh.Position + new Vector3(0, 100, 500), selectedMesh.Position + new Vector3(1, 1, 0));
+            }
+                //Capturar Input Mouse
+                /* if (Input.buttonUp(TgcD3dInput.MouseButtons.BUTTON_LEFT))
+                 {
+
+                     //Como ejemplo podemos hacer un movimiento simple de la cámara.
+                     //En este caso le sumamos un valor en Y
+                     Camara.SetCamera(Camara.Position + new Vector3(0, 10f, 0), Camara.LookAt);
+                     //Ver ejemplos de cámara para otras operaciones posibles.
+
+                     //Si superamos cierto Y volvemos a la posición original.
+                     if (Camara.Position.Y > 300f)
+                     {
+                         Camara.SetCamera(new Vector3(Camara.Position.X, 0f, Camara.Position.Z), Camara.LookAt);
+                     }
+                 }*/
+
 
             if (Input.keyDown(Key.A))
             {
-
                 Camara.SetCamera(Camara.Position + new Vector3(30, 0, 0), Camara.LookAt + new Vector3(30, 0, 0));
             }
             if (Input.keyDown(Key.D))
@@ -538,20 +533,15 @@ namespace TGC.Group.Escenario
                 //Actualizar Ray de colisión en base a posición del mouse
                 pickingRay.updateRay();
 
+                var aabb = mesh3;
                 //Detectar colisión Ray-AABB
-                if (TgcCollisionUtils.intersectRayAABB(pickingRay.Ray, suelo0.BoundingBox, out newPosition))
+                if (TgcCollisionUtils.intersectRayAABB(pickingRay.Ray, aabb.BoundingBox, out collisionPoint))
                 {
-                    //Fijar nueva posición destino
-                    applyMovement = true;
-
-                    collisionPointMesh.Position = newPosition;
-                    directionArrow.PEnd = new Vector3(newPosition.X, 30f, newPosition.Z);
-
-                    //Rotar modelo en base a la nueva dirección a la que apunta
-                    var direction = Vector3.Normalize(newPosition - mesh1.Position);
-                    var angle = FastMath.Acos(Vector3.Dot(originalMeshRot, direction));
-                    var axisRotation = Vector3.Cross(originalMeshRot, direction);
-                    meshRotationMatrix = Matrix.RotationAxis(axisRotation, angle);
+                    selectedMesh = aabb;
+                }
+                else
+                {
+                    selectedMesh = null;
                 }
             }
             //Interporlar movimiento, si hay que mover
@@ -729,22 +719,22 @@ namespace TGC.Group.Escenario
                 mesh3.BoundingBox.render();
 
 
-                reja.BoundingBox.render();
-                reja1.BoundingBox.render();
-                reja2.BoundingBox.render();
-                reja3.BoundingBox.render();
-                reja4.BoundingBox.render();
-                reja5.BoundingBox.render();
-                reja6.BoundingBox.render();
-                reja7.BoundingBox.render();
-                reja8.BoundingBox.render();
-                reja9.BoundingBox.render();
-                reja10.BoundingBox.render();
-                reja11.BoundingBox.render();
-                reja12.BoundingBox.render();
-                reja13.BoundingBox.render();
-                reja14.BoundingBox.render();
-                reja15.BoundingBox.render();
+                //reja.BoundingBox.render();
+                //reja1.BoundingBox.render();
+                //reja2.BoundingBox.render();
+                //reja3.BoundingBox.render();
+                //reja4.BoundingBox.render();
+                //reja5.BoundingBox.render();
+                //reja6.BoundingBox.render();
+                //reja7.BoundingBox.render();
+                //reja8.BoundingBox.render();
+                //reja9.BoundingBox.render();
+                //reja10.BoundingBox.render();
+                //reja11.BoundingBox.render();
+                //reja12.BoundingBox.render();
+                //reja13.BoundingBox.render();
+                //reja14.BoundingBox.render();
+                //reja15.BoundingBox.render();
 
                 characterSphere.render();
             }
