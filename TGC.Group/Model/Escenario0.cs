@@ -321,7 +321,7 @@ namespace TGC.Group.Escenario
 
             if (Input.keyPressed(Key.Z) && selectedMaceta != null)
             {
-                repeater.crearMESH(MediaDir, new Vector3(-340, 3, -6000));
+                repeater.crearMESH(MediaDir, selectedMaceta.Position);
                 repeater.rendermesh();
             }
 
