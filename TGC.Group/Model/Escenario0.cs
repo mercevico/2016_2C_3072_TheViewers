@@ -111,6 +111,7 @@ namespace TGC.Group.Escenario
         private stage0 stage = new stage0();
         private Plant repeater = new Plant();
         private Sol sol0 = new Sol();
+        private Sunflower SunFlo = new Sunflower();
 
         public override void Init()
         {
@@ -156,6 +157,8 @@ namespace TGC.Group.Escenario
             stage.crearMesh(MediaDir);
             repeater.crearMESH(MediaDir);
             sol0.crearMESH(new Vector3(2000, 100, -600),MediaDir);
+            SunFlo.crearMESHSun(MediaDir);
+
             //Iniciarlizar PickingRay
             pickingRay = new TgcPickingRay(Input);
 
@@ -607,6 +610,8 @@ namespace TGC.Group.Escenario
             stage.rendermesh();
             repeater.rendermesh();
             sol0.rendermesh();
+            SunFlo.rendermeshSun();
+
             foreach (var plant in objetosColisionablesPLANTS )
             {
                 if (plant.muerta != true)
@@ -695,6 +700,7 @@ namespace TGC.Group.Escenario
 
             stage.disposeMesh();
             sol0.disposeMesh();
+            SunFlo.disposeMeshSun();
            // repeater.disposeMesh();//  scene.disposeAll();
 
         }

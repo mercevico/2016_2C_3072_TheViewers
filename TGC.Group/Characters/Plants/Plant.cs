@@ -32,11 +32,6 @@ namespace TGC.Group.Characters.Plants
             //Disparar
         }
 
-        public void render()
-        {
-            //Renderizar el meshPath
-        }
-
         public void crearMESH(string MediaDir)
         {
             plantaMesh = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Planta2\\Planta2-TgcScene.xml").Meshes[0];
