@@ -12,7 +12,7 @@ namespace TGC.Group.Characters.Plants
 
         public void renderMesh(String mediaPath)
         {
-            this.render
+            this.render();
         }
     }
 }
