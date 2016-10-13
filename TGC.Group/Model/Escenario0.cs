@@ -75,6 +75,38 @@ namespace TGC.Group.Escenario
         private TgcMesh tumba5;
         private TgcMesh tumba6;
         private TgcMesh tumba7;
+        private TgcMesh maceta;
+        private TgcMesh maceta1;
+        private TgcMesh maceta2;
+        private TgcMesh maceta3;
+        private TgcMesh maceta4;
+        private TgcMesh maceta5;
+        private TgcMesh maceta6;
+        private TgcMesh maceta7;
+        private TgcMesh maceta8;
+        private TgcMesh maceta9;
+        private TgcMesh maceta10;
+        private TgcMesh maceta11;
+        private TgcMesh maceta12;
+        private TgcMesh maceta13;
+        private TgcMesh maceta14;
+        private TgcMesh maceta15;
+        private TgcMesh maceta16;
+        private TgcMesh maceta17;
+        private TgcMesh maceta18;
+        private TgcMesh maceta19;
+        private TgcMesh maceta20;
+        private TgcMesh maceta21;
+        private TgcMesh maceta22;
+        private TgcMesh maceta23;
+        private TgcMesh maceta24;
+        private TgcMesh maceta25;
+        private TgcMesh maceta26;
+        private TgcMesh maceta27;
+        private TgcMesh maceta28;
+        private TgcMesh maceta29;
+        private TgcMesh maceta30;
+        private TgcMesh maceta31;
 
         //Suelo.
         private TgcBox Suelo { get; set; }
@@ -251,6 +283,38 @@ namespace TGC.Group.Escenario
             tumba5 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Sarcofago\\Sarcofago-TgcScene.xml").Meshes[0];
             tumba6 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Sarcofago\\Sarcofago-TgcScene.xml").Meshes[0];
             tumba7 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Sarcofago\\Sarcofago-TgcScene.xml").Meshes[0];
+            maceta = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Olla\\Olla-TgcScene.xml").Meshes[0];
+            maceta1 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Olla\\Olla-TgcScene.xml").Meshes[0];
+            maceta2 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Olla\\Olla-TgcScene.xml").Meshes[0];
+            maceta3 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Olla\\Olla-TgcScene.xml").Meshes[0];
+            maceta4 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Olla\\Olla-TgcScene.xml").Meshes[0];
+            maceta5 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Olla\\Olla-TgcScene.xml").Meshes[0];
+            maceta6 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Olla\\Olla-TgcScene.xml").Meshes[0];
+            maceta7 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Olla\\Olla-TgcScene.xml").Meshes[0];
+            maceta8 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Olla\\Olla-TgcScene.xml").Meshes[0];
+            maceta9 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Olla\\Olla-TgcScene.xml").Meshes[0];
+            maceta10 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Olla\\Olla-TgcScene.xml").Meshes[0];
+            maceta11 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Olla\\Olla-TgcScene.xml").Meshes[0];
+            maceta12 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Olla\\Olla-TgcScene.xml").Meshes[0];
+            maceta13 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Olla\\Olla-TgcScene.xml").Meshes[0];
+            maceta14 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Olla\\Olla-TgcScene.xml").Meshes[0];
+            maceta15 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Olla\\Olla-TgcScene.xml").Meshes[0];
+            maceta16 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Olla\\Olla-TgcScene.xml").Meshes[0];
+            maceta17 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Olla\\Olla-TgcScene.xml").Meshes[0];
+            maceta18 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Olla\\Olla-TgcScene.xml").Meshes[0];
+            maceta19 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Olla\\Olla-TgcScene.xml").Meshes[0];
+            maceta20 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Olla\\Olla-TgcScene.xml").Meshes[0];
+            maceta21 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Olla\\Olla-TgcScene.xml").Meshes[0];
+            maceta22 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Olla\\Olla-TgcScene.xml").Meshes[0];
+            maceta23 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Olla\\Olla-TgcScene.xml").Meshes[0];
+            maceta24 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Olla\\Olla-TgcScene.xml").Meshes[0];
+            maceta25 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Olla\\Olla-TgcScene.xml").Meshes[0];
+            maceta26 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Olla\\Olla-TgcScene.xml").Meshes[0];
+            maceta27 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Olla\\Olla-TgcScene.xml").Meshes[0];
+            maceta28 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Olla\\Olla-TgcScene.xml").Meshes[0];
+            maceta29 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Olla\\Olla-TgcScene.xml").Meshes[0];
+            maceta30 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Olla\\Olla-TgcScene.xml").Meshes[0];
+            maceta31 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Olla\\Olla-TgcScene.xml").Meshes[0];
 
 
             //pongo las rejas en posicion
@@ -320,6 +384,24 @@ namespace TGC.Group.Escenario
             tumba7.Position = new Vector3(-300, 0, 14500);
             mesh2.Position = new Vector3(-550, 2, -14026);
             mesh2.Transform = Matrix.Scaling(new Vector3(25,25,25)) * Matrix.RotationY(16)* Matrix.Translation(mesh2.Position);
+
+            maceta.Position = new Vector3(12000, 3, -600);
+            maceta1.Position = new Vector3(9000, 3, -600);
+            maceta2.Position = new Vector3(6000, 3, -600);
+            maceta3.Position = new Vector3(3000, 3, -600);
+            maceta4.Position = new Vector3(-12000, 3, -1000);
+            maceta5.Position = new Vector3(-9000, 3, -1000);
+            maceta6.Position = new Vector3(-6000, 3, -1000);
+            maceta7.Position = new Vector3(-3000, 3, -1000);
+            maceta8.Position = new Vector3(-340, 3, -12000);
+            maceta9.Position = new Vector3(-340, 3, -9000);
+            maceta10.Position = new Vector3(-340, 3, -6000);
+            maceta11.Position = new Vector3(-340, 3, -3000);
+            maceta12.Position = new Vector3(-340, 3, 12000);
+            maceta13.Position = new Vector3(-340, 3, 8500);
+            maceta14.Position = new Vector3(-340, 3, 5500);
+            maceta15.Position = new Vector3(-340, 3, 2500);
+
 
             /*----------------------------------------------------------------------------------------------------------------------------------------*/
             /*----------------------------------------------------------------------------------------------------------------------------------------*/
@@ -638,8 +720,44 @@ namespace TGC.Group.Escenario
             tumba6.Scale = new Vector3(8, 8, 18);
             tumba7.Scale = new Vector3(8, 8, 18);
             mesh2.Scale = new Vector3(450, 450, 450);
-
             carretilla.Scale = new Vector3(30, 30, 30);
+            
+            maceta.Scale = new Vector3(2.5f, 2.5f, 2.5f);
+            maceta1.Scale = new Vector3(2.5f, 2.5f, 2.5f);
+            maceta2.Scale = new Vector3(2.5f, 2.5f, 2.5f);
+            maceta3.Scale = new Vector3(2.5f, 2.5f, 2.5f);
+            maceta4.Scale = new Vector3(2.5f, 2.5f, 2.5f);
+            maceta5.Scale = new Vector3(2.5f, 2.5f, 2.5f);
+            maceta6.Scale = new Vector3(2.5f, 2.5f, 2.5f);
+            maceta7.Scale = new Vector3(2.5f, 2.5f, 2.5f);
+            maceta8.Scale = new Vector3(2.5f, 2.5f, 2.5f);
+            maceta9.Scale = new Vector3(2.5f, 2.5f, 2.5f);
+            maceta10.Scale = new Vector3(2.5f, 2.5f, 2.5f);
+            maceta11.Scale = new Vector3(2.5f, 2.5f, 2.5f);
+            maceta12.Scale = new Vector3(2.5f, 2.5f, 2.5f);
+            maceta13.Scale = new Vector3(2.5f, 2.5f, 2.5f);
+            maceta14.Scale = new Vector3(2.5f, 2.5f, 2.5f);
+            maceta15.Scale = new Vector3(2.5f, 2.5f, 2.5f);
+            maceta16.Scale = new Vector3(2.5f, 2.5f, 2.5f);
+            maceta17.Scale = new Vector3(2.5f, 2.5f, 2.5f);
+            maceta18.Scale = new Vector3(2.5f, 2.5f, 2.5f);
+            maceta19.Scale = new Vector3(2.5f, 2.5f, 2.5f);
+            maceta20.Scale = new Vector3(2.5f, 2.5f, 2.5f);
+            maceta21.Scale = new Vector3(2.5f, 2.5f, 2.5f);
+            maceta22.Scale = new Vector3(2.5f, 2.5f, 2.5f);
+            maceta23.Scale = new Vector3(2.5f, 2.5f, 2.5f);
+            maceta24.Scale = new Vector3(2.5f, 2.5f, 2.5f);
+            maceta25.Scale = new Vector3(2.5f, 2.5f, 2.5f);
+            maceta26.Scale = new Vector3(2.5f, 2.5f, 2.5f);
+            maceta27.Scale = new Vector3(2.5f, 2.5f, 2.5f);
+            maceta28.Scale = new Vector3(2.5f, 2.5f, 2.5f);
+            maceta29.Scale = new Vector3(2.5f, 2.5f, 2.5f);
+            maceta30.Scale = new Vector3(2.5f, 2.5f, 2.5f);
+            maceta31.Scale = new Vector3(2.5f, 2.5f, 2.5f);
+
+
+
+
             //A modo ejemplo realizamos toda las multiplicaciones, pero aquí solo nos hacia falta la traslación.
             //Finalmente invocamos al render de la caja
             Fondo.render();
@@ -670,6 +788,25 @@ namespace TGC.Group.Escenario
             tumba5.render();
             tumba6.render();
             tumba7.render();
+
+            maceta.render();
+            maceta1.render();
+            maceta2.render();
+            maceta3.render();
+            maceta4.render();
+            maceta5.render();
+            maceta6.render();
+            maceta7.render();
+            maceta8.render();
+            maceta9.render();
+            maceta10.render();
+            maceta11.render();
+            maceta12.render();
+            maceta13.render();
+            maceta14.render();
+            maceta15.render();
+
+
             //mesh2.Transform = mesh2.Transform + Matrix.Scaling(new Vector3(25, 25, 25)) * Matrix.RotationY(16) * Matrix.Translation(mesh2.Position + new Vector3(25, 0, 25));
             mesh2.playAnimation("Empujar",true,2);
             
@@ -782,6 +919,7 @@ namespace TGC.Group.Escenario
             reja13.dispose();
             reja14.dispose();
             reja15.dispose();
+
             tumba.dispose();
             tumba1.dispose();
             tumba2.dispose();
@@ -791,7 +929,22 @@ namespace TGC.Group.Escenario
             tumba6.dispose();
             tumba7.dispose();
 
-
+            maceta.dispose();
+            maceta1.dispose();
+            maceta2.dispose();
+            maceta3.dispose();
+            maceta4.dispose();
+            maceta5.dispose();
+            maceta6.dispose();
+            maceta7.dispose();
+            maceta8.dispose();
+            maceta9.dispose();
+            maceta10.dispose();
+            maceta11.dispose();
+            maceta12.dispose();
+            maceta13.dispose();
+            maceta14.dispose();
+            maceta15.dispose();
 
             //  scene.disposeAll();
 
