@@ -24,12 +24,7 @@ using System.Collections.Generic;
 namespace TGC.Group.Escenario
 
 {
-    /// <summary>
-    ///     Ejemplo para implementar el TP.
-    ///     Inicialmente puede ser renombrado o copiado para hacer más ejemplos chicos, en el caso de copiar para que se
-    ///     ejecute el nuevo ejemplo deben cambiar el modelo que instancia GameForm <see cref="Form.GameForm.InitGraphics()" />
-    ///     line 97.
-    /// </summary>
+   
     public class Escenario0 : TgcExample
     {
         /// <summary>
@@ -162,8 +157,7 @@ namespace TGC.Group.Escenario
         /*----------------------------------------------------------------------------------------------------------------------------------------*/
 
         //Meshes de Objetos del suelo--------------------------------------------------------///
-        //private TgcMesh[] Planta = new TgcMesh[500];
-        //private TgcMesh[] Planta1 = new TgcMesh[500];
+     
         private TgcMesh carretilla { get; set; }
 
         //Boleano para ver si dibujamos el boundingbox
@@ -176,7 +170,7 @@ namespace TGC.Group.Escenario
         ///     Borrar el codigo ejemplo no utilizado.
         /// </summary>
         /// 
-        private TgcScene scene;
+       
 
         //Posición de la camara. La defino como variable global para volver siempre a este punto
         private Vector3 cameraPosition = new Vector3(50, 9500, 1024);
@@ -213,7 +207,6 @@ namespace TGC.Group.Escenario
             mesh3.buildSkletonMesh();
 
             attachment3 = new TgcSkeletalBoneAttach();
-            //var attachmentBox = TgcBox.fromSize(new Vector3(5, 100, 5), Color.Blue);
             attachment3.Mesh = attachmentBox.toMesh("attachment");
             attachment3.Bone = mesh3.getBoneByName("Bip01 L Hand");
             attachment3.Offset = Matrix.Translation(10, -40, 0);
@@ -231,22 +224,7 @@ namespace TGC.Group.Escenario
             //Iniciarlizar PickingRay
             pickingRay = new TgcPickingRay(Input);
 
-            //Cargar personaje
-            var loader = new TgcSceneLoader();
-            var scene =
-                loader.loadSceneFromFile(MediaDir + "\\Esqueletos\\EsqueletoHumano2\\Esqueleto2-TgcScene.xml");
-
-            mesh1 = scene.Meshes[0];
-
-            //Rotación original de la malla, hacia -Z
-            originalMeshRot = new Vector3(0, 0, -1);
-
-            //Manipulamos los movimientos del mesh a mano
-            mesh1.AutoTransformEnable = false;
-            meshRotationMatrix = Matrix.Identity;
-
-            newPosition = mesh1.Position;
-            applyMovement = false;
+           
 
             //Crear caja para marcar en que lugar hubo colision
             collisionPointMesh = TgcBox.fromSize(new Vector3(3, 100, 3), Color.Red);
@@ -281,6 +259,7 @@ namespace TGC.Group.Escenario
             Fondo.Position = new Vector3(-25, 450, 0); /////
 
             carretilla = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Carretilla\\Carretilla-TgcScene.xml").Meshes[0];
+            
             reja = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
             reja1 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
             reja2 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\RejaPinches\\RejaPinches-TgcScene.xml").Meshes[0];
@@ -340,7 +319,11 @@ namespace TGC.Group.Escenario
 
 
             //pongo las rejas en posicion
+            
             reja.rotateY(-44.9f);
+            
+
+
             reja1.rotateY(-45f);
             reja4.rotateY(45f);
             reja5.rotateY(45f);
@@ -368,16 +351,7 @@ namespace TGC.Group.Escenario
             tumba7.rotateX(45.5f);
 
 
-            for (int i = 0; i < 500; i++)
-            {
-                //Planta[i].Position = new Vector3(0+i*25*i^i, 3, i/2 +(-i*15*i));
-            }
-
-            for (int i = 0; i < 500; i++)
-            {
-                //Planta1[i].Position = new Vector3(0 + i * 25 *- i ^ i, 3, i + (i * 15 * i)); ;
-            }
-
+       
             carretilla.Position = new Vector3(-450, 3, -941);
 
             reja.Position = new Vector3(6980,3,8764);
@@ -917,6 +891,8 @@ namespace TGC.Group.Escenario
                             Matrix.RotationYawPitchRoll(Suelo.Rotation.Y, Suelo.Rotation.X, Suelo.Rotation.Z) *
                             Matrix.Translation(Suelo.Position);
 
+           
+
             Fondo.Transform = Matrix.Scaling(Fondo.Scale) *
                             Matrix.RotationYawPitchRoll(Suelo.Rotation.Y, Suelo.Rotation.X, Suelo.Rotation.Z) * Matrix.Translation(Fondo.Position);
             carretilla.Transform = Matrix.Scaling(new Vector3(0, 0, 2));
@@ -1002,6 +978,8 @@ namespace TGC.Group.Escenario
                 plantaCentro.mesh.render();
             }
             */
+
+         
             reja.render();
             reja1.render();
             reja2.render();
@@ -1159,20 +1137,8 @@ namespace TGC.Group.Escenario
             //Dispose de la caja.
             Suelo.dispose();
             Fondo.dispose();
-            mesh1.dispose();
-            //Dispose del mesh.
-            //Mesh.dispose();
-            for (int i = 0; i < 500; i++)
-            {
-                //Planta[i].dispose();
-            }
-            for (int i = 0; i < 500; i++)
-            {
-
-                //Planta1[i].dispose();
-            }
-            //carretilla.dispose();
-            //plantaCentro.mesh.dispose() ;
+            
+            
             foreach (var plant in objetosColisionablesPLANTS)
             {
                 if (plant.muerta != true)
