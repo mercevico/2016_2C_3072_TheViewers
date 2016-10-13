@@ -15,7 +15,7 @@ using TGC.Group.Characters.Zombies;
 using TGC.Group.Characters.Plants;
 using System.Collections.Generic;
 using TGC.Group.Stage;
-using TGC.Group.Characters.Plants;
+using TGC.Group.Characters.soles;
 
 
 namespace TGC.Group.Escenario
@@ -110,6 +110,7 @@ namespace TGC.Group.Escenario
         private Vector3 lookAt = new Vector3(1, 200, 200);
         private stage0 stage = new stage0();
         private Plant repeater = new Plant();
+        private Sol sol0 = new Sol();
 
         public override void Init()
         {
@@ -154,6 +155,7 @@ namespace TGC.Group.Escenario
 
             stage.crearMesh(MediaDir);
             repeater.crearMESH(MediaDir);
+            sol0.crearMESH(new Vector3(2000, 100, -600),MediaDir);
             //Iniciarlizar PickingRay
             pickingRay = new TgcPickingRay(Input);
 
@@ -604,6 +606,7 @@ namespace TGC.Group.Escenario
             //Finalmente invocamos al render de la caja
             stage.rendermesh();
             repeater.rendermesh();
+            sol0.rendermesh();
             foreach (var plant in objetosColisionablesPLANTS )
             {
                 if (plant.muerta != true)
@@ -691,6 +694,7 @@ namespace TGC.Group.Escenario
             }
 
             stage.disposeMesh();
+            sol0.disposeMesh();
            // repeater.disposeMesh();//  scene.disposeAll();
 
         }
