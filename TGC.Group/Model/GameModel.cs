@@ -8,6 +8,17 @@ using TGC.Core.Input;
 using TGC.Core.SceneLoader;
 using TGC.Core.Textures;
 using TGC.Core.Utils;
+using TGC.Core.Collision;
+using TGC.Core.SkeletalAnimation;
+using TGC.Core.BoundingVolumes;
+using TGC.Group.Characters.Zombies;
+using TGC.Group.Characters.Plants;
+using System.Collections.Generic;
+
+using TGC.Core.Camara;
+
+using TGC.Core.Terrain;
+
 
 namespace TGC.Group.Model
 {
@@ -24,6 +35,13 @@ namespace TGC.Group.Model
         /// </summary>
         /// <param name="mediaDir">Ruta donde esta la carpeta con los assets</param>
         /// <param name="shadersDir">Ruta donde esta la carpeta con los shaders</param>
+        private TgcSkyBox skyBox1;
+        private TgcMesh terreno;
+
+
+
+
+
         public GameModel(string mediaDir, string shadersDir) : base(mediaDir, shadersDir)
         {
             Category = Game.Default.Category;
@@ -58,57 +76,24 @@ namespace TGC.Group.Model
 
         public override void Init()
         {
-           
-        //Device de DirectX para crear primitivas.
-        var d3dDevice = D3DDevice.Instance.Device;
-
-            //Textura de la carperta Media. Game.Default es un archivo de configuracion (Game.settings) util para poner cosas.
-            //Pueden abrir el Game.settings que se ubica dentro de nuestro proyecto para configurar.
-            var pathTexturaCaja = MediaDir + Game.Default.TexturaCaja;
-            var pathTexturaFondo = MediaDir + "fondo.jpg";
-            //Cargamos una textura, tener en cuenta que cargar una textura significa crear una copia en memoria.
-            //Es importante cargar texturas en Init, si se hace en el render loop podemos tener grandes problemas si instanciamos muchas.
-            var texture = TgcTexture.createTexture(pathTexturaCaja);
-            var texturefondo = TgcTexture.createTexture(pathTexturaFondo);
-            //Creamos una caja 3D ubicada de dimensiones (5, 10, 5) y la textura como color.
-            var size = new Vector3(1500, 5, 1500);
-            var sizefondo = new Vector3(1500, 1000, 1500); /////
-            //Construimos una caja según los parámetros, por defecto la misma se crea con centro en el origen y se recomienda así para facilitar las transformaciones.
-            Box = TgcBox.fromSize(size, texture);
-            Fondo = TgcBox.fromSize(sizefondo, texturefondo);
-            //Posición donde quiero que este la caja, es común que se utilicen estructuras internas para las transformaciones.
-            //Entonces actualizamos la posición lógica, luego podemos utilizar esto en render para posicionar donde corresponda con transformaciones.
-            Box.Position = new Vector3(-25, 0, 0);
-            Fondo.Position = new Vector3(-25, 450, 0); /////
-           
-
-            //Cargo el unico mesh que tiene la escena.
-            Mesh = new TgcSceneLoader().loadSceneFromFile(MediaDir + "LogoTGC-TgcScene.xml").Meshes[0];
-            //Defino una escala en el modelo logico del mesh que es muy grande.
-            Mesh.Scale = new Vector3(0.5f, 0.5f, 0.5f);
-
-            var loader = new TgcSceneLoader();
-             var loader1 = new TgcSceneLoader();
-            scene = loader.loadSceneFromFile(MediaDir + "Isla_v2-TgcScene.xml");
+            /*
+            //Crear SkyBox
             
-            //Suelen utilizarse objetos que manejan el comportamiento de la camara.
-            //Lo que en realidad necesitamos gráficamente es una matriz de View.
-            //El framework maneja una cámara estática, pero debe ser inicializada.
-            //Posición de la camara.
-            var cameraPosition = new Vector3(0, 140, 500);
-            //Quiero que la camara mire hacia el origen (0,0,0).
-            var lookAt = new Vector3(1, 0, 0);
-            //Configuro donde esta la posicion de la camara y hacia donde mira.
-            Camara.SetCamera(cameraPosition, lookAt);
-            //Internamente el framework construye la matriz de view con estos dos vectores.
-            //Luego en nuestro juego tendremos que crear una cámara que cambie la matriz de view con variables como movimientos o animaciones de escenas.
+            skyBox1= new TgcSkyBox();
+            skyBox.Center = new Vector3(0, 500, 0);
+            skyBox.Size = new Vector3(10000, 10000, 10000);
+            var texturesPath = MediaDir ;
+            skyBox.setFaceTexture(TgcSkyBox.SkyFaces.Up,  MediaDir + "Grass.jpg");
+            skyBox.setFaceTexture(TgcSkyBox.SkyFaces.Down, MediaDir + "Grass.jpg");
+            skyBox.setFaceTexture(TgcSkyBox.SkyFaces.Left, MediaDir + "grass_fence.jpg");
+            skyBox.setFaceTexture(TgcSkyBox.SkyFaces.Right, MediaDir + "grass_fence.jpg");
+            skyBox.setFaceTexture(TgcSkyBox.SkyFaces.Front, MediaDir + "grass_fence.jpg");
+            skyBox.setFaceTexture(TgcSkyBox.SkyFaces.Back, MediaDir + "grass_fence.jpg");
+            skyBox.Init();*/
+
+
         }
 
-        /// <summary>
-        ///     Se llama en cada frame.
-        ///     Se debe escribir toda la lógica de computo del modelo, así como también verificar entradas del usuario y reacciones
-        ///     ante ellas.
-        /// </summary>
         public override void Update()
         {
             PreUpdate();
@@ -201,44 +186,8 @@ namespace TGC.Group.Model
         {
             //Inicio el render de la escena, para ejemplos simples. Cuando tenemos postprocesado o shaders es mejor realizar las operaciones según nuestra conveniencia.
             PreRender();
-
-            //Dibuja un texto por pantalla
-            DrawText.drawText("Con la tecla F se dibuja el bounding box.", 0, 20, Color.OrangeRed);
-            DrawText.drawText(
-                "Con clic izquierdo subimos la camara [Actual]: " + TgcParserUtils.printVector3(Camara.Position), 0, 30,
-                Color.OrangeRed);
-            DrawText.drawText(
-               "Con clic derecho rotamos la camara [Actual]: " + TgcParserUtils.printVector3(Camara.Position), 0, 50,
-               Color.Black);
-            //Siempre antes de renderizar el modelo necesitamos actualizar la matriz de transformacion.
-            //Debemos recordar el orden en cual debemos multiplicar las matrices, en caso de tener modelos jerárquicos, tenemos control total.
-            Box.Transform = Matrix.Scaling(Box.Scale) *
-                            Matrix.RotationYawPitchRoll(Box.Rotation.Y, Box.Rotation.X, Box.Rotation.Z) *
-                            Matrix.Translation(Box.Position);
-
-            Fondo.Transform = Matrix.Scaling(Box.Scale) *
-                            Matrix.RotationYawPitchRoll(Box.Rotation.Y, Box.Rotation.X, Box.Rotation.Z) * Matrix.Translation(Fondo.Position);
             
-            
-            
-            //A modo ejemplo realizamos toda las multiplicaciones, pero aquí solo nos hacia falta la traslación.
-            //Finalmente invocamos al render de la caja
-            Fondo.render();
-            Box.render();
-            scene.renderAll();
-           
-            //Cuando tenemos modelos mesh podemos utilizar un método que hace la matriz de transformación estándar.
-            //Es útil cuando tenemos transformaciones simples, pero OJO cuando tenemos transformaciones jerárquicas o complicadas.
-            Mesh.UpdateMeshTransform();
-            //Render del mesh
-            Mesh.render();
-
-            //Render de BoundingBox, muy útil para debug de colisiones.
-            if (BoundingBox)
-            {
-                Box.BoundingBox.render();
-                Mesh.BoundingBox.render();
-            }
+            /*skyBox.render();*/
 
             //Finaliza el render y presenta en pantalla, al igual que el preRender se debe para casos puntuales es mejor utilizar a mano las operaciones de EndScene y PresentScene
             PostRender();
@@ -251,11 +200,7 @@ namespace TGC.Group.Model
         /// </summary>
         public override void Dispose()
         {
-            //Dispose de la caja.
-            Box.dispose();
-            Fondo.dispose();
-            //Dispose del mesh.
-            Mesh.dispose();
+          /*  skyBox.dispose(); ;*/
             scene.disposeAll();
            
         }
