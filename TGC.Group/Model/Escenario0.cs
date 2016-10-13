@@ -55,8 +55,9 @@ namespace TGC.Group.Escenario
         /*----------------------------------------------------------------------------------------------------------------------------------------*/
         private TgcSkeletalBoneAttach attachment3;
         private TgcSkeletalMesh mesh3;
-        private TgcSkeletalMesh selectedMesh;
+        private TgcMesh selectedMesh;
         private TgcMesh selectedMaceta;
+        private Plant selectedPlant;
 
         private TgcBoundingSphere characterSphere;
         public int cantSoles = 0;
@@ -323,11 +324,13 @@ namespace TGC.Group.Escenario
             {
                 repeater.crearMESH(MediaDir, selectedMaceta.Position);
                 repeater.rendermesh();
+                objetosColisionablesPLANTS.Add(repeater);
+
             }
 
-            if (Input.keyPressed(Key.X) && repeater != null)
+            if (Input.keyPressed(Key.X) && selectedPlant != null)
             {
-                repeater.plantaMesh.dispose();
+                selectedPlant.plantaMesh.dispose();
             }
 
             if (Input.keyPressed(Key.P))
@@ -530,22 +533,23 @@ namespace TGC.Group.Escenario
                 //Actualizar Ray de colisión en base a posición del mouse
                 pickingRay.updateRay();
 
-                var aabb = mesh3;
-                //Detectar colisión Ray-AABB
-                if (TgcCollisionUtils.intersectRayAABB(pickingRay.Ray, aabb.BoundingBox, out collisionPoint))
-                {
-                    selectedMesh = aabb;
+                //var aabb = mesh3;
+                ////Detectar colisión Ray-AABB
+                //if (TgcCollisionUtils.intersectRayAABB(pickingRay.Ray, aabb.BoundingBox, out collisionPoint))
+                //{
+                //    selectedMesh = aabb;
 
-                }
-                else
-                {
-                    selectedMesh = null;
-                }
+                //}
+                //else
+                //{
+                //    selectedMesh = null;
+                //}
 
                 if (TgcCollisionUtils.intersectRayAABB(pickingRay.Ray, stage.Suelo.BoundingBox, out newPosition))
                 {
                     selectedMaceta = null;
                     selectedMesh = null;
+                    selectedPlant = null;
                 }
 
                 foreach (var maceta in objetosColisionablesMACETAS)
@@ -553,8 +557,19 @@ namespace TGC.Group.Escenario
                     if (TgcCollisionUtils.intersectRayAABB(pickingRay.Ray, maceta.BoundingBox, out collisionPoint))
                     {
                         selectedMaceta = maceta;
-                        maceta.BoundingBox.render();
                         selectedMesh = null;
+                        selectedPlant = null;
+                    }
+                }
+
+
+                foreach (var plant in objetosColisionablesPLANTS)
+                {
+                    if (TgcCollisionUtils.intersectRayAABB(pickingRay.Ray, plant.boundingBox(), out collisionPoint))
+                    {
+                        selectedMaceta = null;
+                        selectedMesh = null;
+                        selectedPlant = plant;
                     }
                 }
 

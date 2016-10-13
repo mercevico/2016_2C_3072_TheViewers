@@ -26,6 +26,7 @@ namespace TGC.Group.Characters.Plants
         private String meshPath;
         public TgcMesh plantaMesh;
         public bool muerta = false;
+        internal TgcBoundingAxisAlignBox BoundingBox;
 
         public void shoot()
         {
@@ -51,6 +52,10 @@ namespace TGC.Group.Characters.Plants
             plantaMesh.dispose();
            // plantaMesh.BoundingBox.dispose();
 
+        }
+        public TgcBoundingAxisAlignBox boundingBox()
+        {
+            return plantaMesh.BoundingBox;
         }
     }
 }
