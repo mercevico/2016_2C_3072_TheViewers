@@ -413,6 +413,7 @@ namespace TGC.Group.Escenario
             }
 
 
+
             /*----------------------------------------------------------------------------------------------------------------------------------------*/
             /*----------------------------------------------------------------------------------------------------------------------------------------*/
 
@@ -606,10 +607,20 @@ namespace TGC.Group.Escenario
                 {
                     if (TgcCollisionUtils.intersectRayAABB(pickingRay.Ray, soles.BoundingBox, out collisionPoint))
                     {
+                        if (soles!=null) { soles.dispose(); }
+                        cantSoles++;
+                    }
+                }
+
+                foreach (var soles in SunFlo.objetosColisionablesSOLES)
+                {
+                    if (TgcCollisionUtils.intersectRayAABB(pickingRay.Ray, soles.BoundingBox, out collisionPoint))
+                    {
                         soles.dispose();
                         cantSoles++;
                     }
                 }
+
             }
             /*
             if (TgcCollisionUtils.testSphereAABB(characterSphere, plantaCentro.mesh.BoundingBox))

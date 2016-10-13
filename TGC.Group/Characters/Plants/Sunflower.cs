@@ -22,7 +22,7 @@ namespace TGC.Group.Characters.Plants
 {
     class Sunflower : Plant
     {
-        
+        public List<TgcMesh> objetosColisionablesSOLES = new List<TgcMesh>();
         public new int cooldown = 4;
         public TgcMesh plantaMeshSun;
         public Sol sunny;
@@ -45,7 +45,7 @@ namespace TGC.Group.Characters.Plants
             {
                 sunny = new Sol();
                 sunny.crearMESH(plantaMeshSun.Position, mymedia);
-
+                objetosColisionablesSOLES.Add(sunny.sunnyMesh);
                 sunny.sunnyMesh.render();
                 i = 0;
               
