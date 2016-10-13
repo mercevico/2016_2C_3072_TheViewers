@@ -401,8 +401,23 @@ namespace TGC.Group.Escenario
             maceta13.Position = new Vector3(-340, 3, 8500);
             maceta14.Position = new Vector3(-340, 3, 5500);
             maceta15.Position = new Vector3(-340, 3, 2500);
-
-
+            maceta16.Position = new Vector3(9500, 3, 10000);
+            maceta17.Position = new Vector3(8000, 3, 8000);
+            maceta18.Position = new Vector3(6500, 3, 6000);
+            maceta19.Position = new Vector3(4500, 3, 3000);
+            maceta20.Position = new Vector3(8800, 3, -12000);
+            maceta21.Position = new Vector3(7500, 3, -9000);
+            maceta22.Position = new Vector3(5500, 3, -6000);
+            maceta23.Position = new Vector3(4000, 3, -3000);
+            maceta24.Position = new Vector3(-11000, 3, -12000);
+            maceta25.Position = new Vector3(-9000, 3, -9000);
+            maceta26.Position = new Vector3(-7000, 3, -7000);
+            maceta27.Position = new Vector3(-5000, 3, -4000);
+            maceta28.Position = new Vector3(-11000, 3, 9000);
+            maceta29.Position = new Vector3(-9500, 3, 7200);
+            maceta30.Position = new Vector3(-8000, 3, 5000);
+            maceta31.Position = new Vector3(-5000, 3, 2000);
+            
             /*----------------------------------------------------------------------------------------------------------------------------------------*/
             /*----------------------------------------------------------------------------------------------------------------------------------------*/
             //Rotar modelo en base a la nueva dirección a la que apunta
@@ -805,7 +820,22 @@ namespace TGC.Group.Escenario
             maceta13.render();
             maceta14.render();
             maceta15.render();
-
+            maceta16.render();
+            maceta17.render();
+            maceta18.render();
+            maceta19.render();
+            maceta20.render();
+            maceta21.render();
+            maceta22.render();
+            maceta23.render();
+            maceta24.render();
+            maceta25.render();
+            maceta26.render();
+            maceta27.render();
+            maceta28.render();
+            maceta29.render();
+            maceta30.render();
+            maceta31.render();
 
             //mesh2.Transform = mesh2.Transform + Matrix.Scaling(new Vector3(25, 25, 25)) * Matrix.RotationY(16) * Matrix.Translation(mesh2.Position + new Vector3(25, 0, 25));
             mesh2.playAnimation("Empujar",true,2);
@@ -945,6 +975,22 @@ namespace TGC.Group.Escenario
             maceta13.dispose();
             maceta14.dispose();
             maceta15.dispose();
+            maceta16.dispose();
+            maceta17.dispose();
+            maceta18.dispose();
+            maceta19.dispose();
+            maceta20.dispose();
+            maceta21.dispose();
+            maceta22.dispose();
+            maceta23.dispose();
+            maceta24.dispose();
+            maceta25.dispose();
+            maceta26.dispose();
+            maceta27.dispose();
+            maceta28.dispose();
+            maceta29.dispose();
+            maceta30.dispose();
+            maceta31.dispose();
 
             //  scene.disposeAll();
 
