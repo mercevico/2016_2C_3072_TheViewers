@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TGC.Group.Characters.Plants
 {
-    class Repeater : Plant
+    class RepeaterDouble : Plant
     {
         private String meshPath;
     }

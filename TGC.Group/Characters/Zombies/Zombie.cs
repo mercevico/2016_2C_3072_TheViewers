@@ -11,12 +11,14 @@ namespace TGC.Group.Characters.Zombies
         public int health = 100;
         public int cooldown = 2;
         public int movementSpeed = 5;
+        public int atacarDanio = 10;
 
         private String meshPath;
 
-        public void attack()
+        public int attack()
         {
             //Atacar
+            return atacarDanio;
         }
 
         public void render()
