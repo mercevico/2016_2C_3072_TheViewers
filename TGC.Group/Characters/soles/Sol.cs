@@ -50,7 +50,7 @@ namespace TGC.Group.Characters.soles
         }
         public void disposeMesh()
         {
-            sunnyMesh.dispose();
+           // sunnyMesh.dispose();
             // plantaMesh.BoundingBox.dispose();
 
         }

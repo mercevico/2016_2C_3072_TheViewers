@@ -71,6 +71,7 @@ namespace TGC.Group.Escenario
         /******************************************************************************************************************************************/
         private List<TgcMesh> objetosColisionables = new List<TgcMesh>();
         private List<TgcMesh> objetosColisionablesMACETAS = new List<TgcMesh>();
+        private List<TgcMesh> objetosColisionablesSOLES = new List<TgcMesh>();
         private List<Plant> objetosColisionablesPLANTS = new List<Plant>();
 
 
@@ -104,6 +105,16 @@ namespace TGC.Group.Escenario
         private stage0 stage = new stage0();
         private Plant repeater = new Plant();
         private Sol sol0 = new Sol();
+        private Sol sol1 = new Sol();
+        private Sol sol2 = new Sol();
+        private Sol sol3 = new Sol();
+        private Sol sol4 = new Sol();
+        private Sol sol5 = new Sol();
+        private Sol sol6 = new Sol();
+        private Sol sol7 = new Sol();
+        private Sol sol8 = new Sol();
+        private Sol sol9 = new Sol();
+
         private Sunflower SunFlo = new Sunflower();
 
         public override void Init()
@@ -150,6 +161,16 @@ namespace TGC.Group.Escenario
             stage.crearMesh(MediaDir);
             repeater.crearMESH(MediaDir, new Vector3(12000, 3, -600));
             sol0.crearMESH(new Vector3(2000, 100, -600),MediaDir);
+            sol1.crearMESH(new Vector3(-2000, 100, -2600), MediaDir);
+            sol2.crearMESH(new Vector3(2900, 100, -11600), MediaDir);
+            sol3.crearMESH(new Vector3(7860, 100, 6200), MediaDir);
+            sol4.crearMESH(new Vector3(-12000, 100, -600), MediaDir);
+            sol5.crearMESH(new Vector3(2900, 100, -1600), MediaDir);
+            sol6.crearMESH(new Vector3(3000, 100, 8600), MediaDir);
+            sol7.crearMESH(new Vector3(-9000, 100, -800), MediaDir);
+            sol8.crearMESH(new Vector3(2590, 100, -11100), MediaDir);
+            sol9.crearMESH(new Vector3(-12000, 100, 11600), MediaDir);
+           
             SunFlo.crearMESHSun(MediaDir);
 
             //Iniciarlizar PickingRay
@@ -250,9 +271,17 @@ namespace TGC.Group.Escenario
             objetosColisionablesMACETAS.Add(stage.maceta30);
             objetosColisionablesMACETAS.Add(stage.maceta31);
 
-
-
-
+            objetosColisionablesSOLES.Add(sol0.sunnyMesh);
+            objetosColisionablesSOLES.Add(sol1.sunnyMesh);
+            objetosColisionablesSOLES.Add(sol2.sunnyMesh);
+            objetosColisionablesSOLES.Add(sol3.sunnyMesh);
+            objetosColisionablesSOLES.Add(sol4.sunnyMesh);
+            objetosColisionablesSOLES.Add(sol5.sunnyMesh);
+            objetosColisionablesSOLES.Add(sol6.sunnyMesh);
+            objetosColisionablesSOLES.Add(sol7.sunnyMesh);
+            objetosColisionablesSOLES.Add(sol8.sunnyMesh);
+            objetosColisionablesSOLES.Add(sol9.sunnyMesh);
+            
             /*----------------------------------------------------------------------------------------------------------------------------------------*/
             /*----------------------------------------------------------------------------------------------------------------------------------------*/
             //Defino una escala en el modelo logico del m1esh que es muy grande.
@@ -558,6 +587,14 @@ namespace TGC.Group.Escenario
                     }
                 }
 
+                foreach (var soles in objetosColisionablesSOLES)
+                {
+                    if (TgcCollisionUtils.intersectRayAABB(pickingRay.Ray, soles.BoundingBox, out collisionPoint))
+                    {
+                        soles.dispose();
+                        cantSoles++;
+                    }
+                }
             }
             /*
             if (TgcCollisionUtils.testSphereAABB(characterSphere, plantaCentro.mesh.BoundingBox))
@@ -620,6 +657,16 @@ namespace TGC.Group.Escenario
             stage.rendermesh();
             repeater.rendermesh();
             sol0.rendermesh();
+            sol1.rendermesh();
+            sol2.rendermesh();
+            sol3.rendermesh();
+            sol4.rendermesh();
+            sol5.rendermesh();
+            sol6.rendermesh();
+            sol7.rendermesh();
+            sol8.rendermesh();
+            sol9.rendermesh();
+            
             SunFlo.rendermeshSun();
 
             foreach (var plant in objetosColisionablesPLANTS )
