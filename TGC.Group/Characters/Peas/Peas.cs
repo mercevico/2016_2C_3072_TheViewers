@@ -17,43 +17,43 @@ using System.Collections.Generic;
 using TGC.Group.Stage;
 using System;
 
-namespace TGC.Group.Characters.soles
+namespace TGC.Group.Characters.Peas
 {
-    class Sol
+    class Peas
     {
-        public TgcMesh sunnyMesh;
+        public TgcMesh bomba;
         public Vector3 base1;
 
         public void crearMESH(Vector3 posicion, string MediaDir)
         {
             base1 = posicion;
-            sunnyMesh = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Piedra3\\Piedra3-TgcScene.xml").Meshes[0];
-            sunnyMesh.Position = posicion;
-            sunnyMesh.Scale = new Vector3(40, 20, 40);
-            
+            bomba = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Piedra3\\Piedra3-TgcScene.xml").Meshes[0];
+            bomba.Position = posicion;
+            bomba.Scale = new Vector3(10, 10, 10);
+
         }
-        public void rendermesh()
+        public void rendermesh(bool hit)
         {
-            if (sunnyMesh.Position.Y != 7500)
+            if (hit)
             {
-                sunnyMesh.Position = sunnyMesh.Position + new Vector3(0, 5, 0);
-                sunnyMesh.rotateY(20);
+                bomba.dispose();
             }
             else
-            { sunnyMesh.Position = base1 + new Vector3(3000, -5500, 0); }
-            base1 = sunnyMesh.Position;
+            { bomba.Position = base1 + new Vector3(3000, -5500, 0); bomba.render(); }
+            base1 = bomba.Position;
             //sunnyMesh.rotateX(20);
             // sunnyMesh.rotateZ(20);
-            sunnyMesh.render();
+            bomba.render();
             //sunnyMesh.BoundingBox.render();
-            
+
         }
         public void disposeMesh()
         {
-            sunnyMesh.dispose();
+            bomba.dispose();
             // plantaMesh.BoundingBox.dispose();
 
         }
 
     }
+
 }

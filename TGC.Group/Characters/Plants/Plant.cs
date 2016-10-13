@@ -32,15 +32,10 @@ namespace TGC.Group.Characters.Plants
             //Disparar
         }
 
-        public void render()
-        {
-            //Renderizar el meshPath
-        }
-
-        public void crearMESH(string MediaDir)
+        public void crearMESH(string MediaDir, Vector3 posicion)
         {
             plantaMesh = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Planta2\\Planta2-TgcScene.xml").Meshes[0];
-            plantaMesh.Position = new Vector3(12000, 3, -600);
+            plantaMesh.Position = posicion;
             plantaMesh.Scale = new Vector3(25, 50, 25);
 
         }

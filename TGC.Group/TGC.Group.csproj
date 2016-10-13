@@ -73,6 +73,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Characters\Peas\Peas.cs" />
     <Compile Include="Characters\Plants\RepeaterDouble.cs" />
     <Compile Include="Characters\Plants\Repeater.cs" />
     <Compile Include="Characters\Plants\Sunflower.cs" />

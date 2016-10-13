@@ -59,7 +59,7 @@ namespace TGC.Group.Escenario
         private TgcMesh selectedMaceta;
 
         private TgcBoundingSphere characterSphere;
-
+        public int cantSoles = 0;
         private bool moverMESH2 = true;
         private bool moverMESH3 = true;
 
@@ -104,6 +104,7 @@ namespace TGC.Group.Escenario
         private stage0 stage = new stage0();
         private Plant repeater = new Plant();
         private Sol sol0 = new Sol();
+        private Sunflower SunFlo = new Sunflower();
 
         public override void Init()
         {
@@ -147,8 +148,10 @@ namespace TGC.Group.Escenario
 
 
             stage.crearMesh(MediaDir);
-            repeater.crearMESH(MediaDir);
+            repeater.crearMESH(MediaDir, new Vector3(12000, 3, -600));
             sol0.crearMESH(new Vector3(2000, 100, -600),MediaDir);
+            SunFlo.crearMESHSun(MediaDir);
+
             //Iniciarlizar PickingRay
             pickingRay = new TgcPickingRay(Input);
 
@@ -188,11 +191,11 @@ namespace TGC.Group.Escenario
 
 
             /******************************************************************************************************************************************/
-            plantaCentro.crearMESH(MediaDir );
+            plantaCentro.crearMESH(MediaDir, new Vector3(-450, 3, -941));
            // plantaCentro.mesh.Position = new Vector3(-450, 3, -941);
             //plantaCentro.mesh.Scale = new Vector3(30, 30, 30);
 
-            plantaEnMedio.crearMESH(MediaDir);
+            plantaEnMedio.crearMESH(MediaDir, new Vector3(-340, 3, -6000));
             //plantaEnMedio.mesh.Position = new Vector3(-340, 3, -6000);
             //plantaEnMedio.mesh.Scale = new Vector3(2.5f, 2.5f, 2.5f);
 
@@ -318,7 +321,7 @@ namespace TGC.Group.Escenario
 
             if (Input.keyPressed(Key.Z) && selectedMaceta != null)
             {
-                repeater.crearMESH(MediaDir);
+                repeater.crearMESH(MediaDir, new Vector3(-340, 3, -6000));
                 repeater.rendermesh();
             }
 
@@ -326,6 +329,13 @@ namespace TGC.Group.Escenario
             {
                 repeater.plantaMesh.dispose();
             }
+
+            if (Input.keyPressed(Key.P))
+            {
+                SunFlo.i = 10000;
+                cantSoles++;
+            }
+         
 
 
             if (Input.keyDown(Key.A))
@@ -590,7 +600,7 @@ namespace TGC.Group.Escenario
             //Dibuja un texto por pantalla
             
             DrawText.drawText("ElapsedTime: " + ElapsedTime, 0, 70, Color.GreenYellow);
-
+            DrawText.drawText("Soles Recogidos: " + cantSoles, 0, 200, Color.GreenYellow);
 
             DrawText.drawText("Con la tecla F se dibuja el bounding box.", 0, 20, Color.OrangeRed);
             DrawText.drawText(
@@ -610,6 +620,8 @@ namespace TGC.Group.Escenario
             stage.rendermesh();
             repeater.rendermesh();
             sol0.rendermesh();
+            SunFlo.rendermeshSun();
+
             foreach (var plant in objetosColisionablesPLANTS )
             {
                 if (plant.muerta != true)
@@ -698,6 +710,7 @@ namespace TGC.Group.Escenario
 
             stage.disposeMesh();
             sol0.disposeMesh();
+            SunFlo.disposeMeshSun();
            // repeater.disposeMesh();//  scene.disposeAll();
 
         }
