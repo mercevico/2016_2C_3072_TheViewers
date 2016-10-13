@@ -13,9 +13,7 @@ using TGC.Core.Collision;
 using TGC.Core.SkeletalAnimation;
 
 using TGC.Core.BoundingVolumes;
-
-
-
+using TGC.Group.Characters.Plants;
 
 namespace TGC.Group.Escenario
 
@@ -108,7 +106,9 @@ namespace TGC.Group.Escenario
         /*----------------------------------------------------------------------------------------------------------------------------------------*/
 
         //Meshes de Objetos del suelo--------------------------------------------------------///
-        //private TgcMesh[] Planta = new TgcMesh[500];
+        private Repeater[] Repeaters = new Repeater[500];
+        private Peashooter[] Peashooters = new Peashooter[500];
+        private Sunflower[] Sunflowers = new Sunflower[500];
         //private TgcMesh[] Planta1 = new TgcMesh[500];
         private TgcMesh carretilla { get; set; }
 
@@ -719,22 +719,22 @@ namespace TGC.Group.Escenario
                 mesh3.BoundingBox.render();
 
 
-                //reja.BoundingBox.render();
-                //reja1.BoundingBox.render();
-                //reja2.BoundingBox.render();
-                //reja3.BoundingBox.render();
-                //reja4.BoundingBox.render();
-                //reja5.BoundingBox.render();
-                //reja6.BoundingBox.render();
-                //reja7.BoundingBox.render();
-                //reja8.BoundingBox.render();
-                //reja9.BoundingBox.render();
-                //reja10.BoundingBox.render();
-                //reja11.BoundingBox.render();
-                //reja12.BoundingBox.render();
-                //reja13.BoundingBox.render();
-                //reja14.BoundingBox.render();
-                //reja15.BoundingBox.render();
+                reja.BoundingBox.render();
+                reja1.BoundingBox.render();
+                reja2.BoundingBox.render();
+                reja3.BoundingBox.render();
+                reja4.BoundingBox.render();
+                reja5.BoundingBox.render();
+                reja6.BoundingBox.render();
+                reja7.BoundingBox.render();
+                reja8.BoundingBox.render();
+                reja9.BoundingBox.render();
+                reja10.BoundingBox.render();
+                reja11.BoundingBox.render();
+                reja12.BoundingBox.render();
+                reja13.BoundingBox.render();
+                reja14.BoundingBox.render();
+                reja15.BoundingBox.render();
 
                 characterSphere.render();
             }
@@ -758,13 +758,11 @@ namespace TGC.Group.Escenario
             //Mesh.dispose();
             for (int i = 0; i < 500; i++)
             {
-                //Planta[i].dispose();
+                Peashooters[i].dispose();
+                Repeaters[i].dispose();
+                Sunflowers[i].dispose();
             }
-            for (int i = 0; i < 500; i++)
-            {
 
-                //Planta1[i].dispose();
-            }
             carretilla.dispose();
             reja.dispose();
             reja1.dispose();

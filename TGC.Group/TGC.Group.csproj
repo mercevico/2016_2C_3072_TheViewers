@@ -73,8 +73,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Characters\Plants\RepeaterDouble.cs" />
     <Compile Include="Characters\Plants\Repeater.cs" />
+    <Compile Include="Characters\Plants\Peashooter.cs" />
     <Compile Include="Characters\Plants\Sunflower.cs" />
     <Compile Include="Characters\Plants\Plant.cs" />
     <Compile Include="Characters\Zombies\ZombieBalde.cs" />

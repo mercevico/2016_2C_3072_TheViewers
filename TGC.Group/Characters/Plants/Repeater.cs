@@ -8,6 +8,6 @@ namespace TGC.Group.Characters.Plants
 {
     class Repeater : Plant
     {
-        private String meshPath;
+        private String meshPath = "Plants\\Repeater-TgcScene";
     }
 }

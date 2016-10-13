@@ -8,7 +8,7 @@ namespace TGC.Group.Characters.Plants
 {
     class Sunflower : Plant
     {
-        private String meshPath;
+        private String meshPath =  "Plants\\Sunflower-TgcScene";
         public new int cooldown = 4;
     }
 }

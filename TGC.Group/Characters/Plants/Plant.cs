@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TGC.Core.SceneLoader;
 
 namespace TGC.Group.Characters.Plants
 {
-    class Plant
+    class Plant : TgcMesh
     {
         public int health = 100;
         public int cooldown = 2;
-        private String meshPath;
 
         public void shoot()
         {
