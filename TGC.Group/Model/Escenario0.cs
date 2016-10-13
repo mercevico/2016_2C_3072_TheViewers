@@ -15,7 +15,7 @@ using TGC.Group.Characters.Zombies;
 using TGC.Group.Characters.Plants;
 using System.Collections.Generic;
 using TGC.Group.Stage;
-
+using TGC.Group.Characters.Plants;
 
 
 namespace TGC.Group.Escenario
@@ -109,6 +109,7 @@ namespace TGC.Group.Escenario
         //Quiero que la camara mire hacia el origen (0,0,0).
         private Vector3 lookAt = new Vector3(1, 200, 200);
         private stage0 stage = new stage0();
+        private Plant repeater = new Plant();
 
         public override void Init()
         {
@@ -125,7 +126,7 @@ namespace TGC.Group.Escenario
             var loader1 = new TgcSkeletalLoader();
             zombie2 = loader1.loadMeshAndAnimationsFromFile(pathMesh, mediaPath, animationsPath);
             zombie2.buildSkletonMesh();
-    zombie2.Position = new Vector3(-500, 0, -14526);
+            zombie2.Position = new Vector3(-500, 0, -14526);
 
 
             attachment2 = new TgcSkeletalBoneAttach();
@@ -152,6 +153,7 @@ namespace TGC.Group.Escenario
 
 
             stage.crearMesh(MediaDir);
+            repeater.crearMESH(MediaDir);
             //Iniciarlizar PickingRay
             pickingRay = new TgcPickingRay(Input);
 
@@ -191,13 +193,13 @@ namespace TGC.Group.Escenario
 
 
             /******************************************************************************************************************************************/
-            plantaCentro.crearMESH(MediaDir + "\\Carretilla\\Carretilla-TgcScene.xml");
-            plantaCentro.mesh.Position = new Vector3(-450, 3, -941);
-            plantaCentro.mesh.Scale = new Vector3(30, 30, 30);
+            plantaCentro.crearMESH(MediaDir );
+           // plantaCentro.mesh.Position = new Vector3(-450, 3, -941);
+            //plantaCentro.mesh.Scale = new Vector3(30, 30, 30);
 
-            plantaEnMedio.crearMESH(MediaDir + "\\Olla\\Olla-TgcScene.xml");
-            plantaEnMedio.mesh.Position = new Vector3(-340, 3, -6000);
-            plantaEnMedio.mesh.Scale = new Vector3(2.5f, 2.5f, 2.5f);
+            plantaEnMedio.crearMESH(MediaDir);
+            //plantaEnMedio.mesh.Position = new Vector3(-340, 3, -6000);
+            //plantaEnMedio.mesh.Scale = new Vector3(2.5f, 2.5f, 2.5f);
 
 
             objetosColisionablesPLANTS.Clear();
@@ -265,21 +267,32 @@ namespace TGC.Group.Escenario
             {
                 Camara.SetCamera(selectedMesh.Position + new Vector3(0, 100, 500), selectedMesh.Position + new Vector3(1, 1, 0));
             }
-                //Capturar Input Mouse
-                /* if (Input.buttonUp(TgcD3dInput.MouseButtons.BUTTON_LEFT))
+            //Capturar Input Mouse
+            /* if (Input.buttonUp(TgcD3dInput.MouseButtons.BUTTON_LEFT))
+             {
+
+                 //Como ejemplo podemos hacer un movimiento simple de la cámara.
+                 //En este caso le sumamos un valor en Y
+                 Camara.SetCamera(Camara.Position + new Vector3(0, 10f, 0), Camara.LookAt);
+                 //Ver ejemplos de cámara para otras operaciones posibles.
+
+                 //Si superamos cierto Y volvemos a la posición original.
+                 if (Camara.Position.Y > 300f)
                  {
+                     Camara.SetCamera(new Vector3(Camara.Position.X, 0f, Camara.Position.Z), Camara.LookAt);
+                 }
+             }*/
 
-                     //Como ejemplo podemos hacer un movimiento simple de la cámara.
-                     //En este caso le sumamos un valor en Y
-                     Camara.SetCamera(Camara.Position + new Vector3(0, 10f, 0), Camara.LookAt);
-                     //Ver ejemplos de cámara para otras operaciones posibles.
+            if (Input.keyPressed(Key.Z))
+            {
+                repeater.crearMESH(MediaDir);
+                repeater.rendermesh();
+            }
 
-                     //Si superamos cierto Y volvemos a la posición original.
-                     if (Camara.Position.Y > 300f)
-                     {
-                         Camara.SetCamera(new Vector3(Camara.Position.X, 0f, Camara.Position.Z), Camara.LookAt);
-                     }
-                 }*/
+            if (Input.keyPressed(Key.X))
+            {
+                repeater.plantaMesh.dispose();
+            }
 
 
             if (Input.keyDown(Key.A))
@@ -365,7 +378,7 @@ namespace TGC.Group.Escenario
             {
 
                 if (planta.muerta == false) { 
-                    if ((TgcCollisionUtils.testAABBAABB(zombie2.BoundingBox, planta.mesh.BoundingBox)) )
+                    if(true)// ((TgcCollisionUtils.testAABBAABB(zombie2.BoundingBox, repeater.plantaMesh.BoundingBox)) )
                     {
                         zombie2.BoundingBox.setRenderColor(Color.Red);
                         moverMESH2 = false;
@@ -453,7 +466,7 @@ namespace TGC.Group.Escenario
             {
                 if(planta.muerta == false)
                 {
-                    if (TgcCollisionUtils.testSphereAABB(characterSphere, planta.mesh.BoundingBox))
+                    if (TgcCollisionUtils.testSphereAABB(characterSphere, repeater.plantaMesh.BoundingBox))
                     {
                         characterSphere.setRenderColor(Color.Red);
                         moverMESH3 = false;
@@ -590,12 +603,12 @@ namespace TGC.Group.Escenario
             //A modo ejemplo realizamos toda las multiplicaciones, pero aquí solo nos hacia falta la traslación.
             //Finalmente invocamos al render de la caja
             stage.rendermesh();
-
+            repeater.rendermesh();
             foreach (var plant in objetosColisionablesPLANTS )
             {
                 if (plant.muerta != true)
                 {
-                    plant.mesh.render();
+                    //repeater.plantaMesh.render();
                 }
             }
             /*
@@ -645,7 +658,7 @@ namespace TGC.Group.Escenario
                 {
                     if (plant.muerta != true)
                     {
-                        plant.mesh.BoundingBox.render();
+                       repeater.plantaMesh.BoundingBox.render();
                     }
                 }
 
@@ -673,11 +686,12 @@ namespace TGC.Group.Escenario
             {
                 if (plant.muerta != true)
                 {
-                    plant.mesh.dispose();
+                   // plant.mesh.dispose();
                 }
             }
 
-            stage.disposeMesh();     //  scene.disposeAll();
+            stage.disposeMesh();
+           // repeater.disposeMesh();//  scene.disposeAll();
 
         }
     }
