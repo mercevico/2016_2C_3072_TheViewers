@@ -56,17 +56,8 @@ namespace TGC.Group.Escenario
         private TgcSkeletalBoneAttach attachment3;
         private TgcSkeletalMesh mesh3;
         private TgcSkeletalMesh selectedMesh;
+        private TgcMesh selectedMaceta;
 
-        private Matrix meshRotationMatrixZombie;
-        private Vector3 newPositionZombie;
-        private Vector3 originalMeshRotZombie;
-
-
-        private TgcBoundingCylinder colliderCylinder;
-        private TgcBoundingCylinderFixedY colliderCylinderFixedY;
-        private TgcBoundingSphere collisionableSphere;
-        private TgcMesh collisionableMeshAABB;
-        private TgcBoundingCylinderFixedY collisionableCylinder;
         private TgcBoundingSphere characterSphere;
 
         private bool moverMESH2 = true;
@@ -79,7 +70,9 @@ namespace TGC.Group.Escenario
 
         /******************************************************************************************************************************************/
         private List<TgcMesh> objetosColisionables = new List<TgcMesh>();
+        private List<TgcMesh> objetosColisionablesMACETAS = new List<TgcMesh>();
         private List<Plant> objetosColisionablesPLANTS = new List<Plant>();
+
 
         private Plant plantaCentro = new Plant();
         private Plant plantaEnMedio = new Plant();
@@ -217,6 +210,44 @@ namespace TGC.Group.Escenario
             objetosColisionables.Add(stage.maceta10);
 
 
+            // Array de macetas en donde se pueden plantar las plantas
+
+            objetosColisionablesMACETAS.Clear();
+
+            objetosColisionablesMACETAS.Add(stage.maceta);
+            objetosColisionablesMACETAS.Add(stage.maceta1);
+            objetosColisionablesMACETAS.Add(stage.maceta2);
+            objetosColisionablesMACETAS.Add(stage.maceta3);
+            objetosColisionablesMACETAS.Add(stage.maceta4);
+            objetosColisionablesMACETAS.Add(stage.maceta5);
+            objetosColisionablesMACETAS.Add(stage.maceta6);
+            objetosColisionablesMACETAS.Add(stage.maceta7);
+            objetosColisionablesMACETAS.Add(stage.maceta8);
+            objetosColisionablesMACETAS.Add(stage.maceta9);
+            objetosColisionablesMACETAS.Add(stage.maceta10);
+            objetosColisionablesMACETAS.Add(stage.maceta11);
+            objetosColisionablesMACETAS.Add(stage.maceta12);
+            objetosColisionablesMACETAS.Add(stage.maceta13);
+            objetosColisionablesMACETAS.Add(stage.maceta14);
+            objetosColisionablesMACETAS.Add(stage.maceta15);
+            objetosColisionablesMACETAS.Add(stage.maceta16);
+            objetosColisionablesMACETAS.Add(stage.maceta17);
+            objetosColisionablesMACETAS.Add(stage.maceta18);
+            objetosColisionablesMACETAS.Add(stage.maceta19);
+            objetosColisionablesMACETAS.Add(stage.maceta20);
+            objetosColisionablesMACETAS.Add(stage.maceta21);
+            objetosColisionablesMACETAS.Add(stage.maceta22);
+            objetosColisionablesMACETAS.Add(stage.maceta23);
+            objetosColisionablesMACETAS.Add(stage.maceta24);
+            objetosColisionablesMACETAS.Add(stage.maceta25);
+            objetosColisionablesMACETAS.Add(stage.maceta26);
+            objetosColisionablesMACETAS.Add(stage.maceta27);
+            objetosColisionablesMACETAS.Add(stage.maceta28);
+            objetosColisionablesMACETAS.Add(stage.maceta29);
+            objetosColisionablesMACETAS.Add(stage.maceta30);
+            objetosColisionablesMACETAS.Add(stage.maceta31);
+
+
 
 
             /*----------------------------------------------------------------------------------------------------------------------------------------*/
@@ -285,13 +316,13 @@ namespace TGC.Group.Escenario
                  }
              }*/
 
-            if (Input.keyPressed(Key.Z))
+            if (Input.keyPressed(Key.Z) && selectedMaceta != null)
             {
                 repeater.crearMESH(MediaDir);
                 repeater.rendermesh();
             }
 
-            if (Input.keyPressed(Key.X))
+            if (Input.keyPressed(Key.X) && repeater != null)
             {
                 repeater.plantaMesh.dispose();
             }
@@ -483,7 +514,41 @@ namespace TGC.Group.Escenario
 
 
             }
+            //Si hacen clic con el mouse, ver si hay colision con el suelo
+            if (Input.buttonPressed(TgcD3dInput.MouseButtons.BUTTON_LEFT))
+            {
+                //Actualizar Ray de colisión en base a posición del mouse
+                pickingRay.updateRay();
 
+                var aabb = mesh3;
+                //Detectar colisión Ray-AABB
+                if (TgcCollisionUtils.intersectRayAABB(pickingRay.Ray, aabb.BoundingBox, out collisionPoint))
+                {
+                    selectedMesh = aabb;
+
+                }
+                else
+                {
+                    selectedMesh = null;
+                }
+
+                if (TgcCollisionUtils.intersectRayAABB(pickingRay.Ray, stage.Suelo.BoundingBox, out newPosition))
+                {
+                    selectedMaceta = null;
+                    selectedMesh = null;
+                }
+
+                foreach (var maceta in objetosColisionablesMACETAS)
+                {
+                    if (TgcCollisionUtils.intersectRayAABB(pickingRay.Ray, maceta.BoundingBox, out collisionPoint))
+                    {
+                        selectedMaceta = maceta;
+                        maceta.BoundingBox.render();
+                        selectedMesh = null;
+                    }
+                }
+
+            }
             /*
             if (TgcCollisionUtils.testSphereAABB(characterSphere, plantaCentro.mesh.BoundingBox))
             {
@@ -519,69 +584,7 @@ namespace TGC.Group.Escenario
             PreRender();
             
 
-            //Si hacen clic con el mouse, ver si hay colision con el suelo
-            if (Input.buttonPressed(TgcD3dInput.MouseButtons.BUTTON_LEFT))
-            {
-                //Actualizar Ray de colisión en base a posición del mouse
-                pickingRay.updateRay();
-
-                var aabb = mesh3;
-                //Detectar colisión Ray-AABB
-                if (TgcCollisionUtils.intersectRayAABB(pickingRay.Ray, aabb.BoundingBox, out collisionPoint))
-                {
-                    selectedMesh = aabb;
-                }
-                else
-                {
-                    selectedMesh = null;
-                }
-            }
-            //Interporlar movimiento, si hay que mover
-            if (applyMovement)
-            {
-                //Ver si queda algo de distancia para mover
-                var posDiff = newPosition - mesh1.Position;
-                var posDiffLength = posDiff.LengthSq();
-                if (posDiffLength > float.Epsilon)
-                {
-                    //Movemos el mesh interpolando por la velocidad
-                    var currentVelocity = 1500 * ElapsedTime;
-                    posDiff.Normalize();
-                    posDiff.Multiply(currentVelocity);
-
-                    //Ajustar cuando llegamos al final del recorrido
-                    var newPos = mesh1.Position + posDiff;
-                    if (posDiff.LengthSq() > posDiffLength)
-                    {
-                        newPos = newPosition;
-                    }
-
-                    //Actualizar flecha de movimiento
-                    directionArrow.PStart = new Vector3(mesh1.Position.X, 30f, mesh1.Position.Z);
-                    directionArrow.updateValues();
-
-                    //Actualizar posicion del mesh
-                    mesh1.Position = newPos;
-
-                    //Como desactivamos la transformacion automatica, tenemos que armar nosotros la matriz de transformacion
-                    mesh1.Transform = meshRotationMatrix * Matrix.Translation(mesh1.Position);
-
-                    
-                }
-                //Se acabo el movimiento
-                else
-                {
-                    applyMovement = false;
-                }
-            }
-
-            //Mostrar caja con lugar en el que se hizo click, solo si hay movimiento
-            if (applyMovement)
-            {
-                collisionPointMesh.render();
-                directionArrow.render();
-            }
-
+           
 
 
             //Dibuja un texto por pantalla
