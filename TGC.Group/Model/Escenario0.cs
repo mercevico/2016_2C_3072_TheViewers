@@ -155,7 +155,7 @@ namespace TGC.Group.Escenario
 
 
             stage.crearMesh(MediaDir);
-            repeater.crearMESH(MediaDir);
+            repeater.crearMESH(MediaDir, new Vector3(12000, 3, -600));
             sol0.crearMESH(new Vector3(2000, 100, -600),MediaDir);
             SunFlo.crearMESHSun(MediaDir);
 
@@ -198,11 +198,11 @@ namespace TGC.Group.Escenario
 
 
             /******************************************************************************************************************************************/
-            plantaCentro.crearMESH(MediaDir );
+            plantaCentro.crearMESH(MediaDir, new Vector3(-450, 3, -941));
            // plantaCentro.mesh.Position = new Vector3(-450, 3, -941);
             //plantaCentro.mesh.Scale = new Vector3(30, 30, 30);
 
-            plantaEnMedio.crearMESH(MediaDir);
+            plantaEnMedio.crearMESH(MediaDir, new Vector3(-340, 3, -6000));
             //plantaEnMedio.mesh.Position = new Vector3(-340, 3, -6000);
             //plantaEnMedio.mesh.Scale = new Vector3(2.5f, 2.5f, 2.5f);
 
@@ -290,7 +290,7 @@ namespace TGC.Group.Escenario
 
             if (Input.keyPressed(Key.Z))
             {
-                repeater.crearMESH(MediaDir);
+                repeater.crearMESH(MediaDir, new Vector3(-340, 3, -6000));
                 repeater.rendermesh();
             }
 
