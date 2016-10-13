@@ -27,7 +27,7 @@ namespace TGC.Group.Characters.Plants
         public TgcMesh plantaMeshSun;
         public Sol sunny;
         public string mymedia;
-        int i = 1000;
+        public int i = 10000;
         public void crearMESHSun(string MediaDir)
         {
             mymedia = MediaDir;
@@ -41,13 +41,14 @@ namespace TGC.Group.Characters.Plants
 
             plantaMeshSun.render();
             
-            if (i == 1000)
+            if (i == 10000)
             {
                 sunny = new Sol();
                 sunny.crearMESH(plantaMeshSun.Position, mymedia);
+
                 sunny.sunnyMesh.render();
                 i = 0;
-
+              
             }
             sunny.rendermesh();
             i++;

@@ -34,7 +34,7 @@ namespace TGC.Group.Characters.soles
         }
         public void rendermesh()
         {
-            if (sunnyMesh.Position.Y != 5500)
+            if (sunnyMesh.Position.Y != 7500)
             {
                 sunnyMesh.Position = sunnyMesh.Position + new Vector3(0, 5, 0);
                 sunnyMesh.rotateY(20);

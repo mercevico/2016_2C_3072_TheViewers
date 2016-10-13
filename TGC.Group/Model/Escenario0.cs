@@ -68,7 +68,7 @@ namespace TGC.Group.Escenario
         private TgcMesh collisionableMeshAABB;
         private TgcBoundingCylinderFixedY collisionableCylinder;
         private TgcBoundingSphere characterSphere;
-
+        public int cantSoles = 0;
         private bool moverMESH2 = true;
         private bool moverMESH3 = true;
 
@@ -298,6 +298,13 @@ namespace TGC.Group.Escenario
             {
                 repeater.plantaMesh.dispose();
             }
+
+            if (Input.keyPressed(Key.P))
+            {
+                SunFlo.i = 10000;
+                cantSoles++;
+            }
+         
 
 
             if (Input.keyDown(Key.A))
@@ -590,7 +597,7 @@ namespace TGC.Group.Escenario
             //Dibuja un texto por pantalla
             
             DrawText.drawText("ElapsedTime: " + ElapsedTime, 0, 70, Color.GreenYellow);
-
+            DrawText.drawText("Soles Recogidos: " + cantSoles, 0, 200, Color.GreenYellow);
 
             DrawText.drawText("Con la tecla F se dibuja el bounding box.", 0, 20, Color.OrangeRed);
             DrawText.drawText(
