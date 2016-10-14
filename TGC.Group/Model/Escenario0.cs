@@ -50,7 +50,7 @@ namespace TGC.Group.Escenario
 
         //animacion
         private TgcSkeletalBoneAttach attachment2;
-        private TgcSkeletalMesh zombie2;
+        //private TgcSkeletalMesh zombie2;
         /*----------------------------------------------------------------------------------------------------------------------------------------*/
         /*----------------------------------------------------------------------------------------------------------------------------------------*/
         private TgcSkeletalBoneAttach attachment3;
@@ -80,6 +80,12 @@ namespace TGC.Group.Escenario
         private Plant plantaEnMedio = new Plant();
 
         private Vector3 CENTRO_ESCENARIO;
+
+
+        private Zombie zombie2 = new Zombie();
+        private Zombie zombie3 = new Zombie();
+
+        private List<Zombie> listaZombiesACTIVOS = new List<Zombie>();
 
 
         private bool ThirdPersonCamera;
@@ -128,32 +134,12 @@ namespace TGC.Group.Escenario
             //Path para carpeta de texturas de la malla
             var mediaPath = MediaDir + "Robot\\";
 
-            var animationsPath = new string[1];
-            animationsPath[0] = mediaPath + "Empujar" + "-TgcSkeletalAnim.xml";
-            var loader1 = new TgcSkeletalLoader();
-            zombie2 = loader1.loadMeshAndAnimationsFromFile(pathMesh, mediaPath, animationsPath);
-            zombie2.buildSkletonMesh();
-            zombie2.Position = new Vector3(-500, 0, -14526);
+            zombie2.crearMESH(pathMesh, mediaPath, new Vector3(-500, 0, -14526), 15.8f);
+            zombie3.crearMESH(pathMesh, mediaPath, new Vector3(13500, 5, -480), 1.55f);
 
-
-            attachment2 = new TgcSkeletalBoneAttach();
-            var attachmentBox = TgcBox.fromSize(new Vector3(5, 100, 5), Color.Blue);
-            attachment2.Mesh = attachmentBox.toMesh("attachment");
-            attachment2.Bone = zombie2.getBoneByName("Bip01 L Hand");
-            attachment2.Offset = Matrix.Translation(10, -40, 0);
-            attachment2.updateValues();
-            /*----------------------------------------------------------------------------------------------------------------------------------------*/
-            /*----------------------------------------------------------------------------------------------------------------------------------------*/
-
-            mesh3 = loader1.loadMeshAndAnimationsFromFile(pathMesh, mediaPath, animationsPath);
-            mesh3.buildSkletonMesh();
-
-            attachment3 = new TgcSkeletalBoneAttach();
-            attachment3.Mesh = attachmentBox.toMesh("attachment");
-            attachment3.Bone = mesh3.getBoneByName("Bip01 L Hand");
-            attachment3.Offset = Matrix.Translation(10, -40, 0);
-            attachment3.updateValues();
-
+            listaZombiesACTIVOS.Clear();
+            listaZombiesACTIVOS.Add(zombie2);
+            listaZombiesACTIVOS.Add(zombie3);
 
             /*----------------------------------------------------------------------------------------------------------------------------------------*/
             /*----------------------------------------------------------------------------------------------------------------------------------------*/
@@ -192,24 +178,23 @@ namespace TGC.Group.Escenario
             //Device de DirectX para crear primitivas.
             var d3dDevice = D3DDevice.Instance.Device;
 
-           
 
 
-            
+
+
             /*----------------------------------------------------------------------------------------------------------------------------------------*/
             /*----------------------------------------------------------------------------------------------------------------------------------------*/
             //Rotar modelo en base a la nueva dirección a la que apunta
+            zombie3.mesh.Position = new Vector3(13500, 5, -480);
+            zombie3.mesh.Transform = Matrix.Scaling(new Vector3(25, 25, 25)) * Matrix.RotationY(1.55f) * Matrix.Translation(zombie3.mesh.Position);
 
-            mesh3.Position = new Vector3(10250, 5, -13500);
-            mesh3.Transform = Matrix.Scaling(new Vector3(25, 25, 25)) * Matrix.RotationY(9) * Matrix.Translation(mesh3.Position);
-
-            mesh3.AutoUpdateBoundingBox = false;
-            mesh3.BoundingBox.transform(Matrix.Scaling(new Vector3(25, 25, 25)) * Matrix.RotationY(9) * Matrix.Translation(mesh3.Position));
-
+            zombie3.mesh.AutoUpdateBoundingBox = false;
+            zombie3.mesh.BoundingBox.transform(Matrix.Scaling(new Vector3(25, 25, 25)) * Matrix.RotationY(1.55f) * Matrix.Translation(zombie3.mesh.Position));
 
 
 
-            characterSphere = new TgcBoundingSphere(mesh3.BoundingBox.calculateBoxCenter(), mesh3.BoundingBox.calculateBoxRadius());
+
+            characterSphere = new TgcBoundingSphere(zombie3.mesh.BoundingBox.calculateBoxCenter(), zombie3.mesh.BoundingBox.calculateBoxRadius());
 
 
             /******************************************************************************************************************************************/
@@ -423,150 +408,6 @@ namespace TGC.Group.Escenario
             }
 
 
-
-            /*----------------------------------------------------------------------------------------------------------------------------------------*/
-            /*----------------------------------------------------------------------------------------------------------------------------------------*/
-
-            zombie2.Transform = Matrix.Scaling(new Vector3(25, 25, 25)) * Matrix.RotationY(15.8f) * Matrix.Translation(zombie2.Position);
-            
-            const float MOVEMENT_SPEED = 1f;
-            ACU_TIEMPO_ATAQUE += ElapsedTime;
-
-            if (moverMESH2 == true)
-            {
-                var movement = new Vector3(0, 0, 0);
-
-                //movement.X = 0;
-                //movement.Y = 0;
-                //movement.Z = 1;
-
-                movement = CENTRO_ESCENARIO - zombie2.Position;
-
-                movement *= (MOVEMENT_SPEED * ElapsedTime);
-
-                movement.Normalize();
-
-                //mesh2.move(movement);
-
-                zombie2.Position = zombie2.Position + movement;
-
-                zombie2.Position.Normalize();
-
-                zombie2.Transform = Matrix.Scaling(new Vector3(25, 25, 25)) * Matrix.RotationY(15.8f) * Matrix.Translation(zombie2.Position);
-                zombie2.AutoUpdateBoundingBox = false;
-                zombie2.BoundingBox.transform(Matrix.Scaling(new Vector3(25, 25, 25)) * Matrix.RotationY(15.8f) * Matrix.Translation(zombie2.Position));
-
-            }
-
-
-
-            foreach (var planta in objetosColisionablesPLANTS)
-            {
-
-                if (planta.muerta == false) { 
-                    if(true)// ((TgcCollisionUtils.testAABBAABB(zombie2.BoundingBox, repeater.plantaMesh.BoundingBox)) )
-                    {
-                        zombie2.BoundingBox.setRenderColor(Color.Red);
-                        moverMESH2 = false;
-                        if (ACU_TIEMPO_ATAQUE > 0.55f)
-                        {
-                            planta.health -= zombieMESH2.attack();
-                            ACU_TIEMPO_ATAQUE = 0f;
-                        }
-
-                        if (planta.health <= 0)
-                        {
-                            planta.muerta = true;
-                            zombie2.BoundingBox.setRenderColor(Color.Yellow);
-                            moverMESH2 = true;
-                        }
-
-
-                    }
-                    else
-                    {
-                        zombie2.BoundingBox.setRenderColor(Color.Yellow);
-                        moverMESH2 = true;
-                    }
-               }
-            }
-
-
-
-
-
-            /*
-            if (TgcCollisionUtils.testAABBAABB(mesh2.BoundingBox, plantaCentro.mesh.BoundingBox))
-            {
-                mesh2.BoundingBox.setRenderColor(Color.Red);
-                moverMESH2 = false;
-
-                if (ACU_TIEMPO_ATAQUE > 0.45f) {
-                    plantaCARRETILLA.health -= zombieMESH2.attack();
-                    ACU_TIEMPO_ATAQUE = 0f;
-                }
-            }
-            else
-            {
-                mesh2.BoundingBox.setRenderColor(Color.Yellow);
-                moverMESH2 = true;
-            }
-            */
-
-
-
-
-            //const float MOVEMENT_SPEED = 1f;
-
-            if (moverMESH3 == true)
-            {
-                var movement2 = new Vector3(0, 0, 0);
-
-                //var directionZombie3 = carretilla.Position - mesh3.Position;
-                var directionZombie3 = CENTRO_ESCENARIO - mesh3.Position;
-
-                /*
-                movement.X = 0;
-                movement.Y = 0;
-                movement.Z = 1;
-                */
-
-                movement2 = directionZombie3;
-
-                movement2 *= MOVEMENT_SPEED * ElapsedTime;
-
-                movement2.Normalize();
-
-                
-                mesh3.Position = mesh3.Position + movement2;
-
-                mesh3.Position.Normalize();
-
-                mesh3.Transform = Matrix.Scaling(new Vector3(25, 25, 25)) * Matrix.RotationY(9) * Matrix.Translation(mesh3.Position);
-                
-                mesh3.BoundingBox.transform(Matrix.Scaling(new Vector3(25, 25, 25)) * Matrix.RotationY(9) * Matrix.Translation(mesh3.Position));
-                characterSphere.setCenter(mesh3.BoundingBox.calculateBoxCenter());
-            }
-
-            foreach (var planta in objetosColisionablesPLANTS)
-            {
-                if(planta.muerta == false)
-                {
-                    if (TgcCollisionUtils.testSphereAABB(characterSphere, repeater.plantaMesh.BoundingBox))
-                    {
-                        characterSphere.setRenderColor(Color.Red);
-                        moverMESH3 = false;
-                    }
-                    else
-                    {
-                        characterSphere.setRenderColor(Color.Yellow);
-                        moverMESH3 = true;
-                    }
-                }
-
-
-
-            }
             //Si hacen clic con el mouse, ver si hay colision con el suelo
             if (Input.buttonPressed(TgcD3dInput.MouseButtons.BUTTON_LEFT))
             {
@@ -617,7 +458,7 @@ namespace TGC.Group.Escenario
                 {
                     if (TgcCollisionUtils.intersectRayAABB(pickingRay.Ray, soles.BoundingBox, out collisionPoint))
                     {
-                        if (soles!=null) { soles.dispose(); }
+                        if (soles != null) { soles.dispose(); }
                         cantSoles++;
                     }
                 }
@@ -632,24 +473,100 @@ namespace TGC.Group.Escenario
                 }
 
             }
-            /*
-            if (TgcCollisionUtils.testSphereAABB(characterSphere, plantaCentro.mesh.BoundingBox))
-            {
-                characterSphere.setRenderColor(Color.Red);
-                moverMESH3 = false;
-            }
-            else
-            {
-                characterSphere.setRenderColor(Color.Yellow);
-                moverMESH3 = true;
-            }
-            */
 
-            //reja.AutoUpdateBoundingBox = false;
-            //reja.BoundingBox.transform(Matrix.Scaling(reja.Scale) * Matrix.RotationY(-44.9f) * Matrix.Translation(reja.Position));
 
             /*----------------------------------------------------------------------------------------------------------------------------------------*/
             /*----------------------------------------------------------------------------------------------------------------------------------------*/
+
+            /*----------------------------------------------------------------------------------------------------------------------------------------*/
+            /*----------------------------------------------------------------------------------------------------------------------------------------*/
+
+            foreach (var zombie in listaZombiesACTIVOS)
+            {
+                zombie.mesh.Transform = Matrix.Scaling(new Vector3(25, 25, 25)) * Matrix.RotationY(zombie.rotationY) * Matrix.Translation(zombie.mesh.Position);
+                zombie.mesh.AutoUpdateBoundingBox = false;
+                zombie.mesh.BoundingBox.transform(Matrix.Scaling(new Vector3(25, 25, 25)) * Matrix.RotationY(zombie.rotationY) * Matrix.Translation(zombie.mesh.Position));
+            }
+
+
+
+
+
+            const float MOVEMENT_SPEED = 1f;
+            //ACU_TIEMPO_ATAQUE += ElapsedTime;
+            //ACU_TIEMPO_ATAQUE_2 += ElapsedTime;
+
+            Plant plantaAUX = new Plant();
+
+
+
+            foreach (var zombie in listaZombiesACTIVOS)
+            {
+
+                zombie.ACU_TIEMPO_ATAQUE += ElapsedTime;
+                /******************************************************************************************************************/
+                foreach (var planta in objetosColisionablesPLANTS)
+                {
+
+
+                    if ((TgcCollisionUtils.testAABBAABB(zombie.mesh.BoundingBox, planta.plantaMesh.BoundingBox)))
+                    {
+                        // hay colision
+                        zombie.mesh.BoundingBox.setRenderColor(Color.Red);
+                        if (zombie.ACU_TIEMPO_ATAQUE > 0.55f)
+                        {
+                            planta.health -= zombie.attack();
+                            zombie.ACU_TIEMPO_ATAQUE = 0f;
+
+                        }
+
+                        zombie.mover = false;
+                        plantaAUX = planta;
+
+                        break;
+
+                    }
+
+                }
+
+                if (plantaAUX.health <= 0)
+                {
+                    zombie.mover = true;
+                    zombie.mesh.BoundingBox.setRenderColor(Color.Yellow);
+                }
+
+
+                if (zombie.mover == true)
+                {
+                    var movement = new Vector3(0, 0, 0);
+
+
+                    movement = CENTRO_ESCENARIO - zombie.mesh.Position;
+
+                    movement *= (MOVEMENT_SPEED * ElapsedTime);
+
+                    movement.Normalize();
+
+                    zombie.mesh.Position = zombie.mesh.Position + movement;
+
+                    zombie.mesh.Position.Normalize();
+
+                    zombie.mesh.Transform = Matrix.Scaling(new Vector3(25, 25, 25)) * Matrix.RotationY(zombie.rotationY) * Matrix.Translation(zombie.mesh.Position);
+                    zombie.mesh.AutoUpdateBoundingBox = false;
+                    zombie.mesh.BoundingBox.transform(Matrix.Scaling(new Vector3(25, 25, 25)) * Matrix.RotationY(zombie.rotationY) * Matrix.Translation(zombie.mesh.Position));
+
+                }
+
+
+
+                /******************************************************************************************************************/
+            }
+
+
+
+            /*----------------------------------------------------------------------------------------------------------------------------------------*/
+            /*----------------------------------------------------------------------------------------------------------------------------------------*/
+
 
 
 
@@ -720,21 +637,27 @@ namespace TGC.Group.Escenario
             }
             */
 
-         
-            
+
+            foreach (var zombie in listaZombiesACTIVOS)
+            {
+                zombie.mesh.playAnimation("Empujar", true, 2);
+
+                zombie.mesh.animateAndRender(0.1f);
+            }
 
 
-            //mesh2.Transform = mesh2.Transform + Matrix.Scaling(new Vector3(25, 25, 25)) * Matrix.RotationY(16) * Matrix.Translation(mesh2.Position + new Vector3(25, 0, 25));
-            zombie2.playAnimation("Empujar",true,2);
+
+
+            //zombie2.playAnimation("Empujar",true,2);
             
-            zombie2.animateAndRender(0.1f);
+            //zombie2.animateAndRender(0.1f);
 
 
             /*----------------------------------------------------------------------------------------------------------------------------------------*/
             /*----------------------------------------------------------------------------------------------------------------------------------------*/
             
-            mesh3.playAnimation("Empujar", true, 2);
-            mesh3.animateAndRender(0.1f);
+            //mesh3.playAnimation("Empujar", true, 2);
+            //mesh3.animateAndRender(0.1f);
 
             /*----------------------------------------------------------------------------------------------------------------------------------------*/
             /*----------------------------------------------------------------------------------------------------------------------------------------*/
@@ -749,8 +672,11 @@ namespace TGC.Group.Escenario
             {
                 stage.Suelo.BoundingBox.render();
                 //Mesh.BoundingBox.render();
-                zombie2.BoundingBox.render();
-                mesh3.BoundingBox.render();
+                foreach (var zombie in listaZombiesACTIVOS)
+                {
+                    zombie.mesh.BoundingBox.render();
+                }
+;
 
 
                 //carretilla.BoundingBox.render();
