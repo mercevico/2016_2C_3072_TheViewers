@@ -223,8 +223,8 @@ namespace TGC.Group.Escenario
 
 
             objetosColisionablesPLANTS.Clear();
-            objetosColisionablesPLANTS.Add(plantaCentro);
-            objetosColisionablesPLANTS.Add(plantaEnMedio);
+            //objetosColisionablesPLANTS.Add(plantaCentro);
+            //objetosColisionablesPLANTS.Add(plantaEnMedio);
 
             CENTRO_ESCENARIO = new Vector3(-450, 3, -941); 
 
@@ -351,15 +351,25 @@ namespace TGC.Group.Escenario
 
             if (Input.keyPressed(Key.Z) && selectedMaceta != null)
             {
-                repeater.crearMESH(MediaDir, selectedMaceta.Position);
-                repeater.rendermesh();
-                objetosColisionablesPLANTS.Add(repeater);
+                Plant repeaterNuevo = new Plant();
+                repeaterNuevo.crearMESH(MediaDir, selectedMaceta.Position);
+                //repeater.crearMESH(MediaDir, selectedMaceta.Position);
+                //repeaterNuevo.rendermesh();
+                objetosColisionablesPLANTS.Add(repeaterNuevo);
 
             }
 
             if (Input.keyPressed(Key.X) && selectedPlant != null)
             {
+                /*
+                if ( ! (objetosColisionablesPLANTS.Contains(selectedPlant) ))
+                {
+                    selectedPlant.plantaMesh.dispose();
+                }
+                */
                 selectedPlant.plantaMesh.dispose();
+                objetosColisionablesPLANTS.Remove(selectedPlant);
+
             }
 
             if (Input.keyPressed(Key.P))
@@ -681,7 +691,7 @@ namespace TGC.Group.Escenario
             //A modo ejemplo realizamos toda las multiplicaciones, pero aquí solo nos hacia falta la traslación.
             //Finalmente invocamos al render de la caja
             stage.rendermesh();
-            repeater.rendermesh();
+            //repeater.rendermesh();
             sol0.rendermesh();
             sol1.rendermesh();
             sol2.rendermesh();
@@ -697,9 +707,9 @@ namespace TGC.Group.Escenario
 
             foreach (var plant in objetosColisionablesPLANTS )
             {
-                if (plant.muerta != true)
+                if (plant.health > 0)
                 {
-                    //repeater.plantaMesh.render();
+                   plant.plantaMesh.render();
                 }
             }
             /*
@@ -747,9 +757,9 @@ namespace TGC.Group.Escenario
                 // plantaCentro.mesh.BoundingBox.render();
                 foreach (var plant in objetosColisionablesPLANTS)
                 {
-                    if (plant.muerta != true)
+                    if (plant.health > 0)
                     {
-                       repeater.plantaMesh.BoundingBox.render();
+                        plant.plantaMesh.BoundingBox.render();
                     }
                 }
 
@@ -775,9 +785,10 @@ namespace TGC.Group.Escenario
             
             foreach (var plant in objetosColisionablesPLANTS)
             {
-                if (plant.muerta != true)
+                if (plant.health <= 0)
                 {
-                   // plant.mesh.dispose();
+                   plant.plantaMesh.dispose();
+                   objetosColisionablesPLANTS.Remove(plant);
                 }
             }
 

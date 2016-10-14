@@ -395,7 +395,7 @@ namespace TGC.Group.Stage
             maceta31.render();
 
             carretilla.render();
-
+            /*
             reja.BoundingBox.render();
             reja1.BoundingBox.render();
             reja2.BoundingBox.render();
@@ -412,7 +412,7 @@ namespace TGC.Group.Stage
             reja13.BoundingBox.render();
             reja14.BoundingBox.render();
             reja15.BoundingBox.render();
-
+            */
 
         }
 
