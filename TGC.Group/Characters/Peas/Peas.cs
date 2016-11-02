@@ -23,13 +23,15 @@ namespace TGC.Group.Characters.Peas
     {
         public TgcMesh bomba;
         public Vector3 base1;
+        public int dmg = 50;
+        public bool impacto = false;
 
         public void crearMESH(Vector3 posicion, string MediaDir)
         {
             base1 = posicion;
-            bomba = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Piedra3\\Piedra3-TgcScene.xml").Meshes[0];
+            bomba = new TgcSceneLoader().loadSceneFromFile(MediaDir + "\\Roca\\Roca-TgcScene.xml").Meshes[0];
             bomba.Position = posicion;
-            bomba.Scale = new Vector3(10, 10, 10);
+            bomba.Scale = new Vector3(20, 20, 20);
 
         }
         public void rendermesh(bool hit)

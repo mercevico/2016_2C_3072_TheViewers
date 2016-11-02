@@ -16,6 +16,7 @@ using TGC.Group.Characters.Plants;
 using System.Collections.Generic;
 using TGC.Group.Stage;
 using System;
+using TGC.Group.Characters.Peas;
 
 namespace TGC.Group.Characters.Plants
 {
@@ -27,10 +28,20 @@ namespace TGC.Group.Characters.Plants
         public TgcMesh plantaMesh;
         public bool muerta = false;
         internal TgcBoundingAxisAlignBox BoundingBox;
+        public float ACU_TIEMPO_ATAQUE = 0f;
 
-        public void shoot()
+
+        public bool atacar()
         {
             //Disparar
+            if(ACU_TIEMPO_ATAQUE > 2.8f)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public void crearMESH(string MediaDir, Vector3 posicion)

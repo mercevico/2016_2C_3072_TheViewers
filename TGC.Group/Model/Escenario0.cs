@@ -16,7 +16,7 @@ using TGC.Group.Characters.Plants;
 using System.Collections.Generic;
 using TGC.Group.Stage;
 using TGC.Group.Characters.soles;
-
+using TGC.Group.Characters.Peas;
 
 namespace TGC.Group.Escenario
 
@@ -87,6 +87,7 @@ namespace TGC.Group.Escenario
 
         private List<Zombie> listaZombiesACTIVOS = new List<Zombie>();
 
+        private List<Peas> listaPEAS = new List<Peas>();
 
         private bool ThirdPersonCamera;
         /*----------------------------------------------------------------------------------------------------------------------------------------*/
@@ -141,6 +142,7 @@ namespace TGC.Group.Escenario
             listaZombiesACTIVOS.Add(zombie2);
             listaZombiesACTIVOS.Add(zombie3);
 
+            listaPEAS.Clear();
             /*----------------------------------------------------------------------------------------------------------------------------------------*/
             /*----------------------------------------------------------------------------------------------------------------------------------------*/
 
@@ -478,6 +480,63 @@ namespace TGC.Group.Escenario
             /*----------------------------------------------------------------------------------------------------------------------------------------*/
             /*----------------------------------------------------------------------------------------------------------------------------------------*/
 
+            foreach (var planta in objetosColisionablesPLANTS)
+            {
+                planta.ACU_TIEMPO_ATAQUE += ElapsedTime;
+                if (planta.atacar())
+                {
+                    Peas peaNuevo = new Peas();
+                    var posPEA = planta.plantaMesh.Position;
+                    peaNuevo.crearMESH(posPEA, MediaDir);
+
+                    listaPEAS.Add(peaNuevo);
+
+                    planta.ACU_TIEMPO_ATAQUE = 0f;
+                    
+                }
+            }
+
+            foreach (var pea in listaPEAS)
+            {
+                float MOVEMENT_SPEED_pea = 5000f;
+                var movement2 = new Vector3(0, 0, 0);
+
+
+                movement2 = (CENTRO_ESCENARIO - pea.bomba.Position) * (-1f);
+
+                movement2 *= (MOVEMENT_SPEED_pea * ElapsedTime * 200f);
+
+                movement2.Normalize();
+
+                pea.bomba.Position = pea.bomba.Position + movement2;
+
+                pea.bomba.Position.Normalize();
+                pea.bomba.Transform = Matrix.Scaling(new Vector3(20, 20, 20)) * Matrix.RotationY(1f) * Matrix.Translation(pea.bomba.Position);
+
+            }
+
+
+
+            /*----------------------------------------------------------------------------------------------------------------------------------------*/
+            /*----------------------------------------------------------------------------------------------------------------------------------------*/
+
+            foreach (var pea in listaPEAS)
+            {
+                foreach (var zombie in listaZombiesACTIVOS)
+                {
+                    if ((TgcCollisionUtils.testAABBAABB(pea.bomba.BoundingBox, zombie.mesh.BoundingBox)))
+                    {
+                        // hay colision
+                        zombie.health -= pea.dmg;
+                        pea.impacto = true;
+                        break;
+
+                    }
+                }
+
+            }
+
+
             /*----------------------------------------------------------------------------------------------------------------------------------------*/
             /*----------------------------------------------------------------------------------------------------------------------------------------*/
 
@@ -629,6 +688,17 @@ namespace TGC.Group.Escenario
                    plant.plantaMesh.render();
                 }
             }
+
+            foreach (var pea in listaPEAS)
+            {
+                if (pea.impacto == false)
+                {
+                    pea.bomba.render();
+                }
+            }
+
+
+
             /*
             if (plantaCARRETILLA.health > 0)
             {
@@ -690,10 +760,11 @@ namespace TGC.Group.Escenario
                 }
 
 
-               
+
+
                 //plantaEnMedio.mesh.BoundingBox.render();
 
-                characterSphere.render();
+                //characterSphere.render();
             }
 
             //Finaliza el render y presenta en pantalla, al igual que el preRender se debe para casos puntuales es mejor utilizar a mano las operaciones de EndScene y PresentScene
@@ -717,6 +788,27 @@ namespace TGC.Group.Escenario
                    objetosColisionablesPLANTS.Remove(plant);
                 }
             }
+
+
+            foreach (var pea in listaPEAS)
+            {
+                if (pea.impacto == true)
+                {
+                    pea.bomba.dispose();
+                    listaPEAS.Remove(pea);
+                }
+            }
+
+
+            foreach (var zombie in listaZombiesACTIVOS)
+            {
+                if (zombie.health <= 0)
+                {
+                    zombie.mesh.dispose();
+                    listaZombiesACTIVOS.Remove(zombie);
+                }
+            }
+
 
             stage.disposeMesh();
             sol0.disposeMesh();
