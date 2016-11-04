@@ -44,6 +44,12 @@ namespace TGC.Group.Characters.Zombies
             //Renderizar el meshPath
         }
 
+        public void dispose()
+        {
+            this.mesh.dispose();
+        }
+
+
         public void crearMESH(string pathMesh, string mediaPath, Vector3 InitialPosition, float rotY)
         {
             var animationsPath = new string[1];

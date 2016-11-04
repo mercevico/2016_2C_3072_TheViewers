@@ -369,44 +369,44 @@ namespace TGC.Group.Escenario
 
             if (Input.keyDown(Key.A))
             {
-                Camara.SetCamera(Camara.Position + new Vector3(30, 0, 0), Camara.LookAt + new Vector3(30, 0, 0));
+                Camara.SetCamera(Camara.Position + new Vector3(50, 0, 0), Camara.LookAt + new Vector3(50, 0, 0));
             }
             if (Input.keyDown(Key.D))
             {
 
-                Camara.SetCamera(Camara.Position + new Vector3(-30, 0, 0), Camara.LookAt + new Vector3(-30, 0, 0));
+                Camara.SetCamera(Camara.Position + new Vector3(-50, 0, 0), Camara.LookAt + new Vector3(-50, 0, 0));
             }
             if (Input.keyDown(Key.W))
             {
 
-                Camara.SetCamera(Camara.Position + new Vector3(0, 0, -30), Camara.LookAt + new Vector3(0, 0, -30));
+                Camara.SetCamera(Camara.Position + new Vector3(0, 0, -50), Camara.LookAt + new Vector3(0, 0, -50));
             }
             if (Input.keyDown(Key.S))
             {
 
-                Camara.SetCamera(Camara.Position + new Vector3(0, 0, 30), Camara.LookAt + new Vector3(0, 0, 30));
+                Camara.SetCamera(Camara.Position + new Vector3(0, 0, 50), Camara.LookAt + new Vector3(0, 0, 50));
             }
             
 
             if (Camara.Position.Z < -11826)
             {
-                Camara.SetCamera(new Vector3(Camara.Position.X, Camara.Position.Y, -11826), Camara.LookAt + new Vector3(0, 0, 30));
+                Camara.SetCamera(new Vector3(Camara.Position.X, Camara.Position.Y, -11826), Camara.LookAt + new Vector3(0, 0, 50));
             }
 
 
             if (Camara.Position.Z > 13000)
             {
-                Camara.SetCamera(new Vector3(Camara.Position.X, Camara.Position.Y, 13000), Camara.LookAt + new Vector3(0, 0, -30));
+                Camara.SetCamera(new Vector3(Camara.Position.X, Camara.Position.Y, 13000), Camara.LookAt + new Vector3(0, 0, -50));
             }
 
             if (Camara.Position.X >10000)
             {
-                Camara.SetCamera(new Vector3(10000, Camara.Position.Y, Camara.Position.Z), Camara.LookAt + new Vector3(-30, 0, 0));
+                Camara.SetCamera(new Vector3(10000, Camara.Position.Y, Camara.Position.Z), Camara.LookAt + new Vector3(-50, 0, 0));
             }
 
             if (Camara.Position.X < -10000)
             {
-                Camara.SetCamera(new Vector3(-10000, Camara.Position.Y, Camara.Position.Z), Camara.LookAt + new Vector3(30, 0, 0));
+                Camara.SetCamera(new Vector3(-10000, Camara.Position.Y, Camara.Position.Z), Camara.LookAt + new Vector3(50, 0, 0));
             }
 
 
@@ -529,6 +529,7 @@ namespace TGC.Group.Escenario
                         // hay colision
                         zombie.health -= pea.dmg;
                         pea.impacto = true;
+                        if (zombie.health <= 0) { zombie.dispose(); listaZombiesACTIVOS.Remove(zombie); }
                         break;
 
                     }
@@ -634,7 +635,7 @@ namespace TGC.Group.Escenario
 
         /// <summary>
         ///     Se llama cada vez que hay que refrescar la pantalla.
-        ///     Escribir aquí todo el código referido al renderizado.
+        ///     Escribir aquí todo el código referido al renderizadzombieso.
         ///     Borrar todo lo que no haga falta.
         /// </summary>
         public override void Render()
